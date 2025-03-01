@@ -3,12 +3,18 @@ import './Login.css';
 import { loginUser } from '../api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,36 +23,39 @@ const Login = ({ onLogin }) => {
 
     try {
         const response = await loginUser({ email, password });
+
+        // Store user data properly
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userId', response.data.userId);
-        
+        localStorage.setItem('userId', response.data.user.id);
+        localStorage.setItem('userName', response.data.user.name); 
+
         toast.success(
-              <div style={{ width: '400px'}}>
-                  Login successful!
-              </div>,
-              {
-                  position: 'top-right',
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-              }
-          );
+            <div style={{ width: '400px'}}>
+                Login successful!
+            </div>,
+            {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                closeButton: false, 
+            }
+        );
 
         setTimeout(() => {
-          onLogin(); // Redirect or call the onLogin function
+            onLogin();
         }, 3000);
 
-      } catch (error) {
-          setError('Login failed. Please check your credentials.');
-          console.error('Login error:', error);
-      } finally {
-          setLoading(false);
-      }
+    } catch (error) {
+        setError('Login failed. Please check your credentials.');
+        console.error('Login error:', error);
+    } finally {
+        setLoading(false);
+    }
   };
-
 
   return (
     <div className="login-container">
@@ -72,16 +81,21 @@ const Login = ({ onLogin }) => {
                 required
               />
             </div>
-            <div className="input-group">
+            <div className="input-group password-group">
               <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="password-container">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span className="eye-icon" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
             </div>
             <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}

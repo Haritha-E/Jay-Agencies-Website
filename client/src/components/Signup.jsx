@@ -74,6 +74,7 @@ const Signup = () => {
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
+                        closeButton: false, 
                     }
                 );
 
