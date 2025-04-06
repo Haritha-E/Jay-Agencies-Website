@@ -3,12 +3,12 @@ import './Login.css';
 import { loginUser } from '../api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -22,38 +22,47 @@ const Login = ({ onLogin }) => {
     setError('');
 
     try {
-        const response = await loginUser({ email, password });
-
-        // Store user data properly
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userId', response.data.user.id);
-        localStorage.setItem('userName', response.data.user.name); 
-
-        toast.success(
-            <div style={{ width: '400px'}}>
-                Login successful!
-            </div>,
-            {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                closeButton: false, 
-            }
-        );
-
-        setTimeout(() => {
-            onLogin();
-        }, 3000);
-
+      const response = await loginUser({ email, password });
+      console.log("Login Response:", response.data);
+    
+      const user = response?.data?.user;
+      const token = response?.data?.token;
+    
+      if (!user || !user.name || !user.id) {
+        throw new Error("Invalid response: Missing user information.");
+      }
+    
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userName', user.name);
+    
+      toast.success(
+        <div style={{ width: '400px' }}>Login successful!</div>,
+        {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          closeButton: false,
+        }
+      );
+    
+      setTimeout(() => {
+        if (user.email === 'admin@jayagencies.com') {
+          window.location.href = '/admin/dashboard';
+        } else {
+          onLogin({ name: user.name, email: user.email, token }); // Regular user
+        }
+      }, 3000);
+      
     } catch (error) {
-        setError('Login failed. Please check your credentials.');
-        console.error('Login error:', error);
+      console.error('Login error:', error);
+      setError('Login failed. Please check your credentials.');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 

@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
-const Home = ({ onLogout }) => {
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    const name = localStorage.getItem("userName");
-    setUserName(name || "User");
-  }, []);
+const Home = ({ user, onLogout }) => {
+  const navigate = useNavigate();
 
   const products = [
     { id: 1, name: "Lunch Box", image: "https://vinodcookware.com/cdn/shop/products/1m0a5477_2.jpg?v=1738391972"},
@@ -27,11 +23,15 @@ const Home = ({ onLogout }) => {
       <header className="home-header">
         <h1 className="shop-name">Jay Agencies</h1>
         <nav className="nav-menu">
-          <a href="/">Products</a>
-          <a href="/">Cart</a>
-          <a href="/">Contact Us</a>
+          <a href="#products">Products</a>
+          <a href="#contact">Contact</a>
         </nav>
-        <button onClick={onLogout} className="logout-btn">Logout</button>
+
+        {user ? (
+          <button onClick={onLogout} className="logout-btn">Logout</button>
+        ) : (
+          <button onClick={() => navigate("/login")} className="logout-btn">Get Started</button>
+        )}
       </header>
 
       {/* Banner Section */}
@@ -42,14 +42,17 @@ const Home = ({ onLogout }) => {
           className="banner-image"
         />
         <div className="welcome-section">
-          <h2>Welcome, <span className="user-name">{userName}</span>!</h2>
+        <h2>
+          {user && user.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
+        </h2>
+
           <p>Premium Kitchenware & Home Essentials – Crafted for Perfection!</p>
           <p className="tagline">✨ Bringing Elegance & Efficiency to Your Home ✨</p>
         </div>
       </div>
 
       {/* Our Products Section */}
-      <h2 className="section-heading">Our Products</h2>
+      <h2 id="products" className="section-heading">Our Products</h2>
 
       {/* Product Grid */}
       <div className="product-grid">
@@ -62,7 +65,7 @@ const Home = ({ onLogout }) => {
       </div>
 
       {/* Footer */}
-      <footer className="footer">
+      <footer className="footer" id="contact">
         <div className="footer-container">
           {/* Company Info */}
           <div className="footer-section">
@@ -83,9 +86,8 @@ const Home = ({ onLogout }) => {
             <h3>Quick Links</h3>
             <ul>
               <li><a href="/">Home</a></li>
-              <li><a href="/">Products</a></li>
-              <li><a href="/">About</a></li>
-              <li><a href="/">Contact</a></li>
+              <li><a href="#products">Products</a></li>
+              <li><a href="#contact">Contact</a></li>
             </ul>
           </div>
         </div>

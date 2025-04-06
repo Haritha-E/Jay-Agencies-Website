@@ -3,19 +3,22 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
-
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use("/uploads", express.static("uploads")); // 🔥 Serve static images
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes); // ✅ New Product Route
+app.use("/uploads", express.static("uploads"));
 
-// Connect to MongoDB
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
