@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      default: "",
+    },
+    address: {
+      type: String,
+      default: "",
+    },
+    profilePic: {
+      type: String, // will store filename or image URL
+      default: "",
+    },
   },
   { timestamps: true }
 );

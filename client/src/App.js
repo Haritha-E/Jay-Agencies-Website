@@ -12,6 +12,8 @@ import EditProduct from "./pages/EditProduct";
 import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import WishList from "./pages/WishList";
+import Profile from "./pages/Profile";
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
@@ -76,6 +78,8 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishList />} />
+        <Route path="/profile" element={<Profile />} />
+
 
       </Routes>
     </Router>

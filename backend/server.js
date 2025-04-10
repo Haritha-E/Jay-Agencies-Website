@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -18,9 +19,9 @@ app.use("/uploads", express.static("uploads")); // 🔥 Serve static images
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes); // ✅ New Product Route
-app.use("/uploads", express.static("uploads"));
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/users", userRoutes); // 👤 User profile (view/update)
 
 // MongoDB
 mongoose

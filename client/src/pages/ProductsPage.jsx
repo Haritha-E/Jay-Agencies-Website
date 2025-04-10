@@ -106,7 +106,7 @@ const ProductsPage = () => {
               {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
             </div>
             <img
-              src={`http://localhost:5000/uploads/${product.image}`}
+              src={`http://localhost:5000/uploads/products/${product.image}`}
               alt={product.name}
             />
             <h3>{product.name}</h3>

@@ -30,7 +30,6 @@ const Home = ({ user, onLogout }) => {
           <a href="#contact">Contact</a>
         </nav>
 
-
         {user ? (
           <div className="nav-actions">
             <button className="icon-btn" onClick={() => navigate("/cart")}>

@@ -79,7 +79,7 @@ const CartPage = () => {
               <div key={item._id} className="cart-item">
                 {item.productId ? (
                   <img
-                    src={`http://localhost:5000/uploads/${item.productId.image}`}
+                    src={`http://localhost:5000/uploads/products/${item.productId.image}`}
                     alt={item.productId.name}
                   />
                 ) : (

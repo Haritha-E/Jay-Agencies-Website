@@ -4,9 +4,9 @@ import { addProduct, getAllProducts, deleteProduct, updateProduct } from "../con
 
 const router = express.Router();
 
-router.post("/add", upload.single("image"), addProduct);
+router.post("/add", upload.single("productImage"), addProduct);
 router.get("/", getAllProducts); // 👈 new route
 router.delete("/:id", deleteProduct);
-router.put("/edit/:id", upload.single("image"), updateProduct);
+router.put("/edit/:id", upload.single("productImage"), updateProduct);
 
 export default router;

@@ -88,3 +88,18 @@ export const removeFromWishlist = async (productId) => {
 export const getWishlistItems = async () => {
   return await axios.get(`${API_URL}/wishlist`, getAuthHeaders());
 };
+
+// ---------- PROFILE ----------
+export const getUserProfile = async () => {
+    return await axios.get(`${API_URL}/users/profile`, getAuthHeaders());
+  };
+
+// ---------- PROFILE ----------
+export const updateUserProfile = async (formData) => {
+  return await axios.put(`${API_URL}/users/profile`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data", // 👈 for file uploads
+      ...getAuthHeaders().headers,
+    },
+  });
+};

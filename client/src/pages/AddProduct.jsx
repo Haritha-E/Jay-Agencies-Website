@@ -39,7 +39,7 @@ const AddProduct = () => {
 
     setLoading(true);
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("productImage", image);
     formData.append("name", productData.name);
     formData.append("price", productData.price);
     formData.append("size", productData.size);

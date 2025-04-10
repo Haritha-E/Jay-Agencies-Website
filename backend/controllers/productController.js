@@ -14,7 +14,7 @@ export const addProduct = async (req, res) => {
       price,
       size,
       description,
-      image: req.file.filename, // Save only filename
+      image: req.file.filename, // just filename saved in DB
     });
 
     await newProduct.save();
@@ -27,33 +27,35 @@ export const addProduct = async (req, res) => {
 };
 
 export const getAllProducts = async (req, res) => {
-    try {
-      const products = await Product.find();
-      res.status(200).json(products);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      res.status(500).json({ message: "Failed to fetch products" });
-    }
-  };
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
+};
 
-  export const deleteProduct = async (req, res) => {
-    try {
-      const product = await Product.findByIdAndDelete(req.params.id);
-  
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-  
-      // Optional: Delete image from filesystem if needed
-      fs.unlinkSync(`uploads/${product.image}`);
-  
-      res.status(200).json({ message: "Product deleted successfully" });
-    } catch (error) {
-      console.error("❌ Error deleting product:", error);
-      res.status(500).json({ message: "Failed to delete product" });
-    }
-  };
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
 
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Delete product image from uploads/products/
+    const imagePath = `uploads/products/${product.image}`;
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("❌ Error deleting product:", error);
+    res.status(500).json({ message: "Failed to delete product" });
+  }
+};
 
 export const updateProduct = async (req, res) => {
   try {
@@ -64,11 +66,11 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // If new image is uploaded, delete old one and update
+    // If new image uploaded, delete old one and update
     if (req.file) {
-      // Delete old image
-      if (product.image) {
-        fs.unlinkSync(`uploads/${product.image}`);
+      const oldImagePath = `uploads/products/${product.image}`;
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
       }
       product.image = req.file.filename;
     }
@@ -86,5 +88,3 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
-
-  

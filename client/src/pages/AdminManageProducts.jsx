@@ -66,7 +66,7 @@ const AdminManageProducts = () => {
                 <tr key={product._id}>
                   <td>
                     <img
-                      src={`http://localhost:5000/uploads/${product.image}`}
+                      src={`http://localhost:5000/uploads/products/${product.image}`}
                       alt={product.name}
                       className="product-thumbnail"
                     />

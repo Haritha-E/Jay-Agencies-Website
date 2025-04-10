@@ -58,7 +58,7 @@ const EditProduct = () => {
       formData.append("size", productData.size);
       formData.append("description", productData.description);
       if (productData.image) {
-        formData.append("image", productData.image);
+        formData.append("productImage", productData.image);
       }
 
       await updateProduct(id, formData);
@@ -118,7 +118,7 @@ const EditProduct = () => {
           Existing Image:
           {existingImage && (
             <div className="image-preview">
-              <img src={`http://localhost:5000/uploads/${existingImage}`} alt="Existing" />
+              <img src={`http://localhost:5000/uploads/products/${existingImage}`} alt="Existing" />
             </div>
           )}
         </label>
