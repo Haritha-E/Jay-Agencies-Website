@@ -13,6 +13,8 @@ import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import WishList from "./pages/WishList";
 import Profile from "./pages/Profile";
+import CheckoutPage from "./pages/CheckoutPage";
+import MyOrders from "./pages/MyOrders";
 
 
 function App() {
@@ -79,6 +81,8 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/my-orders" element={<MyOrders />} />
 
 
       </Routes>

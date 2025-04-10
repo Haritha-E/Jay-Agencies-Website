@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getCartItems, removeFromCart, updateCartQuantity } from "../api";
 import "./CartPage.css";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
+  
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState(null);
 
@@ -126,9 +129,10 @@ const CartPage = () => {
 
           <div className="cart-summary">
             <h3>Total: ₹{totalPrice.toFixed(2)}</h3>
-            <button className="checkout-btn" disabled>
-              Checkout (Coming Soon)
+            <button className="checkout-btn" onClick={() => navigate("/checkout")}>
+              Checkout
             </button>
+
           </div>
         </>
       )}

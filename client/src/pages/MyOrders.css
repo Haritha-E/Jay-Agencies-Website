@@ -1,0 +1,140 @@
+/* Base container */
+.orders-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  .orders-container h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #222;
+    text-align: center;
+  }
+  
+  /* No orders message */
+  .no-orders {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #777;
+    padding: 2rem;
+  }
+  
+  /* Order card layout */
+  .order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .order-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 25px 30px;
+    transition: transform 0.2s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .order-card h4 {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .order-card p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  /* Delivery status badges */
+  .delivered,
+  .pending {
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  
+  .delivered {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+  }
+  
+  .pending {
+    color: #ef6c00;
+    background-color: #fff3e0;
+  }
+  
+  /* Product list in order */
+  .order-products {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .order-product {
+    display: flex;
+    gap: 16px;
+    background-color: #fdfdfd;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+    align-items: center;
+  }
+  
+  .order-product img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+  
+  .order-product h5 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #222;
+  }
+  
+  .order-product p {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 2px 0;
+  }
+  
+  /* Loading */
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 60px 0;
+    color: #888;
+  }
+  
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .status-filter {
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  

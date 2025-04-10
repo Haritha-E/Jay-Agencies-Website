@@ -26,9 +26,15 @@ const Home = ({ user, onLogout }) => {
         <h1 className="shop-name">Jay Agencies</h1>
         <nav className="nav-menu">
           <Link to="/products">Products</Link>
-          {user && <Link to="/wishlist">Wishlist</Link>}
+          {user && (
+            <>
+              <Link to="/wishlist">Wishlist</Link>
+              <Link to="/my-orders">My Orders</Link>
+            </>
+          )}
           <a href="#contact">Contact</a>
         </nav>
+
 
         {user ? (
           <div className="nav-actions">

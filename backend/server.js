@@ -7,6 +7,8 @@ import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+
 
 dotenv.config();
 const app = express();
@@ -22,6 +24,8 @@ app.use("/api/products", productRoutes); // ✅ New Product Route
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/users", userRoutes); // 👤 User profile (view/update)
+app.use("/api/orders", orderRoutes);
+
 
 // MongoDB
 mongoose

@@ -48,10 +48,22 @@ export const removeFromWishlist = async (req, res) => {
 export const getWishlist = async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({ user: req.user._id }).populate("products.productId");
+
     if (!wishlist) {
       return res.status(200).json([]);
     }
-    res.status(200).json(wishlist.products.map(p => p.productId));
+
+    // Filter out any null productId (i.e., product deleted from DB)
+    const validProducts = wishlist.products.filter(p => p.productId !== null);
+
+    // Optional: clean the wishlist in the DB as well
+    if (validProducts.length !== wishlist.products.length) {
+      wishlist.products = validProducts;
+      await wishlist.save();
+    }
+
+    // Return only the product details
+    res.status(200).json(validProducts.map(p => p.productId));
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch wishlist", error: err.message });
   }

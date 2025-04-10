@@ -1,7 +1,7 @@
 import express from "express";
 import Cart from "../models/Cart.js";
 import { protect } from "../middleware/authMiddleware.js";
-
+import { clearCart } from "../controllers/cartController.js";
 
 const router = express.Router();
 
@@ -105,4 +105,5 @@ router.put("/update", protect, async (req, res) => {
     }
   });
   
+  router.delete("/clear", protect, clearCart);
 export default router;

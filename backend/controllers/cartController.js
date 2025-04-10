@@ -4,11 +4,24 @@ import Cart from "../models/Cart.js";
 export const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user.id }).populate("items.productId");
-    res.json(cart || { userId: req.user.id, items: [] });
+
+    if (!cart) return res.json({ userId: req.user.id, items: [] });
+
+    // 🔍 Filter out items where the product has been deleted (productId is null)
+    const validItems = cart.items.filter(item => item.productId !== null);
+
+    // 🧹 Optional: update the cart in DB to remove invalid items
+    if (validItems.length !== cart.items.length) {
+      cart.items = validItems;
+      await cart.save();
+    }
+
+    res.json(cart);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch cart." });
   }
 };
+
 
 const handleAddToCart = async (productId) => {
     const token = localStorage.getItem("token");
@@ -62,4 +75,16 @@ export const updateCartQuantity = async (req, res) => {
       res.status(500).json({ error: "Failed to update quantity" });
     }
   };
+
+  // 🧹 Clear user's cart
+export const clearCart = async (req, res) => {
+  try {
+    await Cart.findOneAndDelete({ user: req.user._id });
+    res.status(200).json({ message: "Cart cleared successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to clear cart" });
+  }
+};
+
+  
   

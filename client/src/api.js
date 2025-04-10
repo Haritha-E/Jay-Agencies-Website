@@ -103,3 +103,29 @@ export const updateUserProfile = async (formData) => {
     },
   });
 };
+
+// ---------- ORDERS ----------
+
+// 🧾 Place a new order
+export const placeOrder = async (orderData) => {
+  return await axios.post(`${API_URL}/orders`, orderData, getAuthHeaders());
+};
+
+// 📦 Get user's placed and received orders
+export const getUserOrders = async () => {
+  return await axios.get(`${API_URL}/orders/my-orders`, getAuthHeaders());
+};
+
+// 🛠 Admin: Get all orders
+export const getAllOrders = async () => {
+  return await axios.get(`${API_URL}/orders`, getAuthHeaders());
+};
+
+// ✅ Admin: Mark an order as delivered
+export const markOrderDelivered = async (orderId) => {
+  return await axios.put(`${API_URL}/orders/deliver/${orderId}`, {}, getAuthHeaders());
+};
+
+export const clearUserCart = () => {
+  return axios.delete(`${API_URL}/cart/clear`, getAuthHeaders());
+};
