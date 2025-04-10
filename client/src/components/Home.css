@@ -202,3 +202,20 @@
     color: #333;
   }
   
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+ .icon-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .icon-btn:hover {
+    color: #f1c40f;
+  }

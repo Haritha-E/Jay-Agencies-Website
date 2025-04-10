@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
@@ -8,6 +9,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminManageProducts from "./pages/AdminManageProducts";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
+import ProductsPage from "./pages/ProductsPage";
+import CartPage from "./pages/CartPage";
+import WishList from "./pages/WishList";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
@@ -68,7 +72,10 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard onLogout={handleLogout} />} />
         <Route path="/admin/products" element={<AdminManageProducts />} />
         <Route path="/admin/products/add" element={<AddProduct />} />
-        <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+        <Route path="/admin/products/edit/:id" element={<EditProduct />} />     
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/wishlist" element={<WishList />} />
 
       </Routes>
     </Router>

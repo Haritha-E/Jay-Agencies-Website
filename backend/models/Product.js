@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
   price: Number,
   size: String,
   description: String,
-  image: String, // Now just the filename
+  image: String,
 });
 
 export default mongoose.model("Product", productSchema);

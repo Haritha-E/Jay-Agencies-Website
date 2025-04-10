@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import { Link } from "react-router-dom";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa"; // 👈 Cart & Profile icons
 
 const Home = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -23,12 +25,22 @@ const Home = ({ user, onLogout }) => {
       <header className="home-header">
         <h1 className="shop-name">Jay Agencies</h1>
         <nav className="nav-menu">
-          <a href="#products">Products</a>
+          <Link to="/products">Products</Link>
+          {user && <Link to="/wishlist">Wishlist</Link>}
           <a href="#contact">Contact</a>
         </nav>
 
+
         {user ? (
-          <button onClick={onLogout} className="logout-btn">Logout</button>
+          <div className="nav-actions">
+            <button className="icon-btn" onClick={() => navigate("/cart")}>
+              <FaShoppingCart size={20} />
+            </button>
+            <button className="icon-btn" onClick={() => navigate("/profile")}>
+              <FaUserCircle size={22} />
+            </button>
+            <button onClick={onLogout} className="logout-btn">Logout</button>
+          </div>
         ) : (
           <button onClick={() => navigate("/login")} className="logout-btn">Get Started</button>
         )}
@@ -42,10 +54,9 @@ const Home = ({ user, onLogout }) => {
           className="banner-image"
         />
         <div className="welcome-section">
-        <h2>
-          {user && user.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
-        </h2>
-
+          <h2>
+            {user && user.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
+          </h2>
           <p>Premium Kitchenware & Home Essentials – Crafted for Perfection!</p>
           <p className="tagline">✨ Bringing Elegance & Efficiency to Your Home ✨</p>
         </div>
@@ -67,13 +78,11 @@ const Home = ({ user, onLogout }) => {
       {/* Footer */}
       <footer className="footer" id="contact">
         <div className="footer-container">
-          {/* Company Info */}
           <div className="footer-section">
             <h3>About Us</h3>
             <p>Your trusted destination for high-quality kitchenware & home essentials.</p>
           </div>
 
-          {/* Contact Info */}
           <div className="footer-section">
             <h3>Contact Us</h3>
             <p>📍 36 Natesan Colony, Shankar Nagar, Salem-636007</p>
@@ -81,7 +90,6 @@ const Home = ({ user, onLogout }) => {
             <p>✉️ <a href="mailto:jayagencies_1@yahoo.com">jayagencies_1@yahoo.com</a></p>
           </div>
 
-          {/* Quick Links */}
           <div className="footer-section">
             <h3>Quick Links</h3>
             <ul>
