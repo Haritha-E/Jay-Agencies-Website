@@ -19,18 +19,24 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, wishlistRes] = await Promise.all([
-          getProducts(),
-          getWishlistItems(),
-        ]);
+        const productsRes = await getProducts();
         setProducts(productsRes.data);
-        setWishlistItems(wishlistRes.data.map((item) => item._id));
+  
+        try {
+          const wishlistRes = await getWishlistItems();
+          setWishlistItems(wishlistRes.data.map((item) => item._id));
+        } catch (wishlistErr) {
+          // If user is not logged in, skip wishlist
+          console.warn("Not logged in or session expired - Wishlist won't be shown");
+          setWishlistItems([]); // So all hearts show as 🤍
+        }
       } catch (err) {
-        console.error("Failed to load products or wishlist", err);
+        console.error("Failed to load products", err);
       }
     };
     fetchData();
   }, []);
+  
 
   const handleAddToCart = async (productId) => {
     try {

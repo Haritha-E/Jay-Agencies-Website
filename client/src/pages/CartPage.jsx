@@ -88,7 +88,7 @@ const CartPage = () => {
                 ) : (
                   <p>Product info unavailable</p>
                 )}
-
+            
                 <div className="item-details">
                   <h4>{item.productId.name}</h4>
                   <p>Price: ₹{item.productId.price}</p>

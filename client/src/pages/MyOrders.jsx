@@ -81,11 +81,17 @@ const MyOrders = () => {
               <p><strong>Ordered on:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
               <p><strong>Status:</strong> 
                 {order.status === "Delivered" ? (
-                  <span className="delivered"><FaCheckCircle /> Delivered</span>
+                  <>
+                    <span className="delivered"><FaCheckCircle /> Delivered</span>
+                    {order.deliveredAt && (
+                      <p><strong>Delivered on:</strong> {new Date(order.deliveredAt).toLocaleDateString()}</p>
+                    )}
+                  </>
                 ) : (
                   <span className="pending"><FaClock /> {order.status}</span>
                 )}
               </p>
+
 
               <div className="order-products">
                 {order.products.map((item) => (

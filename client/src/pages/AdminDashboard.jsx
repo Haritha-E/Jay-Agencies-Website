@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBoxOpen, FaShoppingCart, FaUsers, FaSignOutAlt } from "react-icons/fa";
+import { FaBoxOpen, FaShoppingCart, FaChartBar, FaSignOutAlt } from "react-icons/fa";
 import "./AdminDashboard.css";
 
 const AdminDashboard = ({onLogout}) => {
@@ -34,11 +34,12 @@ const AdminDashboard = ({onLogout}) => {
           <p>Track and process customer orders.</p>
         </div>
 
-        <div className="dashboard-card" onClick={() => navigate("/admin/users")}>
-          <FaUsers className="dashboard-icon" />
-          <h2>Manage Users</h2>
-          <p>View and manage user details.</p>
+        <div className="dashboard-card" onClick={() => navigate("/admin/sales-report")}>
+          <FaChartBar className="dashboard-icon" />
+          <h2>Sales Report</h2>
+          <p>Analyze sales performance and generate reports.</p>
         </div>
+
       </div>
     </div>
   );
