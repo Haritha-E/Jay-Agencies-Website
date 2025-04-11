@@ -7,6 +7,9 @@
 
 /* 🔹 Header Styling */
 .home-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures it stays above other content */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -219,3 +222,14 @@
   .icon-btn:hover {
     color: #f1c40f;
   }
+
+  @media (max-width: 768px) {
+    .welcome-section h2 {
+      font-size: 22px;
+    }
+  
+    .welcome-section p {
+      font-size: 16px;
+    }
+  }
+  

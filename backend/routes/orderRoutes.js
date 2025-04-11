@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/", protect, placeOrder);
 router.get("/myorders", protect, getMyOrders);
 router.get("/", protect, admin, getAllOrders);
-router.put("/:orderId/deliver", protect, admin, markOrderAsDelivered);
+router.put("/deliver/:id", protect, admin, markOrderAsDelivered);
 
 export default router;

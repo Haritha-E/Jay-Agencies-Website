@@ -4,16 +4,16 @@ import {
   addToCart,
   addToWishlist,
   removeFromWishlist,
-  getWishlistItems, // 👈 Add this
+  getWishlistItems,
 } from "../api";
 
 import "./ProductsPage.css";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]); // local wishlist state
+  const [wishlistItems, setWishlistItems] = useState([]);
   const [search, setSearch] = useState("");
-  const [sizeFilter, setSizeFilter] = useState("");
+  const [priceFilter, setPriceFilter] = useState("");
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -24,14 +24,13 @@ const ProductsPage = () => {
           getWishlistItems(),
         ]);
         setProducts(productsRes.data);
-        setWishlistItems(wishlistRes.data.map((item) => item._id)); // just store productIds
+        setWishlistItems(wishlistRes.data.map((item) => item._id));
       } catch (err) {
         console.error("Failed to load products or wishlist", err);
       }
     };
     fetchData();
   }, []);
-  
 
   const handleAddToCart = async (productId) => {
     try {
@@ -47,7 +46,6 @@ const ProductsPage = () => {
     }
     setTimeout(() => setToast(null), 2000);
   };
-  
 
   const handleToggleWishlist = async (productId) => {
     try {
@@ -68,14 +66,22 @@ const ProductsPage = () => {
       setTimeout(() => setToast(null), 2000);
     }
   };
-  
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(search.toLowerCase()) ||
       product.description.toLowerCase().includes(search.toLowerCase());
-    const matchesSize = sizeFilter ? product.size === sizeFilter : true;
-    return matchesSearch && matchesSize;
+
+    const matchesPrice =
+      priceFilter === ""
+        ? true
+        : priceFilter === "Below 500"
+        ? product.price < 500
+        : priceFilter === "500-1000"
+        ? product.price >= 500 && product.price <= 1000
+        : product.price > 1000;
+
+    return matchesSearch && matchesPrice;
   });
 
   return (
@@ -85,18 +91,33 @@ const ProductsPage = () => {
       {toast && <div className="toast">{toast}</div>}
 
       <div className="filter-bar">
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select value={sizeFilter} onChange={(e) => setSizeFilter(e.target.value)}>
-          <option value="">All Sizes</option>
-          <option value="Small">Small</option>
-          <option value="Medium">Medium</option>
-          <option value="Large">Large</option>
-        </select>
+        <div className="filter-group">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
+            <option value="">All Prices</option>
+            <option value="Below 500">Below ₹500</option>
+            <option value="500-1000">₹500 - ₹1000</option>
+            <option value="Above 1000">Above ₹1000</option>
+          </select>
+        </div>
+
+        <div className="reset-btn-container">
+          <button
+            className="reset-button"
+            onClick={() => {
+              setSearch("");
+              setPriceFilter("");
+            }}
+          >
+            Reset Filters
+          </button>
+        </div>
       </div>
 
       <div className="product-grid">

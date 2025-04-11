@@ -15,7 +15,7 @@ import WishList from "./pages/WishList";
 import Profile from "./pages/Profile";
 import CheckoutPage from "./pages/CheckoutPage";
 import MyOrders from "./pages/MyOrders";
-
+import AdminManageOrders from "./pages/AdminManageOrders";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
@@ -83,6 +83,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/admin/orders" element={<AdminManageOrders />} />
 
 
       </Routes>

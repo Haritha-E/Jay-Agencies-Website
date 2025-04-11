@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       type: String, // will store filename or image URL
       default: "",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false, // Regular users by default
+    },
   },
   { timestamps: true }
 );

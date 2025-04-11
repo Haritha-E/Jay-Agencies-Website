@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema({
   total: Number,
   status: { type: String, enum: ["Placed", "Delivered"], default: "Placed" },
   createdAt: { type: Date, default: Date.now },
+  deliveredAt: { type: Date },
 });
 
 const Order = mongoose.model("Order", orderSchema);
