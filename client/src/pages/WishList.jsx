@@ -11,7 +11,6 @@ const WishList = () => {
       const res = await getWishlistItems();
       setWishlist(res.data);
     } catch (err) {
-      console.error("Failed to load wishlist", err);
       const message =
         err.response?.data?.message === "Session expired. Please login again."
           ? "Session expired! Please login to view wishlist ❗"

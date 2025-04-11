@@ -1,23 +1,27 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { FaShoppingCart, FaUserCircle, FaArrowCircleRight} from "react-icons/fa"; // 👈 Added FaArrowLeft
 import "./Home.css";
-import { Link } from "react-router-dom";
-import { FaShoppingCart, FaUserCircle } from "react-icons/fa"; // 👈 Cart & Profile icons
+import { getProducts } from "../api"; // 👈 Import your product API
+
 
 const Home = ({ user, onLogout }) => {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
 
-  const products = [
-    { id: 1, name: "Lunch Box", image: "https://vinodcookware.com/cdn/shop/products/1m0a5477_2.jpg?v=1738391972"},
-    { id: 2, name: "Hot Box", image: "https://5.imimg.com/data5/YX/CU/FG/SELLER-28398783/plastic-casserole-hot-box.jpg"},
-    { id: 3, name: "SS Container", image: "https://www.magnushomeware.com/cdn/shop/files/51OIosmXmCL_a1b04c63-9c51-48d4-87d4-fc5c683786e1_700x700.jpg?v=1735372814"},
-    { id: 4, name: "Cutlery Set", image: "https://image.made-in-china.com/202f0j00zfRkDBldgAra/6PCS-Stainless-Steel-Cutlery-Set-Eating-Utensil-Home-Flatware-Knife-Fork-Spoon.webp"},
-    { id: 5, name: "Kadai", image: "https://nutristar.co.in/cdn/shop/products/3_4f70eb75-1128-4fbf-860e-4b0d3797dff1_1024x1024.jpg?v=1670389688"},
-    { id: 6, name: "SS Plates", image: "https://pramaniksteel.com/wp-content/uploads/2021/05/CRAFT_PLATE_1-1.jpg"},
-    { id: 7, name: "SS Tea Cups", image: "https://sumeetcookware.in/cdn/shop/products/411TXcZS5cL_dee5f6cc-beb6-4ba2-a646-40c145eac3fa.jpg?v=1693642380"},
-    { id: 8, name: "Revolving Chair", image: "https://www.jfa.in/product-images/RUH_ML-1289_Chair-min-scaled+%281%29.jpg/431189000027882178/300x300"},
-    { id: 9, name: "Bed", image: "https://www.ikea.com/in/en/images/products/malm-bed-frame-with-mattress-white-valevag-firm__1150856_pe884904_s5.jpg?f=s"},
-  ];
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await getProducts();
+      // Take only the first 8
+      setProducts(res.data.slice(0, 8));
+    } catch (err) {
+      console.error("Error fetching products", err);
+    }
+  };
 
   return (
     <div className="home-container">
@@ -34,7 +38,6 @@ const Home = ({ user, onLogout }) => {
           )}
           <a href="#contact">Contact</a>
         </nav>
-
 
         {user ? (
           <div className="nav-actions">
@@ -60,7 +63,7 @@ const Home = ({ user, onLogout }) => {
         />
         <div className="welcome-section">
           <h2>
-            {user && user.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
+            {user?.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
           </h2>
           <p>Premium Kitchenware & Home Essentials – Crafted for Perfection!</p>
           <p className="tagline">✨ Bringing Elegance & Efficiency to Your Home ✨</p>
@@ -71,13 +74,27 @@ const Home = ({ user, onLogout }) => {
       <h2 id="products" className="section-heading">Our Products</h2>
 
       {/* Product Grid */}
-      <div className="product-grid">
+      <div className="home-product-grid">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} className="product-image" />
+          <div
+            key={product._id}
+            className="product-card clickable"
+            onClick={() => navigate(`/products?search=${encodeURIComponent(product.name)}`)}
+          >
+            <img
+              src={`http://localhost:5000/uploads/products/${product.image}`}
+              alt={product.name}
+              className="product-image"
+            />
             <h3>{product.name}</h3>
           </div>
         ))}
+
+        {/* 9th Card - View More */}
+        <div className="product-card view-more-card" onClick={() => navigate("/products")}>
+          <FaArrowCircleRight size={30} />
+          <p>View All Products</p>
+        </div>
       </div>
 
       {/* Footer */}
@@ -98,8 +115,8 @@ const Home = ({ user, onLogout }) => {
           <div className="footer-section">
             <h3>Quick Links</h3>
             <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="#products">Products</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/products">Products</Link></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div>

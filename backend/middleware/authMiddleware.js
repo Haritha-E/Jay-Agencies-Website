@@ -18,7 +18,6 @@ export const protect = async (req, res, next) => {
 
       return next(); // ✅ Authenticated
     } catch (error) {
-      console.error("JWT Verification Error:", error.message);
       return res.status(401).json({
         message:
           error.name === "TokenExpiredError"

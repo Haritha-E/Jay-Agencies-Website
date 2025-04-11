@@ -37,21 +37,27 @@ const CheckoutPage = () => {
   };
 
   const handleConfirmOrder = async () => {
+    if (!userData.phone.trim() || !userData.address.trim()) {
+      alert("Phone number and address are required to place an order.");
+      return;
+    }
+  
     try {
       await updateUserProfile(userData);
       await placeOrder({ products: cartItems, ...userData });
       await clearUserCart();
-
+  
       setOrderSuccess(true);
       setCartItems([]);
-
+  
       setTimeout(() => {
-        navigate("/my-orders", { replace: true });;
+        navigate("/my-orders", { replace: true });
       }, 3000);
     } catch (err) {
       console.error("Order failed", err);
     }
   };
+  
 
   const totalPrice = cartItems.reduce((sum, item) => {
     if (!item.productId) return sum;

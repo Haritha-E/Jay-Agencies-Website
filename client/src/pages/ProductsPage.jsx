@@ -6,7 +6,7 @@ import {
   removeFromWishlist,
   getWishlistItems,
 } from "../api";
-
+import { useLocation } from "react-router-dom";
 import "./ProductsPage.css";
 
 const ProductsPage = () => {
@@ -15,7 +15,15 @@ const ProductsPage = () => {
   const [search, setSearch] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
   const [toast, setToast] = useState(null);
+  const location = useLocation();
 
+  useEffect(() => {
+    const querySearch = new URLSearchParams(location.search).get("search");
+    if (querySearch) {
+      setSearch(querySearch);
+    }
+  }, [location.search]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,7 +35,6 @@ const ProductsPage = () => {
           setWishlistItems(wishlistRes.data.map((item) => item._id));
         } catch (wishlistErr) {
           // If user is not logged in, skip wishlist
-          console.warn("Not logged in or session expired - Wishlist won't be shown");
           setWishlistItems([]); // So all hearts show as 🤍
         }
       } catch (err) {
@@ -47,7 +54,6 @@ const ProductsPage = () => {
         err.response?.data?.message === "Session expired. Please login again."
           ? "Session expired! Please login to add to cart ❗"
           : "Please login to add to cart ❗";
-      console.error("Error adding to cart", err);
       setToast(message);
     }
     setTimeout(() => setToast(null), 2000);
@@ -67,7 +73,6 @@ const ProductsPage = () => {
         err.response?.data?.message === "Session expired. Please login again."
           ? "Session expired! Please login to use wishlist ❗"
           : "Please login to use wishlist ❗";
-      console.error("Wishlist error", err);
       setToast(message);
       setTimeout(() => setToast(null), 2000);
     }
