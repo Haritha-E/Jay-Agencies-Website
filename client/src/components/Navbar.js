@@ -21,7 +21,7 @@ const Navbar = ({ user, onLogout }) => {
             <Link to="/my-orders">My Orders</Link>
           </>
         )}
-        <a href="#contact">Contact</a>
+        <a href="/#contact">Contact</a>
       </nav>
 
       {user ? (
