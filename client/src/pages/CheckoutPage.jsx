@@ -69,6 +69,8 @@ const CheckoutPage = () => {
       <div className="success-container">
         <div className="success-icon">✓</div>
         <h2 className="success-message">Your order has been placed successfully!</h2>
+        <h3 className="success-message">Your order will be delivered within 10 days!</h3>
+
         <p className="success-sub">Redirecting to your orders...</p>
       </div>
     );

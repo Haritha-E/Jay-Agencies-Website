@@ -1,19 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBoxOpen, FaShoppingCart, FaChartBar, FaSignOutAlt } from "react-icons/fa";
+import axios from "axios";
 import "./AdminDashboard.css";
 
-const AdminDashboard = ({onLogout}) => {
+const AdminDashboard = ({ onLogout }) => {
   const navigate = useNavigate();
+  const [newOrders, setNewOrders] = useState(0);
 
   const handleLogout = () => {
     localStorage.clear();
-    onLogout(); 
+    onLogout();
     navigate("/");
   };
 
+  const fetchPlacedOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/api/orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const placedOrders = response.data.filter(order => order.status === "Placed");
+      setNewOrders(placedOrders.length);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlacedOrders();
+  }, []);
+
   return (
     <div className="admin-dashboard">
+      {/* Notification */}
+      {newOrders > 0 && (
+        <div className="order-notification">
+          🚨 {newOrders} new order{newOrders > 1 ? "s" : ""} placed. Check the Manage Orders section!
+        </div>
+      )}
+
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
         <button className="logout-btn" onClick={handleLogout}>
@@ -39,7 +68,6 @@ const AdminDashboard = ({onLogout}) => {
           <h2>Sales Report</h2>
           <p>Analyze sales performance and generate reports.</p>
         </div>
-
       </div>
     </div>
   );

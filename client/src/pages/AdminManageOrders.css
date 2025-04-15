@@ -9,10 +9,15 @@
 
 .admin-orders-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
+
+.admin-orders-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
 
 .admin-orders-header h2 {
   margin: 0;
@@ -193,4 +198,90 @@
   .admin-product {
     width: 100%;
   }
+}
+
+.admin-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-controls > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-filter,
+.admin-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-sort select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.admin-sort select:hover {
+  background-color: #f1f1f1;
+  border-color: #888;
+}
+
+.admin-sort label {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.admin-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-search input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-search input:focus {
+  border-color: #888;
+}
+
+.reset-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-start; 
+  width: auto;
+  max-width: 200px;
+}
+
+.reset-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px); /* Subtle hover effect */
 }
