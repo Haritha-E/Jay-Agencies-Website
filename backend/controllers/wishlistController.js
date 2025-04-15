@@ -56,7 +56,6 @@ export const getWishlist = async (req, res) => {
     // Filter out any null productId (i.e., product deleted from DB)
     const validProducts = wishlist.products.filter(p => p.productId !== null);
 
-    // Optional: clean the wishlist in the DB as well
     if (validProducts.length !== wishlist.products.length) {
       wishlist.products = validProducts;
       await wishlist.save();

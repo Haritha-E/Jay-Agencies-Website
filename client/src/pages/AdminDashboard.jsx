@@ -8,7 +8,7 @@ const AdminDashboard = ({onLogout}) => {
 
   const handleLogout = () => {
     localStorage.clear();
-    onLogout(); // Updates the App state
+    onLogout(); 
     navigate("/");
   };
 

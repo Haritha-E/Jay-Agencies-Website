@@ -11,7 +11,7 @@ const AddProduct = () => {
   });
 
   const [image, setImage] = useState(null);
-  const fileInputRef = useRef(null); // 👈 useRef for file input
+  const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const AddProduct = () => {
     setProductData({ name: "", price: "", size: "", description: "" });
     setImage(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // 👈 reset file input manually
+      fileInputRef.current.value = ""; 
     }
   };
 
@@ -55,7 +55,7 @@ const AddProduct = () => {
 
       if (res.ok) {
         toast.success("Product added successfully!");
-        handleReset(); // reset after successful submit
+        handleReset(); 
       } else {
         toast.error(data.message || "Failed to add product.");
       }
@@ -77,7 +77,7 @@ const AddProduct = () => {
           type="file"
           onChange={handleImageChange}
           accept="image/*"
-          ref={fileInputRef} // 👈 ref added here
+          ref={fileInputRef}
         />
 
         <input type="number" name="price" value={productData.price} onChange={handleChange} placeholder="Price (₹)" />

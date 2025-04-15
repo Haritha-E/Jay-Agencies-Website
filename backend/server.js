@@ -8,7 +8,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-import ratingRoutes from "./routes/ratingRoutes.js"; // Import rating routes
+import ratingRoutes from "./routes/ratingRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -16,14 +16,14 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static("uploads")); // 🔥 Serve static images
+app.use("/uploads", express.static("uploads"));
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes); // ✅ New Product Route
+app.use("/api/products", productRoutes); 
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
-app.use("/api/users", userRoutes); // 👤 User profile (view/update)
+app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/ratings", ratingRoutes);
 

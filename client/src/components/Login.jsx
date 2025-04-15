@@ -54,7 +54,7 @@ const Login = ({ onLogin }) => {
         if (user.email === 'admin@jayagencies.com') {
           window.location.href = '/admin/dashboard';
         } else {
-          onLogin({ name: user.name, email: user.email, token }); // Regular user
+          onLogin({ name: user.name, email: user.email, token });
         }
       }, 3000);
       

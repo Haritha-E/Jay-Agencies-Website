@@ -22,7 +22,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    // no embedded ratings
   },
   { timestamps: true }
 );

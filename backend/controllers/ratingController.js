@@ -1,9 +1,7 @@
 import Rating from "../models/Rating.js";
 import Product from "../models/Product.js";
 
-// @desc    Add or update a rating
-// @route   POST /api/ratings/:productId
-// @access  Private
+
 export const addOrUpdateRating = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -34,16 +32,14 @@ export const addOrUpdateRating = async (req, res) => {
   }
 };
 
-// @desc    Get all ratings for a product
-// @route   GET /api/ratings/:productId
-// @access  Public
+
 export const getProductRatings = async (req, res) => {
   try {
     const { productId } = req.params;
 
     const ratings = await Rating.find({ productId })
-      .populate("userId", "name profilePic") // Populating userId with name and profilePic
-      .exec(); // Always use exec() for better error handling with Mongoose
+      .populate("userId", "name profilePic")
+      .exec();
 
     // If no ratings found
     if (ratings.length === 0) {
@@ -56,9 +52,7 @@ export const getProductRatings = async (req, res) => {
   }
 };
 
-// @desc    Get current user's rating for a product
-// @route   GET /api/ratings/:productId/my
-// @access  Private
+
 export const getMyRating = async (req, res) => {
   try {
     const { productId } = req.params;

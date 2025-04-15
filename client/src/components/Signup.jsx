@@ -160,7 +160,7 @@ const Signup = () => {
                     </p>
                 </div>
             </div>
-            <ToastContainer /> {/* Toast container for displaying pop-up messages */}
+            <ToastContainer />
         </div>
     );
 };

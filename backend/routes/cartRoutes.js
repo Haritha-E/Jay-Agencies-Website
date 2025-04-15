@@ -12,10 +12,10 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.post("/add", protect, addToCart);
-router.get("/", protect, getCart); // or getCartItems
+router.get("/", protect, getCart); 
 router.delete("/remove/:productId", protect, removeFromCart);
 router.put("/update", protect, updateCartQuantity);
 router.delete("/clear", protect, clearCart);
-router.get("/items", protect, getCartItems); // Optional: get only products array
+router.get("/items", protect, getCartItems);
 
 export default router;

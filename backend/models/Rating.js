@@ -16,7 +16,7 @@ const ratingSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 5, // Rating should be between 1 and 5
+      max: 5,
     },
     feedback: {
       type: String,

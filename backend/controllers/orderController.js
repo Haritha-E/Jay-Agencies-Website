@@ -47,7 +47,7 @@ export const getAllOrders = async (req, res) => {
 // 🟢 Admin: Mark order as delivered
 export const markOrderAsDelivered = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id); // 🛠️ FIXED this line
+    const order = await Order.findById(req.params.id);
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });

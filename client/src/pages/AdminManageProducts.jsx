@@ -6,7 +6,7 @@ import "./AdminManageProducts.css";
 
 const AdminManageProducts = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Search term state
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {

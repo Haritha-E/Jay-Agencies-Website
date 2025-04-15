@@ -5,7 +5,7 @@ import { FaCheckCircle, FaClock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const MyOrders = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
@@ -45,14 +45,17 @@ const MyOrders = () => {
     const handlePopState = () => {
       navigate("/", { replace: true });
     };
-  
+
     window.addEventListener("popstate", handlePopState);
-  
+
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [navigate]);
-  
+
+  const calculateTotalPrice = (products) => {
+    return products.reduce((total, item) => total + item.quantity * (item.productId.price || 0), 0);
+  };
 
   if (loading) return <div className="loading">Loading your orders...</div>;
 
@@ -75,38 +78,45 @@ const MyOrders = () => {
         <p className="no-orders">No orders found for this filter.</p>
       ) : (
         <div className="order-list">
-          {filteredOrders.map((order) => (
-            <div key={order._id} className="order-card">
-              <h4>Order ID: {order._id.slice(-6).toUpperCase()}</h4>
-              <p><strong>Ordered on:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
-              <p><strong>Status:</strong> 
-                {order.status === "Delivered" ? (
-                  <>
-                    <span className="delivered"><FaCheckCircle /> Delivered</span>
-                    {order.deliveredAt && (
-                      <p><strong>Delivered on:</strong> {new Date(order.deliveredAt).toLocaleDateString()}</p>
-                    )}
-                  </>
-                ) : (
-                  <span className="pending"><FaClock /> {order.status}</span>
-                )}
-              </p>
+          {filteredOrders.map((order) => {
+            const totalPrice = calculateTotalPrice(order.products);
 
+            return (
+              <div key={order._id} className="order-card">
+                <h4>Order ID: {order._id.slice(-6).toUpperCase()}</h4>
+                <p><strong>Ordered on:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+                <p><strong>Status:</strong> 
+                  {order.status === "Delivered" ? (
+                    <>
+                      <span className="delivered"><FaCheckCircle /> Delivered</span>
+                      {order.deliveredAt && (
+                        <p><strong>Delivered on:</strong> {new Date(order.deliveredAt).toLocaleDateString()}</p>
+                      )}
+                    </>
+                  ) : (
+                    <span className="pending"><FaClock /> {order.status}</span>
+                  )}
+                </p>
 
-              <div className="order-products">
-                {order.products.map((item) => (
-                  <div key={item._id} className="order-product">
-                    <img src={`http://localhost:5000/uploads/products/${item.productId.image}`} alt={item.productId.name} />
-                    <div>
-                      <h5>{item.productId.name}</h5>
-                      <p>Qty: {item.quantity}</p>
-                      <p>Price: ₹{item.productId.price}</p>
+                <div className="order-products">
+                  {order.products.map((item) => (
+                    <div key={item._id} className="order-product">
+                      <img src={`http://localhost:5000/uploads/products/${item.productId.image}`} alt={item.productId.name} />
+                      <div>
+                        <h5>{item.productId.name}</h5>
+                        <p>Qty: {item.quantity}</p>
+                        <p>Price: ₹{item.productId.price}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <div className="order-total">
+                  <p><strong>Total Price:</strong> ₹{totalPrice.toFixed(2)}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

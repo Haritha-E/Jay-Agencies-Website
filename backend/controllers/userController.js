@@ -25,7 +25,6 @@ export const updateUserProfile = async (req, res) => {
       user.address = req.body.address || user.address;
       user.email = req.body.email || user.email;
 
-      // Handle profilePic update with old image removal
       if (req.file) {
         const oldPicPath = path.join("uploads/profilepics", user.profilePic);
         if (user.profilePic && fs.existsSync(oldPicPath)) {

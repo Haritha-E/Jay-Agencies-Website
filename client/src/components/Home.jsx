@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaArrowCircleRight } from "react-icons/fa"; // Removed unused icons
+import { FaArrowCircleRight } from "react-icons/fa";
 import "./Home.css";
 import { getProducts } from "../api";
 
@@ -53,7 +53,7 @@ const Home = ({ user }) => {
             <img
               src={`http://localhost:5000/uploads/products/${product.image}`}
               alt={product.name}
-              className="product-image"
+              className="product-image-home"
             />
             <h3>{product.name}</h3>
           </div>

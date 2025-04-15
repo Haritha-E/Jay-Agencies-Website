@@ -14,7 +14,7 @@ export const addProduct = async (req, res) => {
       price,
       size,
       description,
-      image: req.file.filename, // just filename saved in DB
+      image: req.file.filename,
     });
 
     await newProduct.save();
@@ -105,7 +105,7 @@ export const getProductById = async (req, res) => {
 // Add rating and feedback for a product
 export const addRating = async (req, res) => {
   const { rating, feedback } = req.body;
-  const userId = req.user._id; // Assuming user is authenticated
+  const userId = req.user._id; 
 
   try {
     const product = await Product.findById(req.params.productId);
