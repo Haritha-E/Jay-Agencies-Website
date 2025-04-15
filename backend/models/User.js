@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      match: [/\S+@\S+\.\S+/, 'Please use a valid email address.'], // Email validation
     },
     password: {
       type: String,
@@ -17,24 +18,23 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      default: "",
+      default: "", // Optional, can be updated later
     },
     address: {
       type: String,
-      default: "",
+      default: "", // Optional, can be updated later
     },
     profilePic: {
-      type: String, // will store filename or image URL
-      default: "",
+      type: String,
+      default: "", // Optional, can be updated later
     },
     isAdmin: {
       type: Boolean,
-      default: false, // Regular users by default
+      default: false,
     },
   },
   { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
-
 export default User;

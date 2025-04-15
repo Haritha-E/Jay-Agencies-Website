@@ -51,11 +51,16 @@ export const updateProduct = async (id, formData) => {
 
 // ---------- CART ----------
 export const addToCart = async (productId) => {
-  return await axios.post(
-    `${API_URL}/cart/add`,
-    { productId, quantity: 1 }, // 👈 ensure quantity is passed
-    getAuthHeaders()
-  );
+  try {
+    const response = await axios.post(
+      `${API_URL}/cart/add`,
+      { productId, quantity: 1 }, // ensure quantity is passed
+      getAuthHeaders()
+    );
+    return response.data.cart; // Return the updated cart data
+  } catch (error) {
+    throw error; // Handle error if needed
+  }
 };
 
 
@@ -91,8 +96,8 @@ export const getWishlistItems = async () => {
 
 // ---------- PROFILE ----------
 export const getUserProfile = async () => {
-    return await axios.get(`${API_URL}/users/profile`, getAuthHeaders());
-  };
+  return await axios.get(`${API_URL}/users/profile`, getAuthHeaders());
+};
 
 // ---------- PROFILE ----------
 export const updateUserProfile = async (formData) => {
@@ -128,4 +133,35 @@ export const markOrderDelivered = async (orderId) => {
 
 export const clearUserCart = () => {
   return axios.delete(`${API_URL}/cart/clear`, getAuthHeaders());
+};
+
+
+export const getProduct = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Add or update a rating for a product
+export const addOrUpdateRating = async (productId, ratingData) => {
+  try {
+    const response = await axios.post(`${API_URL}/ratings/${productId}`, ratingData, getAuthHeaders());
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+
+// Get all ratings for a product
+export const getRatings = async (productId) => {
+  return await axios.get(`${API_URL}/ratings/${productId}`);
+};
+
+// Get the current user's rating for a product
+export const getMyRating = async (productId) => {
+  return await axios.get(`${API_URL}/ratings/${productId}/my`, getAuthHeaders());
 };

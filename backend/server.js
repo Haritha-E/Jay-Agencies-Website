@@ -8,7 +8,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-
+import ratingRoutes from "./routes/ratingRoutes.js"; // Import rating routes
 
 dotenv.config();
 const app = express();
@@ -25,7 +25,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/users", userRoutes); // 👤 User profile (view/update)
 app.use("/api/orders", orderRoutes);
-
+app.use("/api/ratings", ratingRoutes);
 
 // MongoDB
 mongoose

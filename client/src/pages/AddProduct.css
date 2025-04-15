@@ -1,51 +1,97 @@
 .add-product-container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.add-product-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+.add-product-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add-product-container input,
+.add-product-container textarea {
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-product-container input:focus,
+.add-product-container textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+  outline: none;
+}
+
+.add-product-container textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-buttons button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+}
+
+.form-buttons button[type="button"] {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .add-product-container {
+    padding: 20px;
   }
-  
-  .add-product-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .add-product-container form {
-    display: flex;
+
+  .form-buttons {
     flex-direction: column;
     gap: 15px;
   }
-  
-  .add-product-container input,
-  .add-product-container textarea {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-  }
-  
-  .form-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
+
   .form-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
+    width: 100%;
   }
-  
-  .form-buttons button[type="submit"] {
-    background-color: #2ecc71;
-    color: white;
-  }
-  
-  .form-buttons button[type="button"] {
-    background-color: #e74c3c;
-    color: white;
-  }
-  
+}

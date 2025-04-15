@@ -88,3 +88,55 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+export const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
+  } catch (err) {
+    console.error("❌ Error fetching product:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Add rating and feedback for a product
+export const addRating = async (req, res) => {
+  const { rating, feedback } = req.body;
+  const userId = req.user._id; // Assuming user is authenticated
+
+  try {
+    const product = await Product.findById(req.params.productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Add new rating to the product's ratings array
+    product.ratings.push({ userId, rating, feedback });
+
+    // Save the product with the new rating
+    await product.save();
+
+    res.status(200).json({ message: "Rating added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding rating", error });
+  }
+};
+
+// Get all ratings for a product
+export const getAllRatings = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ ratings: product.ratings });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching ratings", error });
+  }
+};

@@ -14,8 +14,10 @@ import CartPage from "./pages/CartPage";
 import WishList from "./pages/WishList";
 import Profile from "./pages/Profile";
 import CheckoutPage from "./pages/CheckoutPage";
+import Layout from "./components/Layout";
 import MyOrders from "./pages/MyOrders";
 import AdminManageOrders from "./pages/AdminManageOrders";
+import ProductDetails from './pages/ProductDetails';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
@@ -60,35 +62,41 @@ function App() {
     <Router>
       <ToastContainer />
       <Routes>
-        {/* Always accessible home page */}
-              <Route
-        path="/"
-        element={
-          loggedIn && !userName ? (
-            <div>Loading...</div> // or a spinner
-          ) : (
-            <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />
-          )
-        }
-      />
+        {/* Auth pages (NO NAVBAR) */}
         <Route path="/login" element={loggedIn ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
         <Route path="/signup" element={loggedIn ? <Navigate to="/" /> : <Signup />} />
+  
+        {/* Routes WITH Navbar */}
+        <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>
+          <Route
+            path="/"
+            element={
+              loggedIn && !userName ? (
+                <div>Loading...</div>
+              ) : (
+                <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />
+              )
+            }
+          />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/wishlist" element={<WishList />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+        </Route>
+  
+        {/* Admin pages (you can wrap with a different layout or leave it like this) */}
         <Route path="/admin/dashboard" element={<AdminDashboard onLogout={handleLogout} />} />
         <Route path="/admin/products" element={<AdminManageProducts />} />
         <Route path="/admin/products/add" element={<AddProduct />} />
-        <Route path="/admin/products/edit/:id" element={<EditProduct />} />     
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/wishlist" element={<WishList />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/admin/products/edit/:id" element={<EditProduct />} />
         <Route path="/admin/orders" element={<AdminManageOrders />} />
-
-
       </Routes>
     </Router>
   );
+  
 }
 
 export default App;

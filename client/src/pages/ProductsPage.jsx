@@ -8,6 +8,7 @@ import {
 } from "../api";
 import { useLocation } from "react-router-dom";
 import "./ProductsPage.css";
+import { useNavigate } from 'react-router-dom';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,7 @@ const ProductsPage = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [toast, setToast] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const querySearch = new URLSearchParams(location.search).get("search");
@@ -44,6 +46,9 @@ const ProductsPage = () => {
     fetchData();
   }, []);
   
+  const handleViewProduct = (id) => {
+    navigate(`/product/${id}`);
+  };
 
   const handleAddToCart = async (productId) => {
     try {
@@ -130,26 +135,48 @@ const ProductsPage = () => {
           </button>
         </div>
       </div>
+        <div className="product-grid">
+          {filteredProducts.map((product) => (
+            <div key={product._id} className="product-card">
+              {/* Wishlist Icon */}
+              <div
+                className="wishlist-icon"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent navigation
+                  handleToggleWishlist(product._id);
+                }}
+              >
+                {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
+              </div>
 
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <div key={product._id} className="product-card">
-            <div className="wishlist-icon" onClick={() => handleToggleWishlist(product._id)}>
-              {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
+              {/* Clickable content to navigate to product details */}
+              <div
+                onClick={() => handleViewProduct(product._id)}
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  src={`http://localhost:5000/uploads/products/${product.image}`}
+                  alt={product.name}
+                />
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+                <p>₹{product.price}</p>
+                <p>Size: {product.size}</p>
+              </div>
+
+              {/* Add to Cart Button (prevent navigation) */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent navigation
+                  handleAddToCart(product._id);
+                }}
+              >
+                Add to Cart
+              </button>
             </div>
-            <img
-              src={`http://localhost:5000/uploads/products/${product.image}`}
-              alt={product.name}
-            />
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p>₹{product.price}</p>
-            <p>Size: {product.size}</p>
-            <button onClick={() => handleAddToCart(product._id)}>Add to Cart</button>
-          </div>
-        ))}
-        {filteredProducts.length === 0 && <p>No products found.</p>}
-      </div>
+          ))}
+          {filteredProducts.length === 0 && <p>No products found.</p>}
+        </div>
     </div>
   );
 };

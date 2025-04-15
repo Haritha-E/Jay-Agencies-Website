@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaShoppingCart, FaUserCircle, FaArrowCircleRight} from "react-icons/fa"; // 👈 Added FaArrowLeft
+import { FaArrowCircleRight } from "react-icons/fa"; // Removed unused icons
 import "./Home.css";
-import { getProducts } from "../api"; // 👈 Import your product API
+import { getProducts } from "../api";
 
-
-const Home = ({ user, onLogout }) => {
+const Home = ({ user }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
@@ -16,7 +15,6 @@ const Home = ({ user, onLogout }) => {
   const fetchProducts = async () => {
     try {
       const res = await getProducts();
-      // Take only the first 8
       setProducts(res.data.slice(0, 8));
     } catch (err) {
       console.error("Error fetching products", err);
@@ -25,35 +23,6 @@ const Home = ({ user, onLogout }) => {
 
   return (
     <div className="home-container">
-      {/* Header Section */}
-      <header className="home-header">
-        <h1 className="shop-name">Jay Agencies</h1>
-        <nav className="nav-menu">
-          <Link to="/products">Products</Link>
-          {user && (
-            <>
-              <Link to="/wishlist">Wishlist</Link>
-              <Link to="/my-orders">My Orders</Link>
-            </>
-          )}
-          <a href="#contact">Contact</a>
-        </nav>
-
-        {user ? (
-          <div className="nav-actions">
-            <button className="icon-btn" onClick={() => navigate("/cart")}>
-              <FaShoppingCart size={20} />
-            </button>
-            <button className="icon-btn" onClick={() => navigate("/profile")}>
-              <FaUserCircle size={22} />
-            </button>
-            <button onClick={onLogout} className="logout-btn">Logout</button>
-          </div>
-        ) : (
-          <button onClick={() => navigate("/login")} className="logout-btn">Get Started</button>
-        )}
-      </header>
-
       {/* Banner Section */}
       <div className="banner-container">
         <img 
@@ -115,8 +84,8 @@ const Home = ({ user, onLogout }) => {
           <div className="footer-section">
             <h3>Quick Links</h3>
             <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/products">Products</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/products">Products</Link></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div>

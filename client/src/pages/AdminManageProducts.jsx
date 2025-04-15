@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import { getProducts, deleteProduct  } from "../api"; // Adjust the path if needed
+import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
+import { getProducts, deleteProduct } from "../api";
 import "./AdminManageProducts.css";
 
 const AdminManageProducts = () => {
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Search term state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,14 +29,19 @@ const AdminManageProducts = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        await deleteProduct(id); // API call
-        setProducts(products.filter(product => product._id !== id)); // UI update
+        await deleteProduct(id);
+        setProducts(products.filter(product => product._id !== id));
       } catch (error) {
         console.error("Failed to delete product:", error);
         alert("Something went wrong while deleting the product.");
       }
     }
   };
+
+  // 🔍 Filter products based on search term
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="manage-products-container">
@@ -46,8 +52,19 @@ const AdminManageProducts = () => {
         </button>
       </header>
 
+      {/* 🔍 Search Bar */}
+      <div className="search-bar">
+        <FaSearch className="search-icon" />
+        <input
+          type="text"
+          placeholder="Search by product name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       <div className="product-table">
-        {products.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <p>No products found.</p>
         ) : (
           <table>
@@ -62,7 +79,7 @@ const AdminManageProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <tr key={product._id}>
                   <td>
                     <img

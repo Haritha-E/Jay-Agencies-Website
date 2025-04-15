@@ -114,7 +114,7 @@ const AdminManageOrders = () => {
                         onError={(e) => (e.target.src = "/default-product.png")}
                       />
                       <div>
-                        <p className="product-name">{item.productId?.name}</p>
+                        <p className="product-name-order">{item.productId?.name}</p>
                         <p>Qty: {item.quantity}</p>
                         <p>₹{item.productId?.price}</p>
                       </div>
