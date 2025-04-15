@@ -111,13 +111,14 @@
 .mark-delivered-btn {
   background-color: #007bff;
   color: white;
-  border: none;
   padding: 0.45rem 0.9rem;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
+  margin-top: 0.3rem;
 }
+
 
 .mark-delivered-btn:hover {
   background-color: #0056b3;
