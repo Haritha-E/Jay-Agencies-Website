@@ -129,6 +129,9 @@
   transition: transform 0.3s ease;
 }
 
+.product-card:hover img {
+  transform: scale(1.05);
+}
 
 .product-card h3 {
   font-size: 20px;
@@ -209,7 +212,7 @@ button:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .filter-bar {
     flex-direction: column;
     padding: 15px;
@@ -225,6 +228,16 @@ button:hover {
   }
 }
 
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .filter-bar {
+    padding: 10px;
+  }
+}
+
 @media (max-width: 480px) {
   .filter-group {
     flex-direction: column;
@@ -233,5 +246,9 @@ button:hover {
 
   .product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .products-page h2 {
+    font-size: 24px;
   }
 }

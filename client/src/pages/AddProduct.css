@@ -81,9 +81,28 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .add-product-container {
+    padding: 25px;
+  }
+
+  .add-product-container h2 {
+    font-size: 22px;
+  }
+
+  .form-buttons button {
+    font-size: 15px;
+    padding: 10px 18px;
+  }
+}
+
 @media (max-width: 768px) {
   .add-product-container {
     padding: 20px;
+  }
+
+  .add-product-container h2 {
+    font-size: 20px;
   }
 
   .form-buttons {
@@ -93,5 +112,22 @@
 
   .form-buttons button {
     width: 100%;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-product-container {
+    padding: 15px;
+  }
+
+  .add-product-container h2 {
+    font-size: 18px;
+  }
+
+  .form-buttons button {
+    font-size: 13px;
+    padding: 8px 14px;
   }
 }
