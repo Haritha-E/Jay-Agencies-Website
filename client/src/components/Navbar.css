@@ -41,7 +41,7 @@
 }
 
 /* 🔹 Logout Button */
-.logout-btn {
+.logout-btn-nav {
   background-color: #dc3545;
   color: white;
   padding: 10px 18px;
@@ -53,7 +53,7 @@
   width: 100px;
 }
 
-.logout-btn:hover {
+.logout-btn-nav:hover {
   background-color: #b02a37;
   transform: scale(1.05);
 }
@@ -87,7 +87,7 @@
     font-size: 22px;
   }
 
-  .logout-btn {
+  .logout-btn-nav {
     padding: 8px 16px;
     font-size: 14px;
     width: auto;
@@ -113,7 +113,7 @@
     margin-bottom: 10px;
   }
 
-  .logout-btn {
+  .logout-btn-nav {
     padding: 8px 14px;
     font-size: 14px;
   }
@@ -129,7 +129,7 @@
     font-size: 18px;
   }
 
-  .logout-btn {
+  .logout-btn-nav {
     width: 100%;
     text-align: center;
   }

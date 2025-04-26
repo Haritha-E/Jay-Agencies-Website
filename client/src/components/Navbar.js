@@ -32,12 +32,12 @@ const Navbar = ({ user, onLogout }) => {
           <button className="icon-btn" onClick={() => navigate("/profile")}>
             <FaUserCircle size={22} />
           </button>
-          <button onClick={onLogout} className="logout-btn">
+          <button onClick={onLogout} className="logout-btn-nav">
             Logout
           </button>
         </div>
       ) : (
-        <button onClick={() => navigate("/login")} className="logout-btn">
+        <button onClick={() => navigate("/login")} className="logout-btn-nav">
           Get Started
         </button>
       )}

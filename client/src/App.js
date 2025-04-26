@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
@@ -20,83 +21,95 @@ import AdminManageOrders from "./pages/AdminManageOrders";
 import ProductDetails from './pages/ProductDetails';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
-  const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
-  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);  // New loading state
 
+  // Check localStorage and set state on initial load
   useEffect(() => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
     const email = localStorage.getItem("userEmail");
+    const storedRole = localStorage.getItem("role");
 
-    if (token && name && email) {
+    if (token && name && email && storedRole) {
       setLoggedIn(true);
       setUserName(name);
       setUserEmail(email);
+      setRole(storedRole);
     }
+
+    setLoading(false);  // Set loading to false after checking localStorage
   }, []);
 
-  const handleLogin = (user) => {
-    if (!user || !user.name || !user.email) {
-      console.error("Invalid user object on login:", user);
-      return;
-    }
-  
-    setLoggedIn(true);
-    setUserName(user.name);
-    setUserEmail(user.email);
-    localStorage.setItem("token", user.token);
-    localStorage.setItem("userName", user.name);
-    localStorage.setItem("userEmail", user.email);
-  };
-  
+const handleLogin = (user) => {
+  if (!user || !user.name || !user.email || !user.token) return;
+
+  // Get the role from the user object directly
+  const userRole = user.isAdmin ? "admin" : "customer";
+
+  setLoggedIn(true);
+  setUserName(user.name);
+  setUserEmail(user.email);
+  setRole(userRole);
+
+  localStorage.setItem("token", user.token);
+  localStorage.setItem("userName", user.name);
+  localStorage.setItem("userEmail", user.email);
+  localStorage.setItem("role", userRole);
+};
+
 
   const handleLogout = () => {
     setLoggedIn(false);
     setUserName("");
     setUserEmail("");
+    setRole("");
     localStorage.clear();
   };
+
+  if (loading) {
+    return <div>Loading...</div>;  // Show loading message until state is updated
+  }
 
   return (
     <Router>
       <ToastContainer />
       <Routes>
-        {/* Auth pages (NO NAVBAR) */}
-        <Route path="/login" element={loggedIn ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
-        <Route path="/signup" element={loggedIn ? <Navigate to="/" /> : <Signup />} />
-  
-        {/* Routes WITH Navbar */}
+        {/* Auth Routes */}
+        <Route path="/login" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Login onLogin={handleLogin} />} />
+        <Route path="/signup" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Signup />} />
+
+        {/* Customer Routes (with Navbar) */}
         <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>
           <Route
             path="/"
-            element={
-              loggedIn && !userName ? (
-                <div>Loading...</div>
-              ) : (
-                <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />
-              )
-            }
+            element={role === "admin" ? (
+              <Navigate to="/admin/dashboard" />
+            ) : (
+              <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />
+            )}
           />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/wishlist" element={<WishList />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/products" element={role !== "admin" ? <ProductsPage /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/cart" element={role !== "admin" ? <CartPage /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/wishlist" element={role !== "admin" ? <WishList /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/profile" element={role !== "admin" ? <Profile /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/checkout" element={role !== "admin" ? <CheckoutPage /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/my-orders" element={role !== "admin" ? <MyOrders /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/product/:id" element={role !== "admin" ? <ProductDetails /> : <Navigate to="/admin/dashboard" />} />
         </Route>
-  
-        {/* Admin pages (you can wrap with a different layout or leave it like this) */}
-        <Route path="/admin/dashboard" element={<AdminDashboard onLogout={handleLogout} />} />
-        <Route path="/admin/products" element={<AdminManageProducts />} />
-        <Route path="/admin/products/add" element={<AddProduct />} />
-        <Route path="/admin/products/edit/:id" element={<EditProduct />} />
-        <Route path="/admin/orders" element={<AdminManageOrders />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={role === "admin" ? <AdminDashboard onLogout={handleLogout} /> : <Navigate to="/" />} />
+        <Route path="/admin/products" element={role === "admin" ? <AdminManageProducts /> : <Navigate to="/" />} />
+        <Route path="/admin/products/add" element={role === "admin" ? <AddProduct /> : <Navigate to="/" />} />
+        <Route path="/admin/products/edit/:id" element={role === "admin" ? <EditProduct /> : <Navigate to="/" />} />
+        <Route path="/admin/orders" element={role === "admin" ? <AdminManageOrders /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
-  
 }
 
 export default App;

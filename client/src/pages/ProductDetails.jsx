@@ -213,15 +213,21 @@ const ProductDetails = () => {
             <div className="add-review">
               <h4>Submit Your Review</h4>
               <div className="review-inputs">
-                <input
-                  type="number"
+              <select
                   value={ratingValue}
-                  min="1"
-                  max="5"
                   onChange={(e) => setRatingValue(Number(e.target.value))}
-                  placeholder="Rate 1 to 5"
                   className="rating-input"
-                />
+                >
+                  <option value={0} disabled>
+                    Select Rating
+                  </option>
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+
                 <textarea
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
