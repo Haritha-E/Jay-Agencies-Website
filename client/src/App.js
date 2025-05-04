@@ -19,6 +19,7 @@ import Layout from "./components/Layout";
 import MyOrders from "./pages/MyOrders";
 import AdminManageOrders from "./pages/AdminManageOrders";
 import ProductDetails from './pages/ProductDetails';
+import SalesReport from "./pages/SalesReport";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -107,6 +108,8 @@ const handleLogin = (user) => {
         <Route path="/admin/products/add" element={role === "admin" ? <AddProduct /> : <Navigate to="/" />} />
         <Route path="/admin/products/edit/:id" element={role === "admin" ? <EditProduct /> : <Navigate to="/" />} />
         <Route path="/admin/orders" element={role === "admin" ? <AdminManageOrders /> : <Navigate to="/" />} />
+        <Route path="/admin/sales-report" element={role === "admin" ? <SalesReport /> : <Navigate to="/" />} />
+
       </Routes>
     </Router>
   );

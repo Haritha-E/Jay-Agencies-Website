@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getCartItems, getUserProfile, updateUserProfile, placeOrder, clearUserCart } from "../api";
+import {
+  getCartItems,
+  getUserProfile,
+  updateUserProfile,
+  placeOrder,
+  clearUserCart,
+} from "../api";
 import { useNavigate } from "react-router-dom";
 import "./CheckoutPage.css";
 
@@ -7,6 +13,7 @@ const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [userData, setUserData] = useState({ phone: "", address: "" });
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,28 +48,41 @@ const CheckoutPage = () => {
       alert("Phone number and address are required to place an order.");
       return;
     }
-  
+
+    setIsPlacingOrder(true); // Show loader
+
     try {
       await updateUserProfile(userData);
       await placeOrder({ products: cartItems, ...userData });
       await clearUserCart();
-  
+
       setOrderSuccess(true);
       setCartItems([]);
-  
+
       setTimeout(() => {
         navigate("/my-orders", { replace: true });
       }, 3000);
     } catch (err) {
       console.error("Order failed", err);
+    } finally {
+      setIsPlacingOrder(false);
     }
   };
-  
 
   const totalPrice = cartItems.reduce((sum, item) => {
     if (!item.productId) return sum;
     return sum + item.productId.price * item.quantity;
   }, 0);
+
+  if (isPlacingOrder) {
+    return (
+      <div className="placing-order-container">
+        <div className="loader"></div>
+        <h2>Placing your order...</h2>
+        <p>Please wait while we confirm and send you confirmation details.</p>
+      </div>
+    );
+  }
 
   if (orderSuccess) {
     return (
@@ -70,7 +90,6 @@ const CheckoutPage = () => {
         <div className="success-icon">✓</div>
         <h2 className="success-message">Your order has been placed successfully!</h2>
         <h3 className="success-message">Your order will be delivered within 10 days!</h3>
-
         <p className="success-sub">Redirecting to your orders...</p>
       </div>
     );

@@ -118,7 +118,7 @@ export const placeOrder = async (orderData) => {
 
 // 📦 Get user's placed and received orders
 export const getUserOrders = async () => {
-  return await axios.get(`${API_URL}/orders/my-orders`, getAuthHeaders());
+  return await axios.get(`${API_URL}/orders/myorders`, getAuthHeaders());
 };
 
 // 🛠 Admin: Get all orders
@@ -164,4 +164,19 @@ export const getRatings = async (productId) => {
 // Get the current user's rating for a product
 export const getMyRating = async (productId) => {
   return await axios.get(`${API_URL}/ratings/${productId}/my`, getAuthHeaders());
+};
+
+// 📊 Admin: Get sales report
+// 📊 Admin: Get sales report
+export const getSalesReport = async (queryString = "") => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/orders/sales-report?${queryString}`,
+      getAuthHeaders()
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching sales report:", error);
+    throw error;
+  }
 };
