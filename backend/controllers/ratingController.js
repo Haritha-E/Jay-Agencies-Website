@@ -41,16 +41,12 @@ export const getProductRatings = async (req, res) => {
       .populate("userId", "name profilePic")
       .exec();
 
-    // If no ratings found
-    if (ratings.length === 0) {
-      return res.status(404).json({ message: "No ratings found for this product" });
-    }
-
     res.status(200).json(ratings);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 export const getMyRating = async (req, res) => {

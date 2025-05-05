@@ -10,6 +10,8 @@
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [statusFilter, setStatusFilter] = useState("All");
     const [loading, setLoading] = useState(true);
+    const [sortOrder, setSortOrder] = useState("Newest");
+
 
     const fetchOrders = async () => {
       try {
@@ -33,13 +35,20 @@
     }, []);
 
     useEffect(() => {
-      if (statusFilter === "All") {
-        setFilteredOrders(orders);
-      } else {
-        const filtered = orders.filter((order) => order.status === statusFilter);
-        setFilteredOrders(filtered);
-      }
-    }, [statusFilter, orders]);
+      let filtered = statusFilter === "All"
+        ? [...orders]
+        : orders.filter((order) => order.status === statusFilter);
+    
+      // Sort based on sortOrder
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return sortOrder === "Newest" ? dateB - dateA : dateA - dateB;
+      });
+    
+      setFilteredOrders(filtered);
+    }, [statusFilter, sortOrder, orders]);
+    
 
     useEffect(() => {
       const handlePopState = () => {
@@ -63,16 +72,28 @@
       <div className="orders-container">
         <div className="orders-header">
           <h2>My Orders</h2>
-          <select
-            className="status-filter"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="All">All</option>
-            <option value="Placed">Placed</option>
-            <option value="Delivered">Delivered</option>
-          </select>
+          <div className="filters">
+            <select
+              className="status-filter"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Placed">Placed</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+
+            <select
+              className="sort-filter"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="Newest">Newest First</option>
+              <option value="Oldest">Oldest First</option>
+            </select>
+          </div>
         </div>
+
 
         {filteredOrders.length === 0 ? (
           <p className="no-orders">No orders found for this filter.</p>
