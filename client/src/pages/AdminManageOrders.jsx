@@ -5,6 +5,7 @@ import "./AdminManageOrders.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const AdminManageOrders = () => {
+  const [confirmModal, setConfirmModal] = useState({ show: false, orderId: null, loading: false });
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("All");
@@ -23,19 +24,6 @@ const AdminManageOrders = () => {
     }
   };
 
-  const handleDeliveryConfirmation = async (orderId) => {
-    const confirm = window.confirm("Are you sure you want to mark this order as Delivered?");
-    if (!confirm) return;
-
-    try {
-      await markOrderDelivered(orderId);
-      toast.success("Order marked as Delivered!");
-      fetchOrders();
-    } catch (error) {
-      toast.error("Failed to update order status.");
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     fetchOrders();
@@ -101,6 +89,48 @@ const AdminManageOrders = () => {
   </div>
 </div>
 
+      {confirmModal.show && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Confirm Delivery</h3>
+            <p>Are you sure you want to mark this order as <strong>Delivered</strong>?</p>
+            <div className="modal-buttons">
+              {confirmModal.loading ? (
+                <p className="modal-loading">Processing... Please wait</p>
+              ) : (
+                <>
+                  <button
+                    className="modal-confirm"
+                    onClick={async () => {
+                      setConfirmModal({ ...confirmModal, loading: true });
+                      try {
+                        await markOrderDelivered(confirmModal.orderId);
+                        toast.success("Order marked as Delivered!");
+                        await fetchOrders();
+                      } catch (error) {
+                        toast.error("Failed to update order status.");
+                      } finally {
+                        setConfirmModal({ show: false, orderId: null, loading: false });
+                      }
+                    }}
+                    disabled={confirmModal.loading}
+                  >
+                    Yes, Confirm
+                  </button>
+                  <button
+                    className="modal-cancel"
+                    onClick={() => setConfirmModal({ show: false, orderId: null, loading: false })}
+                    disabled={confirmModal.loading}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {filteredOrders.length === 0 ? (
         <p className="no-orders">No {filter.toLowerCase()} orders found.</p>
@@ -137,7 +167,7 @@ const AdminManageOrders = () => {
                     {order.status !== "Delivered" && (
                       <button
                         className="mark-delivered-btn"
-                        onClick={() => handleDeliveryConfirmation(order._id)}
+                        onClick={() => setConfirmModal({ show: true, orderId: order._id })}
                       >
                         Mark as Delivered
                       </button>

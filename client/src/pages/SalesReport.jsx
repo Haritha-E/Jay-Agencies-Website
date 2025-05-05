@@ -9,21 +9,25 @@ const SalesReport = () => {
   const [status, setStatus] = useState("All");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [sortOrder, setSortOrder] = useState("Newest");
 
   const fetchReport = useCallback(async () => {
     try {
       const queryParams = new URLSearchParams();
 
+      // Change in fetchReport callback:
       if (status !== "All") queryParams.append("status", status);
       if (startDate) queryParams.append("startDate", startDate);
       if (endDate) queryParams.append("endDate", endDate);
+      // Update the sortOrder parameter value to match the new values:
+      queryParams.append("sortOrder", sortOrder.toLowerCase()); // Convert "Newest" to "newest" for API
 
       const res = await getSalesReport(queryParams.toString());
       setReport(res);
     } catch (error) {
       console.error("Error fetching report:", error);
     }
-  }, [status, startDate, endDate]);
+  }, [status, startDate, endDate, sortOrder]); // Include sortOrder in dependencies
 
   useEffect(() => {
     fetchReport();
@@ -33,7 +37,20 @@ const SalesReport = () => {
     setStatus("All");
     setStartDate("");
     setEndDate("");
+    setSortOrder("Newest"); // Reset sort order to default
   };
+
+  // Handle sorting locally if API doesn't support it
+  const sortedOrders = React.useMemo(() => {
+    if (!report || !report.orders) return [];
+    
+    return [...report.orders].sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      
+      return sortOrder === "Newest" ? dateB - dateA : dateA - dateB;
+    });
+  }, [report, sortOrder]);
 
   // Format date for reports
   const formatDate = (dateString) => {
@@ -93,6 +110,7 @@ const SalesReport = () => {
       } else if (typeof endDate !== 'undefined' && endDate) {
         filterText += ` | Until: ${formatDate(endDate)}`;
       }
+      filterText += ` | Sort: ${sortOrder === "Newest" ? "Newest First" : "Oldest First"}`;
   
       // Function to get status color based on status value
       const getStatusColor = (status) => {
@@ -157,8 +175,8 @@ const SalesReport = () => {
           .report-filter { font-style: italic; text-align: center; font-size: 10pt; color: ${colors.black}; }
           
           /* Summary Box */
-          .summary-box { background-color: ${colors.secondary}; color: ${colors.white}; border-radius: 8px; }
-          .summary-item { font-weight: bold; text-align: left; }
+          .summary-box { background-color: ${colors.primary}; color: ${colors.white}; border-radius: 8px; }
+          .summary-item { font-weight: bold; text-align: left; color: ${colors.white}; padding: 5px; }  
           .summary-accent { background-color: ${colors.accent}; height: 3px; }
           
           /* Table Header */
@@ -256,7 +274,7 @@ const SalesReport = () => {
                 </tr>
                 
                 <!-- Table Rows -->
-                ${report.orders.map((order, index) => `
+                ${sortedOrders.map((order, index) => `
                 <tr class="${index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}">
                   <td class="table-cell align-left">${order._id || 'N/A'}</td>
                   <td class="table-cell align-left">${order.user?.name || 'N/A'}</td>
@@ -383,6 +401,7 @@ const SalesReport = () => {
       if (startDate && endDate) filterText += ` | Period: ${formatDate(startDate)} - ${formatDate(endDate)}`;
       else if (startDate) filterText += ` | From: ${formatDate(startDate)}`;
       else if (endDate) filterText += ` | Until: ${formatDate(endDate)}`;
+      filterText += ` | Sort: ${sortOrder === "newest" ? "Newest First" : "Oldest First"}`;
       
       doc.setFontSize(10);
       doc.setFont("helvetica", "italic");
@@ -512,7 +531,7 @@ const SalesReport = () => {
         doc.setFontSize(10);
       };
       
-      report.orders.forEach((order, index) => {
+      sortedOrders.forEach((order, index) => {
         // Prepare all text content and calculate row height
         const orderId = order._id || "N/A";
         const customerName = order.user?.name || "N/A";
@@ -672,10 +691,23 @@ const SalesReport = () => {
           />
         </div>
 
+        {/* New sort order filter */}
+        <div className="filter">
+          <label>Sort By:</label>
+          <select 
+            onChange={(e) => setSortOrder(e.target.value)} 
+            value={sortOrder}
+          >
+            <option value="Newest">Newest First</option>
+            <option value="Oldest">Oldest First</option>
+          </select>
+        </div>
+
         <button onClick={handleResetFilters} className="filter-btn reset">
           Reset Filters
         </button>
       </div>
+
 
       <div className="summary-cards">
         <div className="card">Total Sales: ₹{report.totalSales}</div>
@@ -709,7 +741,7 @@ const SalesReport = () => {
           </tr>
         </thead>
         <tbody>
-          {report.orders.map((order) => (
+        {sortedOrders.map((order) => (
             <tr key={order._id}>
               <td>{order._id}</td>
               <td>{order.user?.name || 'N/A'}</td>

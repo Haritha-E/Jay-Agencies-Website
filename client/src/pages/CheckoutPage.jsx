@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import "./CheckoutPage.css";
 
 const CheckoutPage = () => {
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [userData, setUserData] = useState({ phone: "", address: "" });
   const [orderSuccess, setOrderSuccess] = useState(false);
@@ -117,6 +118,32 @@ const CheckoutPage = () => {
               <td>{(item.productId?.price * item.quantity).toFixed(2)}</td>
             </tr>
           ))}
+          {showConfirmModal && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <h2>Confirm Your Order</h2>
+                <p>Are you sure you want to place this order?</p>
+                <div className="modal-buttons">
+                  <button
+                    className="modal-confirm"
+                    onClick={() => {
+                      setShowConfirmModal(false);
+                      handleConfirmOrder();
+                    }}
+                  >
+                    Yes, Place Order
+                  </button>
+                  <button
+                    className="modal-cancel"
+                    onClick={() => setShowConfirmModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </tbody>
       </table>
 
@@ -144,9 +171,13 @@ const CheckoutPage = () => {
           />
         </div>
 
-        <button className="confirm-btn" onClick={handleConfirmOrder}>
+        <button
+          className="confirm-btn"
+          onClick={() => setShowConfirmModal(true)}
+        >
           Confirm Order
         </button>
+
       </div>
     </div>
   );

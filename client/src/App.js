@@ -77,7 +77,9 @@ const handleLogin = (user) => {
 
   return (
     <Router>
-      <ToastContainer />
+      <ToastContainer
+       closeButton={false}
+     />
       <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Login onLogin={handleLogin} />} />
@@ -85,7 +87,7 @@ const handleLogin = (user) => {
 
         {/* Customer Routes (with Navbar) */}
         <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>
-          <Route
+        <Route
             path="/"
             element={role === "admin" ? (
               <Navigate to="/admin/dashboard" />

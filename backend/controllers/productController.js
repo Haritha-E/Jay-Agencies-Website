@@ -140,3 +140,37 @@ export const getAllRatings = async (req, res) => {
     res.status(500).json({ message: "Error fetching ratings", error });
   }
 };
+
+// Get similar products based on name and description
+export const getSimilarProducts = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    const currentProduct = await Product.findById(productId);
+    if (!currentProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const keywords = currentProduct.name
+      .split(" ")
+      .filter(word => word.length > 2); 
+
+    const regexPattern = keywords
+      .map(k => `${k}`)
+      .join("|"); 
+
+    const similarProducts = await Product.find({
+      _id: { $ne: productId }, 
+      name: { $regex: regexPattern, $options: "i" }
+    }).limit(4);
+
+    if (similarProducts.length === 0) {
+      return res.status(200).json([]); 
+    }
+
+    res.status(200).json(similarProducts);
+  } catch (error) {
+    console.error("❌ Error fetching similar products:", error);
+    res.status(500).json({ message: "Server error while fetching similar products" });
+  }
+};

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getProduct,
@@ -9,10 +9,12 @@ import {
   getWishlistItems,
   getCartItems,
   addOrUpdateRating,
+  getSimilarProducts,
 } from "../api";
 import "./ProductDetails.css";
 
-let toastTimeout; // For managing toast stacking
+
+let toastTimeout;
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -24,44 +26,47 @@ const ProductDetails = () => {
   const [toast, setToast] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [similarProducts, setSimilarProducts] = useState([]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
+        setLoading(true);
+        setProduct(null);
+        setRatings([]);
+        setSimilarProducts([]);
+  
         const productData = await getProduct(id);
         setProduct(productData);
-
+  
         const ratingsRes = await getRatings(id);
-        console.log("Fetched Ratings:", ratingsRes.data); // Optional debug
-        setRatings(ratingsRes.data); // ✅ Only set the array of ratings
-
-
-        try {
-          const wishlistRes = await getWishlistItems();
-          setWishlistItems(wishlistRes.data.map((item) => item._id));
-        } catch {
-          setWishlistItems([]);
-        }
-
-        try {
-          const cartRes = await getCartItems();
-          const cartProductIds = cartRes.data.products.map((item) =>
-            typeof item.productId === "object" ? item.productId._id : item.productId
-          );
-          setCartItems(cartProductIds);
-        } catch {
-          setCartItems([]);
-        }
-
+        setRatings(ratingsRes.data);
+  
+        const wishlistRes = await getWishlistItems();
+        setWishlistItems(wishlistRes.data.map((item) => item._id));
+  
+        const cartRes = await getCartItems();
+        const cartProductIds = cartRes.data.products.map((item) =>
+          typeof item.productId === "object" ? item.productId._id : item.productId
+        );
+        setCartItems(cartProductIds);
+  
+        const similarProductsData = await getSimilarProducts(id);
+        setSimilarProducts(Array.isArray(similarProductsData) ? similarProductsData : []);
+  
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product details:", error);
         setLoading(false);
       }
     };
-
-    fetchProductDetails();
+  
+    window.scrollTo(0, 0);
+    if (id) {
+      fetchProductDetails();
+    }
   }, [id]);
+  
 
   const showToast = (message) => {
     setToast(message);
@@ -71,12 +76,12 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     try {
-      await addToCart(product._id); // Add product to cart
-      const cartRes = await getCartItems(); // Fetch updated cart items from the backend
+      await addToCart(product._id);
+      const cartRes = await getCartItems();
       const cartProductIds = cartRes.data.products.map((item) =>
         typeof item.productId === "object" ? item.productId._id : item.productId
       );
-      setCartItems(cartProductIds); // Update state with the latest cart items
+      setCartItems(cartProductIds);
       showToast("Product added to cart ✅");
     } catch (error) {
       const message =
@@ -86,7 +91,6 @@ const ProductDetails = () => {
       showToast(message);
     }
   };
-  
 
   const handleToggleWishlist = async () => {
     try {
@@ -108,7 +112,6 @@ const ProductDetails = () => {
     }
   };
 
-
   const handleSubmitReview = async () => {
     try {
       const ratingData = { rating: ratingValue, feedback };
@@ -116,16 +119,14 @@ const ProductDetails = () => {
       showToast("Review added successfully 👍");
       setRatingValue(0);
       setFeedback("");
-  
-      // Update the ratings list after review is submitted
+
       const updatedRatingsRes = await getRatings(id);
-      setRatings(updatedRatingsRes.data); // Update the ratings
+      setRatings(updatedRatingsRes.data);
     } catch (error) {
       showToast("Error submitting review ❌");
       console.error("Error submitting review:", error);
     }
   };
-  
 
   const averageRating = ratings.length
     ? ratings.reduce((sum, rating) => sum + rating.rating, 0) / ratings.length
@@ -143,7 +144,7 @@ const ProductDetails = () => {
     );
   };
 
-  if (loading) {
+  if (loading || !product) {
     return (
       <div className="product-details-container">
         <div className="loader"></div>
@@ -196,9 +197,8 @@ const ProductDetails = () => {
                 ratings.map((rating, index) => (
                   <div key={index} className="rating-item">
                     <div className="rating-user">
-                    User: {rating.userId ? rating.userId.name : "Unknown"}
+                      User: {rating.userId ? rating.userId.name : "Unknown"}
                     </div>
-
                     <div className="rating-feedback">{rating.feedback}</div>
                     <div className="rating-value">
                       Rating: {starRating(rating.rating)}
@@ -213,7 +213,7 @@ const ProductDetails = () => {
             <div className="add-review">
               <h4>Submit Your Review</h4>
               <div className="review-inputs">
-              <select
+                <select
                   value={ratingValue}
                   onChange={(e) => setRatingValue(Number(e.target.value))}
                   className="rating-input"
@@ -248,6 +248,31 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="similar-products">
+        <h3>Similar Products</h3>
+        <div className="similar-products-list">
+          {similarProducts.length > 0 ? (
+            similarProducts.map((similarProduct) => (
+              <Link
+                key={similarProduct._id}
+                to={`/product/${similarProduct._id}`}
+                className="similar-product-item"
+              >
+                <img
+                  src={`http://localhost:5000/uploads/products/${similarProduct.image}`}
+                  alt={similarProduct.name}
+                  className="similar-product-img"
+                />
+                <p className="similar-product-name">{similarProduct.name}</p>
+                <p className="similar-product-price">₹{similarProduct.price}</p>
+              </Link>
+            ))
+          ) : (
+            <p>No similar products available.</p>
+          )}
         </div>
       </div>
     </div>

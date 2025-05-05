@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // Base API URL
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -13,6 +14,20 @@ const getAuthHeaders = () => {
   };
 };
 
+// 🔁 Axios interceptor for 401 errors
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      toast.error("Session expired. Please login again.");
+      localStorage.removeItem("token");
+      setTimeout(() => {
+        window.location.href = "/login"; // 👈 Redirect to login page
+      }, 2000);
+    }
+    return Promise.reject(error);
+  }
+);
 // ---------- AUTH ----------
 export const registerUser = async (userData) => {
   return await axios.post(`${API_URL}/auth/signup`, userData);
@@ -166,7 +181,20 @@ export const getMyRating = async (productId) => {
   return await axios.get(`${API_URL}/ratings/${productId}/my`, getAuthHeaders());
 };
 
-// 📊 Admin: Get sales report
+
+// Get similar products
+export const getSimilarProducts = async (productId) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/similar/${productId}`);
+    console.log("Similar products API response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`No similar products found for product ID: ${productId}`, error.message);
+    return [];
+  }
+};
+
+
 // 📊 Admin: Get sales report
 export const getSalesReport = async (queryString = "") => {
   try {

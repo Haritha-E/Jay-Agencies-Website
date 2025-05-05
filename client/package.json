@@ -25,7 +25,8 @@
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.3",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yet-another-react-lightbox": "^3.23.0"
   },
   "scripts": {
     "start": "react-scripts start",
