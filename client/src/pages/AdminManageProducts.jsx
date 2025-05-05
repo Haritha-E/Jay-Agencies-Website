@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
 import { getProducts, deleteProduct } from "../api";
+import AdminNavbar from "../components/AdminNavbar"; // Import AdminNavbar
 import "./AdminManageProducts.css";
 
 const AdminManageProducts = () => {
@@ -44,7 +45,11 @@ const AdminManageProducts = () => {
   );
 
   return (
+    <>
+          <AdminNavbar />
     <div className="manage-products-container">
+      {/* Include AdminNavbar here */}
+
       <header className="manage-products-header">
         <h2>Manage Products</h2>
         <button className="add-product-btn" onClick={() => navigate("/admin/products/add")}>
@@ -107,6 +112,8 @@ const AdminManageProducts = () => {
         )}
       </div>
     </div>
+    </>
+
   );
 };
 

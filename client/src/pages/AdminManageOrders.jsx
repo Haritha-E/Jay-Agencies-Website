@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllOrders, markOrderDelivered } from "../api";
 import { toast } from "react-toastify";
+import AdminNavbar from "../components/AdminNavbar"; // Import AdminNavbar
 import "./AdminManageOrders.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -11,7 +12,6 @@ const AdminManageOrders = () => {
   const [filter, setFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState("Newest");
   const [search, setSearch] = useState("");
-
 
   const fetchOrders = async () => {
     try {
@@ -24,70 +24,72 @@ const AdminManageOrders = () => {
     }
   };
 
-
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const filteredOrders = orders
-  .filter((order) => {
-    const matchesFilter = filter === "All" ? true : order.status === filter;
-    const matchesSearch = order._id.toLowerCase().includes(search.toLowerCase());
-    return matchesFilter && matchesSearch;
-  })
-  .sort((a, b) => {
-    const dateA = new Date(a.createdAt);
-    const dateB = new Date(b.createdAt);
-    return sortOrder === "Newest" ? dateB - dateA : dateA - dateB;
-  });
-
+    .filter((order) => {
+      const matchesFilter = filter === "All" ? true : order.status === filter;
+      const matchesSearch = order._id.toLowerCase().includes(search.toLowerCase());
+      return matchesFilter && matchesSearch;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return sortOrder === "Newest" ? dateB - dateA : dateA - dateB;
+    });
 
   if (loading) return <div className="admin-loading">Loading orders...</div>;
 
   return (
+    <>
+          <AdminNavbar />
     <div className="admin-orders-page">
+      {/* Use AdminNavbar here */}
+
       <div className="admin-orders-header">
-  <h2 className="admin-orders-title">Manage Orders</h2>
-  
-  <div className="admin-controls">
-    <div className="admin-search">
-      <label>Search:</label>
-      <input
-        type="text"
-        placeholder="Enter Order ID"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-    </div>
+        <h2 className="admin-orders-title">Manage Orders</h2>
 
-    <div className="admin-filter">
-      <label>Filter:</label>
-      <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-        <option value="All">All</option>
-        <option value="Placed">Placed</option>
-        <option value="Delivered">Delivered</option>
-      </select>
-    </div>
+        <div className="admin-controls">
+          <div className="admin-search">
+            <label>Search:</label>
+            <input
+              type="text"
+              placeholder="Enter Order ID"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
-    <div className="admin-sort">
-      <label>Sort by:</label>
-      <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-        <option value="Newest">Newest First</option>
-        <option value="Oldest">Oldest First</option>
-      </select>
-    </div>
-    <button
-   className="reset-btn"
-  onClick={() => {
-    setSearch("");
-    setFilter("All");
-    setSortOrder("Newest");
-  }}
->
-  Reset Filters
-</button>
-  </div>
-</div>
+          <div className="admin-filter">
+            <label>Filter:</label>
+            <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+              <option value="All">All</option>
+              <option value="Placed">Placed</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+
+          <div className="admin-sort">
+            <label>Sort by:</label>
+            <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+              <option value="Newest">Newest First</option>
+              <option value="Oldest">Oldest First</option>
+            </select>
+          </div>
+          <button
+            className="reset-btn"
+            onClick={() => {
+              setSearch("");
+              setFilter("All");
+              setSortOrder("Newest");
+            }}
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
 
       {confirmModal.show && (
         <div className="modal-overlay">
@@ -130,7 +132,6 @@ const AdminManageOrders = () => {
           </div>
         </div>
       )}
-
 
       {filteredOrders.length === 0 ? (
         <p className="no-orders">No {filter.toLowerCase()} orders found.</p>
@@ -197,6 +198,7 @@ const AdminManageOrders = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

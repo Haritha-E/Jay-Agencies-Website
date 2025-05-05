@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
+import AdminNavbar from "../components/AdminNavbar";  // Assuming this is the Admin Navbar component
 import "./AddProduct.css";
 
 const AddProduct = () => {
@@ -68,6 +69,8 @@ const AddProduct = () => {
   };
 
   return (
+    <>
+      <AdminNavbar />  {/* Admin Navbar added here */}
     <div className="add-product-container">
       <h2>Add New Product</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -92,6 +95,7 @@ const AddProduct = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

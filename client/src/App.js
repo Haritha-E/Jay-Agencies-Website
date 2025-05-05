@@ -20,6 +20,9 @@ import MyOrders from "./pages/MyOrders";
 import AdminManageOrders from "./pages/AdminManageOrders";
 import ProductDetails from './pages/ProductDetails';
 import SalesReport from "./pages/SalesReport";
+import Contact from "./pages/Contact";
+import AdminMessages from "./pages/AdminMessages";
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -96,6 +99,7 @@ const handleLogin = (user) => {
             )}
           />
           <Route path="/products" element={role !== "admin" ? <ProductsPage /> : <Navigate to="/admin/dashboard" />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={role !== "admin" ? <CartPage /> : <Navigate to="/admin/dashboard" />} />
           <Route path="/wishlist" element={role !== "admin" ? <WishList /> : <Navigate to="/admin/dashboard" />} />
           <Route path="/profile" element={role !== "admin" ? <Profile /> : <Navigate to="/admin/dashboard" />} />
@@ -111,6 +115,7 @@ const handleLogin = (user) => {
         <Route path="/admin/products/edit/:id" element={role === "admin" ? <EditProduct /> : <Navigate to="/" />} />
         <Route path="/admin/orders" element={role === "admin" ? <AdminManageOrders /> : <Navigate to="/" />} />
         <Route path="/admin/sales-report" element={role === "admin" ? <SalesReport /> : <Navigate to="/" />} />
+        <Route path="/admin/messages" element={role === "admin" ? <AdminMessages /> : <Navigate to="/" />} />
 
       </Routes>
     </Router>

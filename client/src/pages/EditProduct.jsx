@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProducts, updateProduct } from "../api";
 import "./EditProduct.css"; // 👈 Import the new CSS file
+import AdminNavbar from "../components/AdminNavbar"; // Import AdminNavbar
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -78,7 +79,9 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="edit-container">
+    <>
+    <AdminNavbar />
+    <div className="edit-container">    
       <h2>Edit Product</h2>
 
       {/* Toast Notification */}
@@ -131,6 +134,7 @@ const EditProduct = () => {
         <button type="submit">Update Product</button>
       </form>
     </div>
+    </>
   );
 };
 
