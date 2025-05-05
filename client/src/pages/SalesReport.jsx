@@ -402,7 +402,7 @@ const SalesReport = () => {
       if (startDate && endDate) filterText += ` | Period: ${formatDate(startDate)} - ${formatDate(endDate)}`;
       else if (startDate) filterText += ` | From: ${formatDate(startDate)}`;
       else if (endDate) filterText += ` | Until: ${formatDate(endDate)}`;
-      filterText += ` | Sort: ${sortOrder === "newest" ? "Newest First" : "Oldest First"}`;
+      filterText += ` | Sort: ${sortOrder === "Newest" ? "Newest First" : "Oldest First"}`;
       
       doc.setFontSize(10);
       doc.setFont("helvetica", "italic");

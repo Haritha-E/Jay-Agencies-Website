@@ -13,6 +13,11 @@ export const placeOrder = async (req, res) => {
   try {
     const { products, address } = req.body;
 
+    const user = await User.findById(req.user._id);  // <-- move this up
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     let total = 0;
     const enrichedProducts = [];
 
@@ -31,16 +36,12 @@ export const placeOrder = async (req, res) => {
       user: req.user._id,
       products: enrichedProducts,
       address,
+      phone: user.phone || "",  // now safe to use
       total,
       status: "Placed",
     });
 
     const savedOrder = await order.save();
-
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -255,7 +256,7 @@ export const getMyOrders = async (req, res) => {
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("user", "name email")
+      .populate("user", "name email phone")
       .populate("products.productId");
     res.json(orders);
   } catch (error) {
