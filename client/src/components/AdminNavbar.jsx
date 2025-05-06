@@ -14,8 +14,13 @@ const AdminNavbar = ({ onLogout }) => {
 
   return (
     <header className="admin-nav-header">
-      {/* Clickable Jay Agencies heading */}
+      {/* Clickable Jay Agencies heading with logo */}
       <Link to="/" className="shop-name">
+        <img
+          src="/jay_logo.png"  // Referencing the logo from the public folder
+          alt="Jay Agencies Logo"
+          className="navbar-logo"
+        />
         Jay Agencies
       </Link>
 

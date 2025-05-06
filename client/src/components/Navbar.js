@@ -8,12 +8,18 @@ const Navbar = ({ user, onLogout }) => {
 
   return (
     <header className="home-header">
-      {/* Clickable Jay Agencies heading */}
-      <Link to="/" className="shop-name">
+      {/* Logo */}
+      <div className="shop-name">
+        <img
+          src="/jay_logo.png"
+          alt="Jay Agencies Logo"
+          className="navbar-logo"
+        />
         Jay Agencies
-      </Link>
+      </div>
 
       <nav className="nav-menu">
+        <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
         {user && (
           <>

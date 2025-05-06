@@ -14,8 +14,16 @@
 }
 
 /* 🔹 Shop Name / Logo */
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+
 .shop-name {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
