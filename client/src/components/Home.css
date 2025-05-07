@@ -82,7 +82,7 @@
   }
   
   .section-header h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #2c3e50;
     margin-bottom: 0.5rem;
   }
@@ -97,7 +97,7 @@
   /* Hero Section - Split Screen */
   .hero-section {
     background-color: #f8f9fa;
-    padding-bottom: -2rem;
+    padding-bottom: -2em;
     min-height: 400px;
     position: relative;
   }
@@ -206,7 +206,7 @@
   
   /* About Section */
   .about-section {
-    margin-top: -3rem;
+    margin-top: -2.7rem;
     background-color: #fff;
   }
   
@@ -594,9 +594,6 @@
       font-size: 1.3rem;
     }
     
-    .section-header h2 {
-      font-size: 2rem;
-    }
     
     .footer-section {
       min-width: 100%;
