@@ -10,6 +10,8 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import messageRoutes from './routes/messageRoutes.js';
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+
 
 dotenv.config();
 const app = express();
@@ -28,6 +30,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use('/api/messages', messageRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // MongoDB
 mongoose

@@ -29,6 +29,7 @@ const AdminNavbar = ({ onLogout }) => {
         <Link to="/admin/orders">Manage Orders</Link>
         <Link to="/admin/sales-report">Sales Report</Link>
         <Link to="/admin/messages">Customer Messages</Link>
+        <Link to="/admin/analytics">Analytics</Link>
       </nav>
 
       <div className="admin-nav-actions">

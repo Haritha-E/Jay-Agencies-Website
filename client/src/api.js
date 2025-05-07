@@ -193,3 +193,24 @@ export const getSalesReport = async (queryString = "") => {
     throw error;
   }
 };
+
+// ---------- ANALYTICS ----------
+export const getTopSoldProducts = async () => {
+  return await axios.get(`${API_URL}/analytics/top-sold-products`, getAuthHeaders());
+};
+
+export const getTopRatedProducts = async () => {
+  return await axios.get(`${API_URL}/analytics/top-rated-products`, getAuthHeaders());
+};
+
+export const getYearlyTurnover = async () => {
+  return await axios.get(`${API_URL}/analytics/turnover/yearly`, getAuthHeaders());
+};
+
+export const getMonthlyTurnover = async () => {
+  return await axios.get(`${API_URL}/analytics/turnover/monthly`, getAuthHeaders());
+};
+
+export const getTopCustomers = async () => {
+  return await axios.get(`${API_URL}/analytics/top-customers`, getAuthHeaders());
+};

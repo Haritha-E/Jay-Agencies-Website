@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getWishlistItems, removeFromWishlist, addToCart } from "../api";
+import { getWishlistItems, removeFromWishlist } from "../api";
+import { useNavigate } from "react-router-dom"; // import for navigation
 import "./WishList.css"; // Optional: style as needed
 
 const WishList = () => {
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState(null);
+  const navigate = useNavigate(); // initialize navigation
 
   const fetchWishlist = async () => {
     try {
@@ -40,19 +42,8 @@ const WishList = () => {
     }
   };
 
-  const handleAddToCart = async (productId) => {
-    try {
-      await addToCart(productId);
-      setToast("Added to cart ✅");
-      setTimeout(() => setToast(null), 2000);
-    } catch (err) {
-      const message =
-        err.response?.data?.message === "Session expired. Please login again."
-          ? "Session expired! Please login to add to cart ❗"
-          : "Login to add to cart ❗";
-      setToast(message);
-      setTimeout(() => setToast(null), 2000);
-    }
+  const handleViewProduct = (productId) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
@@ -74,8 +65,8 @@ const WishList = () => {
             <p>₹{product.price}</p>
             <p>Size: {product.size}</p>
             <div className="wishlist-actions">
-              <button onClick={() => handleAddToCart(product._id)}>
-                Add to Cart
+              <button onClick={() => handleViewProduct(product._id)}>
+                View
               </button>
               <button onClick={() => handleRemove(product._id)}>
                 Remove ❌
