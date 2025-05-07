@@ -140,6 +140,14 @@
   background: linear-gradient(90deg, #52c41a, #87d068);
 }
 
+.dashboard-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #ffba18, #dab765);
+}
+
+.dashboard-card:nth-child(5)::before {
+  background: linear-gradient(90deg, #914dff, rgb(202, 89, 251));
+}
+
 .dashboard-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.1);
@@ -167,6 +175,15 @@
   color: #52c41a;
 }
 
+.dashboard-card:nth-child(4) .dashboard-icon {
+  color: #ffba18;
+}
+
+.dashboard-card:nth-child(5) .dashboard-icon {
+  color: #914dff;
+}
+
+
 .dashboard-card:hover .dashboard-icon {
   transform: scale(1.15);
 }
@@ -191,6 +208,14 @@
 
 .dashboard-card:nth-child(3):hover h2 {
   color: #52c41a;
+}
+
+.dashboard-card:nth-child(4):hover h2 {
+  color: #ffba18;
+}
+
+.dashboard-card:nth-child(5):hover h2 {
+  color: #914dff;
 }
 
 .order-notification {

@@ -6,6 +6,7 @@ import {
   FaChartBar,
   FaEnvelope,
 } from "react-icons/fa";
+import { MdAnalytics } from "react-icons/md";
 import axios from "axios";
 import "./AdminDashboard.css";
 
@@ -116,6 +117,16 @@ const AdminDashboard = () => {
           <h2>Customer Messages</h2>
           <p>Read and respond to messages sent by customers.</p>
         </div>
+
+        <div
+          className="dashboard-card"
+          onClick={() => navigate("/admin/analytics")}
+        >
+          <MdAnalytics className="dashboard-icon" />
+          <h2>Sales Analytics</h2>
+          <p>View top-selling products and turnover trends.</p>
+        </div>
+
       </div>
     </div>
   );

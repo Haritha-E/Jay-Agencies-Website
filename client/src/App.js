@@ -23,6 +23,7 @@ import SalesReport from "./pages/SalesReport";
 import Contact from "./pages/Contact";
 import AdminMessages from "./pages/AdminMessages";
 import AdminLayout from "./components/AdminLayout";
+import AdminAnalytics from "./pages/AdminAnalytics";
 
 
 function App() {
@@ -119,6 +120,7 @@ const handleLogin = (user) => {
           <Route path="orders" element={<AdminManageOrders />} />
           <Route path="sales-report" element={<SalesReport />} />
           <Route path="messages" element={<AdminMessages />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
         </Route>
       </Routes>
     </Router>
