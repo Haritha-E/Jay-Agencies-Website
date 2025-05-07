@@ -316,7 +316,7 @@
   }
   
   .ad-product-image {
-    width: 2rem;
+    width: 100px;
     height: 150px;
     border-radius: 0.375rem;
     display: flex;

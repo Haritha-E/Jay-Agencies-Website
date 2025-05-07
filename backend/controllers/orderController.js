@@ -190,28 +190,18 @@ export const placeOrder = async (req, res) => {
                       <tr>
                         <td>${product.name}</td>
                         <td>${item.quantity}</td>
-                        <td>₹${product.price.toFixed(2)}</td>
-                        <td>₹${(product.price * item.quantity).toFixed(2)}</td>
+                        <td>Rs.${product.price.toFixed(2)}</td>
+                        <td>Rs.${(product.price * item.quantity).toFixed(2)}</td>
                       </tr>
                     `;
                   })).then(rows => rows.join(''))}
                   
                   <tr class="total-row">
-                    <td colspan="3" style="text-align: right;">Subtotal:</td>
-                    <td>₹${savedOrder.total.toFixed(2)}</td>
+                    <td colspan="3" style="text-align: right;">Total:</td>
+                    <td>Rs.${savedOrder.total.toFixed(2)}</td>
                   </tr>
-                  <tr class="total-row">
-                    <td colspan="3" style="text-align: right;">Shipping:</td>
-                    <td>₹0.00</td>
-                  </tr>
-                  <tr class="total-row">
-                    <td colspan="3" style="text-align: right;">Tax:</td>
-                    <td>₹${(savedOrder.total * 0.18).toFixed(2)}</td>
-                  </tr>
-                  <tr class="total-row">
-                    <td colspan="3" style="text-align: right;"><strong>Grand Total:</strong></td>
-                    <td><strong>₹${(savedOrder.total + savedOrder.total * 0.18).toFixed(2)}</strong></td>
-                  </tr>
+                  
+    
                 </tbody>
               </table>
               
@@ -374,23 +364,7 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
               margin: 20px 0;
               border-radius: 4px;
             }
-            .rating-box {
-              background-color: #fff4e6;
-              padding: 15px;
-              margin: 20px 0;
-              border-radius: 4px;
-              border: 1px solid #ffd8a8;
-            }
-            .star-rating {
-              text-align: center;
-              margin: 15px 0;
-            }
-            .star-rating a {
-              color: #ff9900;
-              font-size: 24px;
-              text-decoration: none;
-              margin: 0 5px;
-            }
+            
             .footer {
               margin-top: 30px;
               padding-top: 20px;
@@ -438,18 +412,6 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
             </div>
             
             <p>We've attached a PDF copy of your invoice to this email for your records.</p>
-            
-            <div class="rating-box">
-              <h3>How was your experience?</h3>
-              <p>We'd love to hear your feedback! Please rate your overall experience:</p>
-              <div class="star-rating">
-                <a href="${process.env.FRONTEND_URL}/rate-order/${order._id}/1">★</a>
-                <a href="${process.env.FRONTEND_URL}/rate-order/${order._id}/2">★</a>
-                <a href="${process.env.FRONTEND_URL}/rate-order/${order._id}/3">★</a>
-                <a href="${process.env.FRONTEND_URL}/rate-order/${order._id}/4">★</a>
-                <a href="${process.env.FRONTEND_URL}/rate-order/${order._id}/5">★</a>
-              </div>
-            </div>
             
             
             <p>If you have any questions about your order, please contact E. Ravi at <a href="mailto:jayagencies_1@yahoo.com">jayagencies_1@yahoo.com</a> or call us at +91 94432 62722.</p>
@@ -615,10 +577,10 @@ const generateInvoicePDF = async (order) => {
         doc.text(quantity.toString(), x, currentY);
         
         x += columnWidths[2];
-        doc.text(`₹${price.toFixed(2)}`, x, currentY);
+        doc.text(`Rs.${price.toFixed(2)}`, x, currentY);
         
         x += columnWidths[3];
-        doc.text(`₹${amount.toFixed(2)}`, x, currentY);
+        doc.text(`Rs.${amount.toFixed(2)}`, x, currentY);
         
         currentY += 20;
       });
@@ -629,30 +591,15 @@ const generateInvoicePDF = async (order) => {
       
       // Calculate totals
       const subtotal = order.total;
-      const taxAmount = subtotal * 0.18;
-      const grandTotal = subtotal + taxAmount;
       
       // Draw totals
-      doc.text('', 50, currentY);
-      doc.text('Subtotal:', 380, currentY);
-      doc.text(`₹${subtotal.toFixed(2)}`, 490, currentY);
-      currentY += 15;
-      
-      doc.text('Shipping:', 380, currentY);
-      doc.text('₹0.00', 490, currentY);
-      currentY += 15;
-      
-      doc.text('Tax (18% GST):', 380, currentY);
-      doc.text(`₹${taxAmount.toFixed(2)}`, 490, currentY);
-      currentY += 15;
-      
-      doc.moveTo(380, currentY).lineTo(550, currentY).stroke();
-      currentY += 15;
-      
       doc.font('Helvetica-Bold');
-      doc.text('Grand Total:', 380, currentY);
-      doc.text(`₹${grandTotal.toFixed(2)}`, 490, currentY);
+      doc.text('', 50, currentY);
+      doc.text('Total:', 380, currentY);
+      doc.text(`Rs.${subtotal.toFixed(2)}`, 490, currentY);
+      currentY += 15;
       doc.font('Helvetica');
+
       
       // Add footer
       doc.moveDown(4);
