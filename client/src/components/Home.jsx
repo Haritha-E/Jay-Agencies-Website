@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaArrowCircleRight, FaHome, FaBoxOpen, FaPhoneAlt } from "react-icons/fa";
 import "./Home.css";
-import { getProducts } from "../api";
+import { getProducts,API_URL  } from "../api";
 
 const Home = ({ user }) => {
   const navigate = useNavigate();
@@ -116,7 +116,7 @@ const Home = ({ user }) => {
             >
               <div className="product-image-container">
                 <img
-                  src={`http://localhost:5000/uploads/products/${product.image}`}
+                  src={`${API_URL}/uploads/products/${product.image}`}
                   alt={product.name}
                   className="home-product-image"
                 />

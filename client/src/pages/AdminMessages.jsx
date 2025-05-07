@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminMessages.css";
+import { API_URL } from "../api"; // Adjust the import path as necessary
 
 const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -16,7 +17,7 @@ const AdminMessages = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const { data } = await axios.get("http://localhost:5000/api/messages", {
+      const { data } = await axios.get(`${API_URL}/api/messages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(sortMessages(data, sortOrder));
@@ -88,7 +89,7 @@ const AdminMessages = () => {
   const deleteMessage = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:5000/api/messages/${id}`, {
+      await axios.delete(`${API_URL}/api/messages/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       showNotification("success", "Message deleted successfully");

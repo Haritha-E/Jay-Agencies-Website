@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllOrders, markOrderDelivered } from "../api";
+import { getAllOrders, markOrderDelivered, API_URL } from "../api";
 import { toast } from "react-toastify";
 import "./AdminManageOrders.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -177,7 +177,7 @@ const AdminManageOrders = () => {
                   {order.products.map((item) => (
                     <div key={item._id} className="admin-product">
                       <img
-                        src={`http://localhost:5000/uploads/products/${item.productId?.image}`}
+                        src={`${API_URL}/uploads/products/${item.productId?.image}`}
                         alt={item.productId?.name}
                         onError={(e) => (e.target.src = "/default-product.png")}
                       />

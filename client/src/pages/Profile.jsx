@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaUserCircle } from "react-icons/fa";
 import "./Profile.css";
-import { getUserProfile, updateUserProfile } from "../api";
+import { getUserProfile, updateUserProfile, API_URL } from "../api";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState({
@@ -23,7 +23,7 @@ const ProfilePage = () => {
         const res = await getUserProfile();
         setUserData(res.data);
         if (res.data.profilePic) {
-          setImagePreview(`http://localhost:5000/uploads/profilePics/${res.data.profilePic}`);
+          setImagePreview(`${API_URL}/uploads/profilePics/${res.data.profilePic}`);
         }
       } catch (err) {
         toast.error("Failed to load profile");
@@ -62,7 +62,7 @@ const ProfilePage = () => {
       const res = await getUserProfile();
       setUserData(res.data);
       if (res.data.profilePic) {
-        setImagePreview(`http://localhost:5000/uploads/profilePics/${res.data.profilePic}`);
+        setImagePreview(`${API_URL}/uploads/profilePics/${res.data.profilePic}`);
       }
       setFile(null);
     } catch (err) {

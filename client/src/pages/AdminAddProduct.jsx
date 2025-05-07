@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import "./AdminAddProduct.css";
+import {API_URL} from "../api"; // Adjust the import based on your project structure
 
 const AddProduct = ({onLogout}) => {
   const [productData, setProductData] = useState({
@@ -48,7 +49,7 @@ const AddProduct = ({onLogout}) => {
     formData.append("stock", productData.stock);  // Send stock in the request
 
     try {
-      const res = await fetch("http://localhost:5000/api/products/add", {
+      const res = await fetch(`${API_URL}/api/products/add`, {
         method: "POST",
         body: formData,
       });

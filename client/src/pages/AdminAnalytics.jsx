@@ -5,6 +5,7 @@ import {
   getYearlyTurnover,
   getMonthlyTurnover,
   getTopCustomers,
+  API_URL,
 } from "../api";
 import { LineChart, BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line, Bar, ResponsiveContainer } from "recharts";
 import { Loader, AlertCircle, DollarSign, ShoppingBag, Star, Users, TrendingUp } from "lucide-react";
@@ -269,7 +270,7 @@ const AdminAnalytics = () => {
                     <div className="product-rank">{index + 1}</div>
                     <div className="ad-product-image">
                       {product.image ? (
-                        <img src={`http://localhost:5000/uploads/products/${product.image}`} alt={product.name} />
+                        <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
                       ) : (
                         <ShoppingBag size={32} />
                       )}
@@ -294,7 +295,7 @@ const AdminAnalytics = () => {
                     <div className="product-rank">{index + 1}</div>
                     <div className="ad-product-image">
                       {product.image ? (
-                        <img src={`http://localhost:5000/uploads/products/${product.image}`} alt={product.name} />
+                        <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
                       ) : (
                         <Star size={32} />
                       )}

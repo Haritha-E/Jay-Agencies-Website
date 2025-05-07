@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getWishlistItems, removeFromWishlist } from "../api";
+import { getWishlistItems, removeFromWishlist, API_URL } from "../api";
 import { useNavigate } from "react-router-dom"; // import for navigation
 import "./WishList.css"; // Optional: style as needed
 
@@ -57,7 +57,7 @@ const WishList = () => {
         {wishlist.map((product) => (
           <div key={product._id} className="wishlist-card">
             <img
-              src={`http://localhost:5000/uploads/products/${product.image}`}
+              src={`${API_URL}/uploads/products/${product.image}`}
               alt={product.name}
             />
             <h3>{product.name}</h3>

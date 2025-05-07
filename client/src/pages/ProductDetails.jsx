@@ -12,6 +12,7 @@ import {
   getSimilarProducts,
   removeFromCart,
   updateCartQuantity,
+  API_URL,
 } from "../api";
 import "./ProductDetails.css";
 
@@ -211,7 +212,7 @@ const ProductDetails = () => {
       <div className="product-details">
         <div className="product-image">
           <img
-            src={`http://localhost:5000/uploads/products/${product.image}`}
+            src={`${API_URL}/uploads/products/${product.image}`}
             alt={product.name}
             className="product-img"
           />
@@ -351,7 +352,7 @@ const ProductDetails = () => {
                 className="similar-product-item"
               >
                 <img
-                  src={`http://localhost:5000/uploads/products/${similarProduct.image}`}
+                  src={`${API_URL}/uploads/products/${similarProduct.image}`}
                   alt={similarProduct.name}
                   className="similar-product-img"
                 />

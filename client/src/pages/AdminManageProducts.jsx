@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
-import { getProducts, deleteProduct } from "../api";
+import { getProducts, deleteProduct, API_URL } from "../api";
 import "./AdminManageProducts.css";
 
 const AdminManageProducts = () => {
@@ -88,7 +88,7 @@ const AdminManageProducts = () => {
                   <tr key={product._id}>
                     <td>
                       <img
-                        src={`http://localhost:5000/uploads/products/${product.image}`}
+                        src={`${API_URL}/uploads/products/${product.image}`}
                         alt={product.name}
                         className="product-thumbnail"
                       />

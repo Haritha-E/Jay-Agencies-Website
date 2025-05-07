@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProducts, updateProduct } from "../api";
+import { getProducts, updateProduct, API_URL} from "../api";
 import "./AdminEditProduct.css";
 
 const EditProduct = () => {
@@ -167,7 +167,7 @@ const EditProduct = () => {
             {existingImage && (
               <div className="image-preview">
                 <img
-                  src={`http://localhost:5000/uploads/products/${existingImage}`}
+                  src={`${API_URL}/uploads/products/${existingImage}`}
                   alt="Existing"
                 />
               </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane } from "react-icons/fa";
 import "./Contact.css";
 import axios from 'axios';
+import { API_URL } from "../api"; // Adjust the import path as necessary
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -56,7 +57,7 @@ const Contact = () => {
     setFormStatus({ submitted: true, success: false, message: "Sending your message..." });
   
     try {
-        await axios.post("http://localhost:5000/api/messages", formData);
+        await axios.post(`${API_URL}/api/messages`, formData);
       setFormStatus({
         submitted: true,
         success: true,

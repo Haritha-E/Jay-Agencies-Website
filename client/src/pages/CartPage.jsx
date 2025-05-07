@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCartItems, removeFromCart, updateCartQuantity } from "../api";
+import { getCartItems, removeFromCart, updateCartQuantity, API_URL } from "../api";
 import "./CartPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -88,7 +88,7 @@ const CartPage = () => {
               <div key={item._id} className="cart-item">
                 {item.productId ? (
                   <img
-                    src={`http://localhost:5000/uploads/products/${item.productId.image}`}
+                    src={`${API_URL}/uploads/products/${item.productId.image}`}
                     alt={item.productId.name}
                   />
                 ) : (

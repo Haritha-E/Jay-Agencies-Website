@@ -3,6 +3,7 @@
   import "./MyOrders.css";
   import { FaCheckCircle, FaClock } from "react-icons/fa";
   import { useNavigate } from "react-router-dom";
+  import { API_URL } from "../api"; // Adjust the import path as necessary
 
   const MyOrders = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/orders/myorders", {
+        const response = await axios.get(`${API_URL}/api/orders/myorders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -129,7 +130,7 @@
                   <div className="order-products">
                     {order.products.map((item) => (
                       <div key={item._id} className="order-product">
-                        <img src={`http://localhost:5000/uploads/products/${item.productId.image}`} alt={item.productId.name} />
+                        <img src={`${API_URL}/uploads/products/${item.productId.image}`} alt={item.productId.name} />
                         <div>
                           <h5>{item.productId.name}</h5>
                           <p>Qty: {item.quantity}</p>

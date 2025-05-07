@@ -7,7 +7,8 @@ import {
   getCartItems,
   addToWishlist,
   removeFromWishlist,
-  getWishlistItems
+  getWishlistItems,
+  API_URL,
 } from "../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ProductsPage.css";
@@ -184,7 +185,7 @@ const ProductsPage = () => {
               <p className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}>
                 {product.stock > 0 ? "Available" : "Out of Stock"}
               </p>
-              <img src={`http://localhost:5000/uploads/products/${product.image}`} alt={product.name} />
+              <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <p>₹{product.price}</p>

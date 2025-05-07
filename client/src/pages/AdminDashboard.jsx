@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { MdAnalytics } from "react-icons/md";
 import axios from "axios";
+import { API_URL } from "../api"; // Adjust the import path as necessary
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -20,7 +21,7 @@ const AdminDashboard = () => {
   const fetchPlacedOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/orders", {
+      const response = await axios.get(`${API_URL}/api/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,7 +40,7 @@ const AdminDashboard = () => {
   const fetchPendingMessages = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/messages", {
+      const response = await axios.get(`${API_URL}/api/messages`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
