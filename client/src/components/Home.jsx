@@ -73,10 +73,10 @@ const Home = ({ user }) => {
             />
           </div>
           <div className="about-text">
-            <h3>Your Trusted Partner Since 1995</h3>
+            <h3>Your Trusted Partner Since 2014</h3>
             <p>
               Jay Agencies has been a leading distributor of premium kitchenware and home essentials 
-              in Salem for over two decades. We pride ourselves on curating products that combine 
+              in Salem for over a decade. We pride ourselves on curating products that combine 
               functionality, durability, and elegant design.
             </p>
             <p>
