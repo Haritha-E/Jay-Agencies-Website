@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllOrders, markOrderDelivered } from "../api";
 import { toast } from "react-toastify";
-import AdminNavbar from "../components/AdminNavbar"; // Import AdminNavbar
 import "./AdminManageOrders.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -43,8 +42,6 @@ const AdminManageOrders = () => {
   if (loading) return <div className="admin-loading">Loading orders...</div>;
 
   return (
-    <>
-          <AdminNavbar />
     <div className="admin-orders-page">
       {/* Use AdminNavbar here */}
 
@@ -198,7 +195,6 @@ const AdminManageOrders = () => {
         </div>
       )}
     </div>
-    </>
   );
 };
 

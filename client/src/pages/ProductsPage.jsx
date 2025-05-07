@@ -154,6 +154,13 @@ const ProductsPage = () => {
                 onClick={() => handleViewProduct(product._id)}
                 style={{ cursor: "pointer" }}
               >
+                {/* Stock Availability Tag */}
+                <p
+                  className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}
+                >
+                  {product.stock > 0 ? "Available" : "Out of Stock"}
+                </p>
+
                 <img
                   src={`http://localhost:5000/uploads/products/${product.image}`}
                   alt={product.name}
@@ -163,6 +170,7 @@ const ProductsPage = () => {
                 <p>₹{product.price}</p>
                 <p>Size: {product.size}</p>
               </div>
+
 
               {/* Add to Cart Button (prevent navigation) */}
               <button

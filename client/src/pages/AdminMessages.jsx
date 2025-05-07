@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AdminNavbar from "../components/AdminNavbar"; // Import AdminNavbar
 import "./AdminMessages.css";
 
 const AdminMessages = () => {
@@ -118,11 +117,7 @@ const AdminMessages = () => {
   }, [fetchMessages]);
 
   return (
-    <>
-          <AdminNavbar />
     <div className="admin-messages-container">
-      {/* Include AdminNavbar here */}
-
       <header className="admin-header">
         <h1>Customer Messages</h1>
         <div className="admin-controls">
@@ -220,8 +215,6 @@ const AdminMessages = () => {
         </div>
       )}
     </div>
-    </>
-
   );
 };
 

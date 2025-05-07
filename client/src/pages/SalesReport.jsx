@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react"; 
 import { saveAs } from "file-saver";
 import { getSalesReport } from "../api";
-import AdminNavbar from "../components/AdminNavbar";
 import { jsPDF } from "jspdf";
 import "./SalesReport.css";
 
@@ -661,8 +660,6 @@ const SalesReport = () => {
   if (!report) return <p>Loading sales report...</p>;
 
   return (
-    <>
-          <AdminNavbar />  {/* Admin Navbar added here */}
     <div className="sales-report-page">
       
       <h2>Sales Report</h2>
@@ -758,7 +755,6 @@ const SalesReport = () => {
         </tbody>
       </table>
     </div>
-    </>
   );
 };
 

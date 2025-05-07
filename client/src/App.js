@@ -22,6 +22,7 @@ import ProductDetails from './pages/ProductDetails';
 import SalesReport from "./pages/SalesReport";
 import Contact from "./pages/Contact";
 import AdminMessages from "./pages/AdminMessages";
+import AdminLayout from "./components/AdminLayout";
 
 
 function App() {
@@ -109,14 +110,16 @@ const handleLogin = (user) => {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={role === "admin" ? <AdminDashboard onLogout={handleLogout} /> : <Navigate to="/" />} />
-        <Route path="/admin/products" element={role === "admin" ? <AdminManageProducts /> : <Navigate to="/" />} />
-        <Route path="/admin/products/add" element={role === "admin" ? <AddProduct /> : <Navigate to="/" />} />
-        <Route path="/admin/products/edit/:id" element={role === "admin" ? <EditProduct /> : <Navigate to="/" />} />
-        <Route path="/admin/orders" element={role === "admin" ? <AdminManageOrders /> : <Navigate to="/" />} />
-        <Route path="/admin/sales-report" element={role === "admin" ? <SalesReport /> : <Navigate to="/" />} />
-        <Route path="/admin/messages" element={role === "admin" ? <AdminMessages /> : <Navigate to="/" />} />
-
+        {/* Admin Routes with AdminLayout */}
+        <Route path="/admin" element={role === "admin" ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/" />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminManageProducts />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="products/edit/:id" element={<EditProduct />} />
+          <Route path="orders" element={<AdminManageOrders />} />
+          <Route path="sales-report" element={<SalesReport />} />
+          <Route path="messages" element={<AdminMessages />} />
+        </Route>
       </Routes>
     </Router>
   );

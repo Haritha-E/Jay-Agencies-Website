@@ -3,7 +3,7 @@ import fs from 'fs';
 
 export const addProduct = async (req, res) => {
   try {
-    const { name, price, size, description } = req.body;
+    const { name, price, size, description, stock } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "Image is required" });
@@ -14,6 +14,7 @@ export const addProduct = async (req, res) => {
       price,
       size,
       description,
+      stock,
       image: req.file.filename,
     });
 
@@ -44,7 +45,6 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Delete product image from uploads/products/
     const imagePath = `uploads/products/${product.image}`;
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
@@ -59,14 +59,15 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, size, description } = req.body;
+    const { name, price, size, description, stock } = req.body;
+    console.log("Stock received in backend:", stock);  // Log the stock value to check
+
     const product = await Product.findById(req.params.id);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // If new image uploaded, delete old one and update
     if (req.file) {
       const oldImagePath = `uploads/products/${product.image}`;
       if (fs.existsSync(oldImagePath)) {
@@ -75,11 +76,11 @@ export const updateProduct = async (req, res) => {
       product.image = req.file.filename;
     }
 
-    // Update other fields
     product.name = name;
     product.price = price;
     product.size = size;
     product.description = description;
+    product.stock = stock; // Ensure this is stored as a number
 
     await product.save();
     res.status(200).json({ message: "Product updated successfully" });
@@ -88,6 +89,7 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 export const getProductById = async (req, res) => {
   try {
@@ -102,22 +104,18 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// Add rating and feedback for a product
+// Add rating and feedback
 export const addRating = async (req, res) => {
   const { rating, feedback } = req.body;
   const userId = req.user._id; 
 
   try {
     const product = await Product.findById(req.params.productId);
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Add new rating to the product's ratings array
     product.ratings.push({ userId, rating, feedback });
-
-    // Save the product with the new rating
     await product.save();
 
     res.status(200).json({ message: "Rating added successfully" });
@@ -126,11 +124,10 @@ export const addRating = async (req, res) => {
   }
 };
 
-// Get all ratings for a product
+// Get all ratings
 export const getAllRatings = async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -141,7 +138,7 @@ export const getAllRatings = async (req, res) => {
   }
 };
 
-// Get similar products based on name and description
+// Get similar products
 export const getSimilarProducts = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -163,10 +160,6 @@ export const getSimilarProducts = async (req, res) => {
       _id: { $ne: productId }, 
       name: { $regex: regexPattern, $options: "i" }
     }).limit(4);
-
-    if (similarProducts.length === 0) {
-      return res.status(200).json([]); 
-    }
 
     res.status(200).json(similarProducts);
   } catch (error) {

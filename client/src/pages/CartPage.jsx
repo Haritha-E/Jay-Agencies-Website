@@ -8,6 +8,7 @@ const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState(null);
+  const [stockWarnings, setStockWarnings] = useState({});
 
   useEffect(() => {
     fetchCartItems();
@@ -44,23 +45,28 @@ const CartPage = () => {
 
   const handleQuantityChange = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
-
-    // 1. Optimistic UI update
+  
     const updatedItems = cartItems.map((item) =>
       item.productId._id === productId
         ? { ...item, quantity: newQuantity }
         : item
     );
     setCartItems(updatedItems);
-
-    // 2. Sync with backend
+  
     try {
       await updateCartQuantity(productId, newQuantity);
+      // Clear any previous warning for this item
+      setStockWarnings((prev) => ({ ...prev, [productId]: null }));
     } catch (err) {
       console.error("Error updating quantity", err);
-      fetchCartItems(); // rollback if error
+      const message =
+        err.response?.data?.message || "Error updating quantity";
+      setStockWarnings((prev) => ({ ...prev, [productId]: message }));
+  
+      fetchCartItems(); // rollback
     }
   };
+  
 
   const totalPrice = cartItems.reduce((sum, item) => {
     if (!item.productId) return sum;
@@ -89,7 +95,7 @@ const CartPage = () => {
                   <p>Product info unavailable</p>
                 )}
             
-                <div className="item-details">
+            <div className="item-details">
                   <h4>{item.productId.name}</h4>
                   <p>Price: ₹{item.productId.price}</p>
 
@@ -115,6 +121,10 @@ const CartPage = () => {
                       +
                     </button>
                   </div>
+
+                  {stockWarnings[item.productId._id] && (
+                    <p className="stock-warning">{stockWarnings[item.productId._id]}</p>
+                  )}
                 </div>
 
                 <button

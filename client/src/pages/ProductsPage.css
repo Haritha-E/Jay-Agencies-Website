@@ -248,3 +248,20 @@ button:hover {
     font-size: 24px;
   }
 }
+
+.stock-tag {
+  font-weight:normal;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 3px;
+  color: #ffffff !important; /* Font color */
+}
+
+.available {
+  background-color: #28a745; /* green */
+}
+
+.out-of-stock {
+  background-color: #dc3545; /* red */
+}

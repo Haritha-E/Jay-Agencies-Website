@@ -23,7 +23,13 @@ export const placeOrder = async (req, res) => {
 
     for (const item of products) {
       const product = await Product.findById(item.productId);
-      if (!product) continue;
+      if (!product || product.stock < item.quantity) {
+        return res.status(400).json({ message: `Product ${product.name} is out of stock.` });
+      }
+
+      product.stock -= item.quantity;
+      product.sold += item.quantity;
+      await product.save(); // Save product with updated stock and sold count
 
       total += product.price * item.quantity;
       enrichedProducts.push({
@@ -36,7 +42,7 @@ export const placeOrder = async (req, res) => {
       user: req.user._id,
       products: enrichedProducts,
       address,
-      phone: user.phone || "",  // now safe to use
+      phone: user.phone || "",
       total,
       status: "Placed",
     });

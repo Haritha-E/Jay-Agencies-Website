@@ -214,3 +214,13 @@
     padding: 6px;
   }
 }
+
+.in-stock {
+  color: green;
+  font-weight: bold;
+}
+
+.out-of-stock {
+  color: red;
+  font-weight: bold;
+}

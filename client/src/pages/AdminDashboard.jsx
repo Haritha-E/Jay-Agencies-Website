@@ -7,10 +7,9 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 import axios from "axios";
-import AdminNavbar from "../components/AdminNavbar";  // Import the AdminNavbar component
 import "./AdminDashboard.css";
 
-const AdminDashboard = ({ onLogout }) => {
+const AdminDashboard = () => {
   const navigate = useNavigate();
   const [newOrders, setNewOrders] = useState(0);
   const [pendingMessages, setPendingMessages] = useState(0);
@@ -61,8 +60,6 @@ const AdminDashboard = ({ onLogout }) => {
   }, []);
 
   return (
-    <>
-          <AdminNavbar onLogout={onLogout} />
           
     <div className="admin-dashboard">
       {/* Include AdminNavbar component */}
@@ -121,7 +118,6 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
