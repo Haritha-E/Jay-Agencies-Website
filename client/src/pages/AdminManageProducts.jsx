@@ -102,7 +102,7 @@ const AdminManageProducts = () => {
                       {product.stock > 0 ? (
                         <span className="in-stock">In Stock</span>
                       ) : (
-                        <span className="out-of-stock">Out of Stock</span>
+                        <span className="admin-out-of-stock">Out of Stock</span>
                       )}
                     </td>
                     <td>

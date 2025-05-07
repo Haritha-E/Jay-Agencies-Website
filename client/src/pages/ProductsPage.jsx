@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import {
   getProducts,
   addToCart,
+  removeFromCart,
+  updateCartQuantity,
+  getCartItems,
   addToWishlist,
   removeFromWishlist,
-  getWishlistItems,
+  getWishlistItems
 } from "../api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ProductsPage.css";
-import { useNavigate } from 'react-router-dom';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
   const [toast, setToast] = useState(null);
@@ -25,35 +28,33 @@ const ProductsPage = () => {
       setSearch(querySearch);
     }
   }, [location.search]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productsRes = await getProducts();
         setProducts(productsRes.data);
-  
-        try {
-          const wishlistRes = await getWishlistItems();
-          setWishlistItems(wishlistRes.data.map((item) => item._id));
-        } catch (wishlistErr) {
-          // If user is not logged in, skip wishlist
-          setWishlistItems([]); // So all hearts show as 🤍
-        }
+
+        // Fetch user's cart
+        const cartRes = await getCartItems();
+        setCartItems(cartRes.data.products);
+
+        // Fetch wishlist items
+        const wishlistRes = await getWishlistItems();
+        setWishlistItems(wishlistRes.data.map((item) => item._id));
       } catch (err) {
-        console.error("Failed to load products", err);
+        console.error("Failed to load data", err);
       }
     };
     fetchData();
   }, []);
-  
-  const handleViewProduct = (id) => {
-    navigate(`/product/${id}`);
-  };
 
   const handleAddToCart = async (productId) => {
     try {
       await addToCart(productId);
       setToast("Product added to cart ✅");
+      const cartRes = await getCartItems();  // Fetch updated cart after adding
+      setCartItems(cartRes.data.products);
     } catch (err) {
       const message =
         err.response?.data?.message === "Session expired. Please login again."
@@ -62,6 +63,44 @@ const ProductsPage = () => {
       setToast(message);
     }
     setTimeout(() => setToast(null), 2000);
+  };
+
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      await removeFromCart(productId);
+      setToast("Item removed from cart 🗑️");
+      const cartRes = await getCartItems();  // Fetch updated cart after removal
+      setCartItems(cartRes.data.products);
+    } catch (err) {
+      setToast("Error removing item ❌");
+    }
+    setTimeout(() => setToast(null), 2000);
+  };
+
+  const handleIncreaseQuantity = async (productId) => {
+    const cartItem = cartItems.find((item) => item.productId._id === productId);
+    const newQuantity = cartItem ? cartItem.quantity + 1 : 1;
+
+    try {
+      await updateCartQuantity(productId, newQuantity); // Send the updated quantity directly
+      const cartRes = await getCartItems();  // Fetch updated cart after increase
+      setCartItems(cartRes.data.products);
+    } catch (err) {
+      console.error("Error increasing quantity", err);
+    }
+  };
+
+  const handleDecreaseQuantity = async (productId) => {
+    const cartItem = cartItems.find((item) => item.productId._id === productId);
+    const newQuantity = cartItem && cartItem.quantity > 1 ? cartItem.quantity - 1 : 1;
+
+    try {
+      await updateCartQuantity(productId, newQuantity); // Send the updated quantity directly
+      const cartRes = await getCartItems();  // Fetch updated cart after decrease
+      setCartItems(cartRes.data.products);
+    } catch (err) {
+      console.error("Error decreasing quantity", err);
+    }
   };
 
   const handleToggleWishlist = async (productId) => {
@@ -100,6 +139,12 @@ const ProductsPage = () => {
     return matchesSearch && matchesPrice;
   });
 
+  // Check if product is already in the cart
+  const getCartQuantity = (productId) => {
+    const cartItem = cartItems.find((item) => item.productId._id === productId);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
   return (
     <div className="products-page">
       <h2>Available Products</h2>
@@ -107,84 +152,106 @@ const ProductsPage = () => {
       {toast && <div className="toast">{toast}</div>}
 
       <div className="filter-bar">
-        <div className="filter-group">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-
-          <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
-            <option value="">All Prices</option>
-            <option value="Below 500">Below ₹500</option>
-            <option value="500-1000">₹500 - ₹1000</option>
-            <option value="Above 1000">Above ₹1000</option>
-          </select>
-        </div>
-
-        <div className="reset-btn-container">
-          <button
-            className="reset-button"
-            onClick={() => {
-              setSearch("");
-              setPriceFilter("");
-            }}
-          >
-            Reset Filters
-          </button>
-        </div>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
+          <option value="">All Prices</option>
+          <option value="Below 500">Below ₹500</option>
+          <option value="500-1000">₹500 - ₹1000</option>
+          <option value="Above 1000">Above ₹1000</option>
+        </select>
       </div>
-        <div className="product-grid">
-          {filteredProducts.map((product) => (
-            <div key={product._id} className="product-card">
-              {/* Wishlist Icon */}
-              <div
-                className="wishlist-icon"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent navigation
-                  handleToggleWishlist(product._id);
-                }}
-              >
-                {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
-              </div>
 
-              {/* Clickable content to navigate to product details */}
-              <div
-                onClick={() => handleViewProduct(product._id)}
-                style={{ cursor: "pointer" }}
-              >
-                {/* Stock Availability Tag */}
-                <p
-                  className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}
+      <div className="product-grid">
+        {filteredProducts.map((product) => (
+          <div key={product._id} className="product-card">
+            {/* Wishlist Icon */}
+            <div
+              className="wishlist-icon"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent navigation
+                handleToggleWishlist(product._id);
+              }}
+            >
+              {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
+            </div>
+
+            <div onClick={() => navigate(`/product/${product._id}`)} style={{ cursor: "pointer" }}>
+              <p className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}>
+                {product.stock > 0 ? "Available" : "Out of Stock"}
+              </p>
+              <img src={`http://localhost:5000/uploads/products/${product.image}`} alt={product.name} />
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <p>₹{product.price}</p>
+              <p>Size: {product.size}</p>
+            </div>
+
+            {/* Add to Cart Button or Quantity Selector */}
+            {getCartQuantity(product._id) > 0 ? (
+            <>
+              <div className="quantity-controls">
+                <button
+                  className="decrease-btn"
+                  onClick={() => handleDecreaseQuantity(product._id)}
+                  disabled={getCartQuantity(product._id) === 1}
                 >
-                  {product.stock > 0 ? "Available" : "Out of Stock"}
-                </p>
-
-                <img
-                  src={`http://localhost:5000/uploads/products/${product.image}`}
-                  alt={product.name}
-                />
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>₹{product.price}</p>
-                <p>Size: {product.size}</p>
+                  -
+                </button>
+                <span className="qty">{getCartQuantity(product._id)}</span>
+                <button
+                  className="increase-btn"
+                  onClick={() => handleIncreaseQuantity(product._id)}
+                  disabled={getCartQuantity(product._id) >= product.stock}
+                >
+                  +
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleRemoveFromCart(product._id)}
+                >
+                  🗑️
+                </button>
               </div>
 
-
-              {/* Add to Cart Button (prevent navigation) */}
+              {/* Move this below the quantity controls */}
+              {getCartQuantity(product._id) >= product.stock && (
+                <p className="stock-warning">
+                  Only {product.stock} left in stock
+                </p>
+              )}
+            </>
+          ) : (
+            <div>
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent navigation
+                  e.stopPropagation();
                   handleAddToCart(product._id);
                 }}
+                disabled={product.stock === 0}
               >
                 Add to Cart
               </button>
             </div>
-          ))}
-          {filteredProducts.length === 0 && <p>No products found.</p>}
-        </div>
+          )}
+
+
+
+
+            {/* Display available stock if quantity exceeds stock */}
+            {getCartQuantity(product._id) > 0 && getCartQuantity(product._id) > product.stock && (
+              <p className="stock-warning">
+                Only {product.stock} item(s) available in stock
+              </p>
+            )}
+          </div>
+        ))}
+        {filteredProducts.length === 0 && <p>No products found.</p>}
+      </div>
     </div>
   );
 };
