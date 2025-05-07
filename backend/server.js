@@ -15,6 +15,7 @@ import analyticsRoutes from "./routes/analyticsRoutes.js";
 
 dotenv.config();
 const app = express();
+app.use(express.json());
 
 // Middleware
 const allowedOrigins = [
