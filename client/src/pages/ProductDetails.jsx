@@ -10,6 +10,8 @@ import {
   getCartItems,
   addOrUpdateRating,
   getSimilarProducts,
+  removeFromCart,
+  updateCartQuantity,
 } from "../api";
 import "./ProductDetails.css";
 
@@ -46,10 +48,7 @@ const ProductDetails = () => {
         setWishlistItems(wishlistRes.data.map((item) => item._id));
   
         const cartRes = await getCartItems();
-        const cartProductIds = cartRes.data.products.map((item) =>
-          typeof item.productId === "object" ? item.productId._id : item.productId
-        );
-        setCartItems(cartProductIds);
+        setCartItems(cartRes.data.products);
   
         const similarProductsData = await getSimilarProducts(id);
         setSimilarProducts(Array.isArray(similarProductsData) ? similarProductsData : []);
@@ -78,10 +77,7 @@ const ProductDetails = () => {
     try {
       await addToCart(product._id);
       const cartRes = await getCartItems();
-      const cartProductIds = cartRes.data.products.map((item) =>
-        typeof item.productId === "object" ? item.productId._id : item.productId
-      );
-      setCartItems(cartProductIds);
+      setCartItems(cartRes.data.products);
       showToast("Product added to cart ✅");
     } catch (error) {
       const message =
@@ -125,6 +121,62 @@ const ProductDetails = () => {
     } catch (error) {
       showToast("Error submitting review ❌");
       console.error("Error submitting review:", error);
+    }
+  };
+
+  // New function to get the cart quantity of a product
+  const getCartQuantity = (productId) => {
+    const cartItem = cartItems.find((item) => 
+      (typeof item.productId === 'object' ? item.productId._id : item.productId) === productId
+    );
+    return cartItem ? cartItem.quantity : 0;
+  };
+
+  // New function to increase quantity
+  const handleIncreaseQuantity = async (productId) => {
+    const cartItem = cartItems.find((item) => 
+      (typeof item.productId === 'object' ? item.productId._id : item.productId) === productId
+    );
+    const newQuantity = cartItem ? cartItem.quantity + 1 : 1;
+
+    try {
+      await updateCartQuantity(productId, newQuantity);
+      const cartRes = await getCartItems();
+      setCartItems(cartRes.data.products);
+      showToast("Cart updated ✅");
+    } catch (err) {
+      showToast("Error updating cart ❌");
+      console.error("Error increasing quantity", err);
+    }
+  };
+
+  // New function to decrease quantity
+  const handleDecreaseQuantity = async (productId) => {
+    const cartItem = cartItems.find((item) => 
+      (typeof item.productId === 'object' ? item.productId._id : item.productId) === productId
+    );
+    const newQuantity = cartItem && cartItem.quantity > 1 ? cartItem.quantity - 1 : 1;
+
+    try {
+      await updateCartQuantity(productId, newQuantity);
+      const cartRes = await getCartItems();
+      setCartItems(cartRes.data.products);
+      showToast("Cart updated ✅");
+    } catch (err) {
+      showToast("Error updating cart ❌");
+      console.error("Error decreasing quantity", err);
+    }
+  };
+
+  // New function to remove from cart
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      await removeFromCart(productId);
+      showToast("Item removed from cart 🗑️");
+      const cartRes = await getCartItems();
+      setCartItems(cartRes.data.products);
+    } catch (err) {
+      showToast("Error removing item ❌");
     }
   };
 
@@ -179,15 +231,52 @@ const ProductDetails = () => {
           <p className="product-price">₹{product.price}</p>
           <p className="product-description">{product.description}</p>
           <p className="product-size">Size: {product.size}</p>
+          <p className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}>
+            {product.stock > 0 ? "In Stock" : "Out of Stock"}
+          </p>
 
           <div className="product-actions">
-            <button
-              className="btn add-to-cart"
-              onClick={handleAddToCart}
-              disabled={cartItems.includes(product._id)}
-            >
-              {cartItems.includes(product._id) ? "Added to Cart" : "Add to Cart"}
-            </button>
+            {getCartQuantity(product._id) > 0 ? (
+              <>
+                <div className="quantity-controls">
+                  <button
+                    className="decrease-btn"
+                    onClick={() => handleDecreaseQuantity(product._id)}
+                    disabled={getCartQuantity(product._id) === 1}
+                  >
+                    -
+                  </button>
+                  <span className="qty">{getCartQuantity(product._id)}</span>
+                  <button
+                    className="increase-btn"
+                    onClick={() => handleIncreaseQuantity(product._id)}
+                    disabled={getCartQuantity(product._id) >= product.stock}
+                  >
+                    +
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleRemoveFromCart(product._id)}
+                  >
+                    🗑️
+                  </button>
+                </div>
+
+                {getCartQuantity(product._id) >= product.stock && (
+                  <p className="stock-warning">
+                    Only {product.stock} left in stock
+                  </p>
+                )}
+              </>
+            ) : (
+              <button
+                className="btn add-to-cart"
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+              >
+                Add to Cart
+              </button>
+            )}
           </div>
 
           <div className="product-rating">
