@@ -159,7 +159,7 @@ const ProductsPage = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="status-filter">
+        <div className="price-filter">
         <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
           <option value="">All Prices</option>
           <option value="Below 500">Below ₹500</option>
