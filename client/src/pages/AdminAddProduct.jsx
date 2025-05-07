@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
-import "./AddProduct.css";
+import "./AdminAddProduct.css";
 
 const AddProduct = ({onLogout}) => {
   const [productData, setProductData] = useState({

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { saveAs } from "file-saver";
 import { getSalesReport } from "../api";
 import { jsPDF } from "jspdf";
-import "./SalesReport.css";
+import "./AdminSalesReport.css";
 
 const SalesReport = () => {
   const [report, setReport] = useState(null);
