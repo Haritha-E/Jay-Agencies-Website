@@ -5,7 +5,8 @@ import {
   removeFromCart,
   updateCartQuantity,
   clearCart,
-  getCartItems
+  getCartItems,
+  ValidateStock
 } from "../controllers/cartController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -17,5 +18,7 @@ router.delete("/remove/:productId", protect, removeFromCart);
 router.put("/update", protect, updateCartQuantity);
 router.delete("/clear", protect, clearCart);
 router.get("/items", protect, getCartItems);
+router.get("/validate-stock", protect, ValidateStock);
+
 
 export default router;

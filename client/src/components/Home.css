@@ -1,4 +1,8 @@
 /* Base Styles */
+button{
+  width: 100%;
+}
+
 .home-container {
     width: 100%;
     max-width: 100%;
@@ -97,7 +101,6 @@
   /* Hero Section - Split Screen */
   .hero-section {
     background-color: #f8f9fa;
-    padding-bottom: -2em;
     min-height: 400px;
     position: relative;
   }
@@ -140,6 +143,7 @@
     font-weight: 600;
     color: #3498db;
     margin-bottom: 1.5rem;
+    text-align: center;
   }
   
   .hero-description {
@@ -147,6 +151,7 @@
     color: #7f8c8d;
     margin-bottom: 2rem;
     line-height: 1.6;
+    text-align: center;
   }
   
   .hero-buttons {
@@ -206,7 +211,6 @@
   
   /* About Section */
   .about-section {
-    margin-top: -2.7rem;
     background-color: #fff;
   }
   
@@ -243,6 +247,7 @@
     font-size: 1.8rem;
     color: #2c3e50;
     margin-bottom: 1.5rem;
+    text-align: center;
   }
   
   .about-text p {
@@ -250,6 +255,7 @@
     line-height: 1.8;
     color: #555;
     margin-bottom: 1.5rem;
+    text-align:justify;
   }
   
   .about-features {
@@ -377,7 +383,7 @@
   .view-more-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: #3498db; /* Change the icon color to a visible blue */
+    color: #ffffff; /* Change the icon color to a visible blue */
     transition: transform 0.3s ease, color 0.3s ease; /* Add transition for smooth hover effects */
   }
   

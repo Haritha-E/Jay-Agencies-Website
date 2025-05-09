@@ -63,6 +63,9 @@ export const addToCart = async (productId) => {
   }
 };
 
+export const validateCartStock = async() =>{
+  return await axios.get(`${API_URL}/api/cart/validate-stock`, getAuthHeaders()); // 🔐 Protected route},
+  };
 
 export const getCartItems = async () => {
   return await axios.get(`${API_URL}/api/cart`, getAuthHeaders()); // 🔐 Protected route

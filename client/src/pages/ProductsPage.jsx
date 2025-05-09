@@ -146,84 +146,84 @@ const ProductsPage = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
-  return (
-    <div className="products-page">
-      <h2>Available Products</h2>
+ return (
+  <div className="prod-products-page">
+    <h2>Available Products</h2>
 
-      {toast && <div className="toast">{toast}</div>}
+    {toast && <div className="prod-toast">{toast}</div>}
 
-      <div className="filter-bar">
+    <div className="prod-filter-bar">
+      <div className="prod-filter-group">
         <input
           type="text"
+          className="prod-search-input"
           placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="price-filter">
+      </div>
+      <div className="prod-price-filter">
         <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
           <option value="">All Prices</option>
           <option value="Below 500">Below ₹500</option>
           <option value="500-1000">₹500 - ₹1000</option>
           <option value="Above 1000">Above ₹1000</option>
         </select>
-        </div>
       </div>
+    </div>
 
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <div key={product._id} className="product-card">
-            {/* Wishlist Icon */}
-            <div
-              className="wishlist-icon"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent navigation
-                handleToggleWishlist(product._id);
-              }}
-            >
-              {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
-            </div>
+    <div className="prod-product-grid">
+      {filteredProducts.map((product) => (
+        <div key={product._id} className="prod-product-card">
+          <div
+            className="prod-wishlist-icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleWishlist(product._id);
+            }}
+          >
+            {wishlistItems.includes(product._id) ? "❤️" : "🤍"}
+          </div>
 
-            <div onClick={() => navigate(`/product/${product._id}`)} style={{ cursor: "pointer" }}>
-              <p className={`stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}>
-                {product.stock > 0 ? "Available" : "Out of Stock"}
-              </p>
-              <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p>₹{product.price}</p>
-              <p>Size: {product.size}</p>
-            </div>
+          <div onClick={() => navigate(`/product/${product._id}`)} style={{ cursor: "pointer" }}>
+            <p className={`prod-stock-tag ${product.stock > 0 ? "available" : "out-of-stock"}`}>
+              {product.stock > 0 ? "Available" : "Out of Stock"}
+            </p>
+            <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p>₹{product.price}</p>
+            <p>Size: {product.size}</p>
+          </div>
 
-            {/* Add to Cart Button or Quantity Selector */}
-            {getCartQuantity(product._id) > 0 ? (
+          {getCartQuantity(product._id) > 0 ? (
             <>
-              <div className="quantity-controls">
+              <div className="prod-quantity-controls">
                 <button
-                  className="decrease-btn"
+                  className="prod-decrease-btn"
                   onClick={() => handleDecreaseQuantity(product._id)}
                   disabled={getCartQuantity(product._id) === 1}
                 >
                   -
                 </button>
-                <span className="qty">{getCartQuantity(product._id)}</span>
+                <span className="prod-qty">{getCartQuantity(product._id)}</span>
                 <button
-                  className="increase-btn"
+                  className="prod-increase-btn"
                   onClick={() => handleIncreaseQuantity(product._id)}
                   disabled={getCartQuantity(product._id) >= product.stock}
                 >
                   +
                 </button>
                 <button
-                  className="delete-btn"
+                  className="prod-delete-btn"
                   onClick={() => handleRemoveFromCart(product._id)}
                 >
                   🗑️
                 </button>
               </div>
 
-              {/* Move this below the quantity controls */}
               {getCartQuantity(product._id) >= product.stock && (
-                <p className="stock-warning">
+                <p className="prod-stock-warning">
                   Only {product.stock} left in stock
                 </p>
               )}
@@ -241,22 +241,13 @@ const ProductsPage = () => {
               </button>
             </div>
           )}
-
-
-
-
-            {/* Display available stock if quantity exceeds stock */}
-            {getCartQuantity(product._id) > 0 && getCartQuantity(product._id) > product.stock && (
-              <p className="stock-warning">
-                Only {product.stock} item(s) available in stock
-              </p>
-            )}
-          </div>
-        ))}
-        {filteredProducts.length === 0 && <p>No products found.</p>}
-      </div>
+        </div>
+      ))}
+      {filteredProducts.length === 0 && <p>No products found.</p>}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default ProductsPage;

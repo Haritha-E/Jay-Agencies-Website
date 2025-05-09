@@ -1,5 +1,7 @@
 /* MyOrders.css - Professional styling with distinct cards */
-
+p{
+  text-align: center;
+}
 .orders-container {
   max-width: 1200px;
   margin: 0 auto;

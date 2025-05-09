@@ -9,14 +9,14 @@ const Navbar = ({ user, onLogout }) => {
   return (
     <header className="home-header">
       {/* Logo */}
-      <div className="shop-name">
+      <Link to="/" className="shop-name">
         <img
           src="/jay_logo.png"
           alt="Jay Agencies Logo"
           className="navbar-logo"
         />
         Jay Agencies
-      </div>
+      </Link>
 
       <nav className="nav-menu">
         <Link to="/">Home</Link>

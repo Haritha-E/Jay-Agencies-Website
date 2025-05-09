@@ -148,3 +148,29 @@ export const getCartItems = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const ValidateStock = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.user._id }).populate("products.productId");
+    const insufficientStock = [];
+
+    for (let item of cart.products) {
+      if (!item.productId) continue;
+      if (item.quantity > item.productId.stock) {
+        insufficientStock.push({
+          name: item.productId.name,
+          available: item.productId.stock,
+          requested: item.quantity,
+        });
+      }
+    }
+
+    if (insufficientStock.length > 0) {
+      return res.status(200).json({ ok: false, insufficientStock });
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ message: "Error validating stock", error: err.message });
+  }
+};

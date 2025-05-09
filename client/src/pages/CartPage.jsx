@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCartItems, removeFromCart, updateCartQuantity, API_URL } from "../api";
+import { getCartItems, removeFromCart, updateCartQuantity, API_URL, validateCartStock } from "../api";
 import "./CartPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -40,6 +40,27 @@ const CartPage = () => {
     } catch (err) {
       console.error("Error removing item", err);
       setToast("Error removing item ❌");
+    }
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const res = await validateCartStock();
+  
+      if (res.data.ok) {
+        navigate("/checkout");
+      } else {
+        const warnings = res.data.insufficientStock.map(
+          (item) =>
+            `⚠️ ${item.name}: only ${item.available} available, but you selected ${item.requested}`
+        );
+        setToast(warnings.join("\n"));
+        setTimeout(() => setToast(null), 4000);
+      }
+    } catch (err) {
+      console.error("Stock validation error", err);
+      setToast("Error validating stock before checkout ❌");
+      setTimeout(() => setToast(null), 2000);
     }
   };
 
@@ -117,6 +138,7 @@ const CartPage = () => {
                       onClick={() =>
                         handleQuantityChange(item.productId._id, item.quantity + 1)
                       }
+                      disabled={item.quantity >= item.productId.stock}
                     >
                       +
                     </button>
@@ -139,7 +161,7 @@ const CartPage = () => {
 
           <div className="cart-summary">
             <h3>Total: ₹{totalPrice.toFixed(2)}</h3>
-            <button className="checkout-btn" onClick={() => navigate("/checkout")}>
+            <button className="checkout-btn" onClick={handleCheckout}>
               Checkout
             </button>
 

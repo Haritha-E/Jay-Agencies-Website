@@ -60,7 +60,7 @@ export const getMonthlyTurnover = async (req, res) => {
   }
 };
 
-// 📌 Top 10 Most Active Customers
+// 📌 Top 5 Most Active Customers
 export const getTopCustomers = async (req, res) => {
   try {
     const customers = await Order.aggregate([
@@ -72,7 +72,7 @@ export const getTopCustomers = async (req, res) => {
         },
       },
       { $sort: { ordersCount: -1 } },
-      { $limit: 10 },
+      { $limit: 5 },
       {
         $lookup: {
           from: "users",
@@ -104,7 +104,7 @@ export const getTopSoldProducts = async (req, res) => {
   try {
     const topSold = await Product.find()
       .sort({ sold: -1 })
-      .limit(10); // or any number you prefer
+      .limit(5); // or any number you prefer
 
     res.json(topSold);
   } catch (err) {
@@ -124,7 +124,7 @@ export const getTopRatedProducts = async (req, res) => {
         },
       },
       { $sort: { averageRating: -1, totalRatings: -1 } },
-      { $limit: 10 },
+      { $limit: 5 },
       {
         $lookup: {
           from: "products",

@@ -121,3 +121,15 @@
     }
   }
   
+  .admin-nav-menu a:visited {
+    color: white; /* Ensure visited links stay white */
+  }
+
+  .shop-name,
+.shop-name:visited {
+  color: rgb(88, 103, 189);
+  text-decoration: none;
+  text-decoration: underline;
+}
+
+  

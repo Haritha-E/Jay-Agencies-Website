@@ -37,6 +37,16 @@
     color: #ccc;
     margin-bottom: 10px;
   }
+
+  input {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 14px;
+    transition: border .3s, box-shadow .3s;
+    width: 100%;
+  }
   
   .profile-img-container input[type="file"] {
     margin-top: 8px;

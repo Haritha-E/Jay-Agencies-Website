@@ -1,164 +1,394 @@
-/* Centering the login container */
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
+/* Login.css */
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #2563eb;
+  --primary-dark: #1e40af;
+  --secondary: #e11d48;
+  --gray-light: #f3f4f6;
+  --gray: #d1d5db;
+  --gray-dark: #6b7280;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --white: #ffffff;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Base Layout */
+.log-login-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Brand Section */
+.log-login-brand-section {
+  background-color: var(--primary);
+  color: var(--white);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+  background-image: linear-gradient(135deg, rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.8)), url('https://media.istockphoto.com/id/586162072/photo/various-kitchen-utensils.jpg?s=612x612&w=0&k=20&c=auwz9ZHqkG_UlKw5y-8UqvMLznA2PySQ_Jt3ameL1aU=');
+  background-size: cover;
+  background-position: center;
+}
+
+.log-brand-content {
+  max-width: 480px;
+  text-align: center;
+}
+
+.log-brand-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+.log-tagline {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.log-brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.log-feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(5px);
+}
+
+.log-feature-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.log-feature span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Form Section */
+.log-login-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--white);
+  padding: 2rem;
+  max-width: 480px;
+}
+
+.log-login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.log-logo {
+  max-width: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.log-login-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+/* Login Form */
+.log-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.log-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.log-form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Fix for consistent input field widths */
+.log-form-group input {
+  width: 100%; /* Make all inputs take full width of their container */
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gray);
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+/* Ensure the password container takes full width too */
+.log-password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+}
+
+/* No need to change this, already correct */
+.log-password-container input {
+  width: 100%;
+  padding-right: 2.5rem; /* Make space for the eye icon */
+}
+
+.log-form-group input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.log-eye-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--gray-dark);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.log-eye-icon:hover {
+  color: var(--primary);
+}
+
+/* Error message */
+.log-error-message {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.log-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.log-remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.log-remember-me input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+
+.log-remember-me label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.log-forgot-password-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.log-forgot-password-btn:hover {
+  text-decoration: underline;
+  color: var(--primary-dark);
+}
+
+.log-login-btn {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+.log-login-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.log-login-btn:disabled {
+  background-color: var(--gray-dark);
+  cursor: not-allowed;
+}
+
+.log-register-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.log-register-prompt a {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.log-register-prompt a:hover {
+  text-decoration: underline;
+}
+
+/* Forgot Password Section */
+.log-forgot-password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.log-reset-instructions {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.log-reset-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.log-reset-btn {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.log-reset-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.log-back-to-login {
+  background-color: transparent;
+  border: 1px solid var(--gray);
+  color: var(--text);
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.log-back-to-login:hover {
+  background-color: var(--gray-light);
+}
+
+/* Reset Email Sent State */
+.log-reset-email-sent {
+  text-align: center;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.log-success-icon {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--success);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.log-reset-email-sent h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.log-reset-email-sent p {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Footer */
+.log-login-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .log-login-container {
+    flex-direction: column;
   }
   
-  .password-container {
-    position: relative;
-    width: 100%;
+  .log-login-brand-section {
+    padding: 3rem 1.5rem;
   }
   
-  .password-container input {
-    width: 95%;
-    padding-right: 40px;
+  .log-login-form-section {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .log-brand-content h1 {
+    font-size: 2rem;
   }
   
-  .eye-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #555;
-    font-size: 18px;
+  .log-tagline {
+    font-size: 1rem;
   }
-  
-  .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Soft gradient background */
-      font-family: 'Arial', sans-serif; /* Set a clean font */
-      padding: 20px; 
-    }
-    
-    /* Styling the login box */
-    .login-box {
-      display: flex;
-      align-items: center;
-      background-color: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
-      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-    }
-      
-    /* Styling for the login image */
-    .login-image {
-      width: 50%;
-      height: 100%; /* Ensures full height */
-      object-fit: cover; /* Maintain aspect ratio */
-      transition: transform 0.3s ease; /* Smooth scale effect */
-    }
-    
-    
-    /* Styling for the form section */
-    .login-form {
-      padding: 40px; /* Increased padding for comfort */
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Heading styles */
-    h2 {
-      font-size: 28px;
-      margin-bottom: 16px;
-      color: #333;
-      font-weight: bold; /* Stronger weight for emphasis */
-      text-align: center; /* Center align for a balanced look */
-    }
-    
-    /* Paragraph styles */
-    p {
-      margin-bottom: 24px;
-      font-size: 16px;
-      color: #555;
-      text-align: center; /* Center align for better readability */
-    }
-    
-    /* Input group styles */
-    .input-group {
-      margin-bottom: 20px; /* Spacing between input groups */
-    }
-    
-    /* Label styles */
-    label {
-      margin-bottom: 8px; /* Spacing between label and input */
-      font-weight: 600;
-      color: #333;
-      display: block; /* Make label a block element */
-    }
-    
-    /* Input field styles */
-    input {
-      width: 100%;
-      padding: 14px; /* Comfortable padding */
-      margin-bottom: 10px;
-      border: 2px solid #ddd; /* Thicker border for visibility */
-      border-radius: 8px;
-      font-size: 16px; /* Consistent font size */
-      transition: border 0.3s, box-shadow 0.3s; /* Transition for interaction */
-    }
-    
-    /* Input focus effect */
-    input:focus {
-      border: 2px solid #007bff; /* Stronger border color on focus */
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Soft blue shadow */
-      outline: none; /* Remove default outline */
-    }
-    
-    /* Button styles */
-    button {
-      width: 100%;
-      padding: 14px; /* Increased padding */
-      background-color: #007bff; /* Primary button color */
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold; /* Bold font for emphasis */
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-    }
-    
-    /* Button hover effect */
-    button:hover {
-      background-color: #0056b3; /* Darker blue on hover */
-      transform: translateY(-2px); /* Slight lift effect */
-    }
-    
-    /* Link styles */
-    a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: 500; /* Slightly bolder font */
-      transition: color 0.3s ease; /* Transition for hover effects */
-    }
-    
-    /* Link hover effect */
-    a:hover {
-      color: #0056b3; /* Darker blue on hover */
-      text-decoration: underline;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .login-box {
-        flex-direction: column; /* Stack the image and form on smaller screens */
-        width: 90%; /* Full width on mobile */
-      }
-      
-      .login-image {
-        width: 100%; /* Full width on mobile */
-        height: 200px; /* Fixed height for mobile */
-      }
-    
-      .login-form {
-        width: 100%; /* Full width on mobile */
-      }
-    }
-  
+}
