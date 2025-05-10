@@ -13,7 +13,7 @@ export const placeOrder = async (req, res) => {
   try {
     const { products, address } = req.body;
 
-    const user = await User.findById(req.user._id);  // <-- move this up
+    const user = await User.findById(req.user._id);  
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -29,7 +29,7 @@ export const placeOrder = async (req, res) => {
 
       product.stock -= item.quantity;
       product.sold += item.quantity;
-      await product.save(); // Save product with updated stock and sold count
+      await product.save(); 
 
       total += product.price * item.quantity;
       enrichedProducts.push({
@@ -261,7 +261,6 @@ export const getAllOrders = async (req, res) => {
 };
 
 
-// Update the markOrderAsDelivered function to send a delivery notification email with PDF invoice
 export const markOrderAsDelivered = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -273,12 +272,10 @@ export const markOrderAsDelivered = async (req, res) => {
     order.deliveredAt = new Date();
     const updatedOrder = await order.save();
 
-    // Send delivery confirmation email with invoice
     try {
       await sendDeliveryConfirmationEmail(order._id);
     } catch (emailError) {
       console.error("Error sending delivery confirmation email", emailError);
-      // Don't return error as order was still marked as delivered
     }
 
     res.json(updatedOrder);
@@ -287,10 +284,9 @@ export const markOrderAsDelivered = async (req, res) => {
   }
 };
 
-// Function to send delivery confirmation email with PDF invoice
+
 const sendDeliveryConfirmationEmail = async (orderId) => {
   try {
-    // Fetch the order with populated data
     const order = await Order.findById(orderId)
       .populate("user")
       .populate("products.productId");
@@ -301,10 +297,8 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
 
     const user = order.user;
     
-    // Generate PDF invoice
     const invoicePath = await generateInvoicePDF(order);
     
-    // Set up email transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -313,11 +307,9 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
       },
     });
 
-    // Format dates
     const orderDate = moment(order.createdAt).format('MMMM Do YYYY, h:mm a');
     const deliveryDate = moment(order.deliveredAt).format('MMMM Do YYYY, h:mm a');
 
-    // Send email with PDF attachment
     await transporter.sendMail({
       from: '"Jay Agencies" <jayagencies_1@yahoo.com>',
       to: user.email,
@@ -443,7 +435,6 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
       ]
     });
 
-    // Delete the temporary invoice file after sending
     fs.unlinkSync(invoicePath);
 
   } catch (error) {
@@ -452,11 +443,9 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
   }
 };
 
-// Function to generate PDF invoice
 const generateInvoicePDF = async (order) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // Create a directory for temporary PDF files if it doesn't exist
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const tempDir = path.join(__dirname, '../temp');
       
@@ -467,34 +456,27 @@ const generateInvoicePDF = async (order) => {
       const invoicePath = path.join(tempDir, `invoice-${order._id}.pdf`);
       const doc = new PDFDocument({ margin: 50 });
       
-      // Pipe the PDF to a file
       const writeStream = fs.createWriteStream(invoicePath);
       doc.pipe(writeStream);
       
-      // Add company logo/header
       doc.fontSize(20).text('Jay Agencies', { align: 'center' });
       doc.fontSize(10).text('Your trusted destination for high-quality kitchenware & home essentials', { align: 'center' });
       doc.moveDown();
       
-      // Add company address
       doc.fontSize(10).text('36 Natesan Colony, Shankar Nagar, Salem-636007', { align: 'center' });
       doc.text('Email: jayagencies_1@yahoo.com | Phone: +91 94432 62722', { align: 'center' });
       doc.text('Contact Person: E. Ravi', { align: 'center' });
       doc.text('GST: 33AGAPR3442B1ZZ', { align: 'center' });
       
-      // Add a horizontal line
       doc.moveDown();
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
       doc.moveDown();
       
-      // Add invoice title and number
       doc.fontSize(16).text('TAX INVOICE', { align: 'center' });
       doc.moveDown();
       
-      // Add invoice details in two columns
       const invoiceDetailsY = doc.y;
       
-      // Left column
       doc.fontSize(10).text('Invoice Number:', 50, invoiceDetailsY);
       doc.text(`INV-${order._id.toString().slice(-8)}`, 150, invoiceDetailsY);
       
@@ -507,7 +489,6 @@ const generateInvoicePDF = async (order) => {
       doc.text('Order Date:', 50, invoiceDetailsY + 45);
       doc.text(`${moment(order.createdAt).format('DD/MM/YYYY')}`, 150, invoiceDetailsY + 45);
       
-      // Right column
       doc.text('Customer Name:', 300, invoiceDetailsY);
       doc.text(`${order.user.name}`, 400, invoiceDetailsY);
       
@@ -520,23 +501,19 @@ const generateInvoicePDF = async (order) => {
       doc.text('Payment Method:', 300, invoiceDetailsY + 45);
       doc.text('Cash on Delivery', 400, invoiceDetailsY + 45);
       
-      // Add shipping address
       doc.moveDown(4);
       doc.fontSize(11).text('Shipping Address:', { underline: true });
       doc.fontSize(10).text(`${order.user.name}`);
       doc.text(`${order.address || order.user.address || 'Address not provided'}`);
       
-      // Add a horizontal line
       doc.moveDown();
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
       doc.moveDown();
       
-      // Add product table header
       const tableTop = doc.y;
       const tableHeaders = ['No.', 'Product', 'Qty', 'Unit Price', 'Amount'];
       const columnWidths = [40, 230, 70, 100, 100];
       
-      // Draw table header
       doc.font('Helvetica-Bold');
       tableHeaders.forEach((header, i) => {
         let x = 50;
@@ -546,15 +523,12 @@ const generateInvoicePDF = async (order) => {
         doc.text(header, x, tableTop);
       });
       
-      // Draw header line
       doc.moveDown();
       doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
       doc.moveDown(0.5);
       
-      // Reset to normal font
       doc.font('Helvetica');
       
-      // Draw product rows
       let currentY = doc.y;
       let totalAmount = 0;
       
@@ -585,14 +559,11 @@ const generateInvoicePDF = async (order) => {
         currentY += 20;
       });
       
-      // Draw line after products
       doc.moveTo(50, currentY).lineTo(550, currentY).stroke();
       currentY += 15;
       
-      // Calculate totals
       const subtotal = order.total;
       
-      // Draw totals
       doc.font('Helvetica-Bold');
       doc.text('', 50, currentY);
       doc.text('Total:', 380, currentY);
@@ -601,23 +572,19 @@ const generateInvoicePDF = async (order) => {
       doc.font('Helvetica');
 
       
-      // Add footer
       doc.moveDown(4);
       doc.fontSize(10).text('Thank you for your business!', { align: 'center' });
       doc.moveDown();
       doc.fontSize(9).text('This is a computer-generated invoice and does not require a signature.', { align: 'center' });
       
-      // Add Terms and Conditions
       doc.moveDown(2);
       doc.fontSize(10).text('Terms & Conditions', { underline: true });
       doc.fontSize(8).text('1. All items are non-returnable once delivered unless damaged or defective.');
       doc.text('2. For any issues with your order, please contact customer support within 7 days of delivery.');
       doc.text('3. Warranty claims should be processed as per the manufacturer\'s warranty policy.');
       
-      // Finalize PDF
       doc.end();
       
-      // Wait for the PDF to be created
       writeStream.on('finish', () => {
         resolve(invoicePath);
       });

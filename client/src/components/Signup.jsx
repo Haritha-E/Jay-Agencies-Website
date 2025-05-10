@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; // Reuse the same CSS
-import { registerUser } from '../api'; // API function
+import './Login.css'; 
+import { registerUser } from '../api'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -29,7 +29,6 @@ const Signup = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Clear error when user types
     setErrors({
       ...errors,
       [e.target.name]: ''
@@ -45,7 +44,6 @@ const Signup = () => {
   };
 
   const validateEmail = (email) => {
-    // More comprehensive email validation regex
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(String(email).toLowerCase());
   };
@@ -53,7 +51,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Reset all error messages
     const newErrors = {
       name: '',
       email: '',
@@ -61,19 +58,16 @@ const Signup = () => {
       confirmPassword: ''
     };
     
-    // Validate name (should not be empty)
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required.';
     }
 
-    // Validate email format
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required.';
     } else if (!validateEmail(formData.email)) {
       newErrors.email = 'Please enter a valid email address.';
     }
 
-    // Validate password strength
     const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!formData.password) {
       newErrors.password = 'Password is required.';
@@ -81,20 +75,17 @@ const Signup = () => {
       newErrors.password = 'Password must be at least 8 characters long and contain at least one special character.';
     }
 
-    // Check if passwords match
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password.';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match!';
     }
 
-    // Check if there are any errors
     if (newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword) {
       setErrors(newErrors);
       return;
     }
 
-    // Register the user
     try {
       setLoading(true);
       await registerUser({ 
@@ -103,7 +94,6 @@ const Signup = () => {
         password: formData.password 
       });
 
-      // Show success toast notification
       toast.success(
         <div style={{ width: '400px' }}>
           Registration successful!
@@ -122,15 +112,11 @@ const Signup = () => {
         }
       );
 
-      // Redirect to login page after a delay
       setTimeout(() => navigate('/login'), 3000);
     } catch (error) {
       console.error('Registration error:', error);
       
-      // Handle specific error cases
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         if (error.response.status === 400 && error.response.data.message === "User already exists") {
           setErrors({
             ...errors,
@@ -143,13 +129,11 @@ const Signup = () => {
           });
         }
       } else if (error.request) {
-        // The request was made but no response was received
         setErrors({
           ...errors,
           email: 'Network error. Please check your connection and try again.'
         });
       } else {
-        // Something happened in setting up the request that triggered an Error
         setErrors({
           ...errors,
           email: 'An unexpected error occurred. Please try again later.'

@@ -53,7 +53,6 @@ export const getWishlist = async (req, res) => {
       return res.status(200).json([]);
     }
 
-    // Filter out any null productId (i.e., product deleted from DB)
     const validProducts = wishlist.products.filter(p => p.productId !== null);
 
     if (validProducts.length !== wishlist.products.length) {
@@ -61,7 +60,6 @@ export const getWishlist = async (req, res) => {
       await wishlist.save();
     }
 
-    // Return only the product details
     res.status(200).json(validProducts.map(p => p.productId));
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch wishlist", error: err.message });

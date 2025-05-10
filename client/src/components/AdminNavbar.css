@@ -1,4 +1,3 @@
-/* 🔹 Admin Navbar Container */
 .admin-nav-header {
     position: sticky;
     top: 0;
@@ -14,7 +13,6 @@
     margin-bottom: 20px;
   }
   
-  /* 🔹 Logo */
   .logo {
     font-size: 24px;
     font-weight: 700;
@@ -30,7 +28,6 @@
   }
   
   
-  /* 🔹 Admin Navigation Links */
   .admin-nav-menu {
     display: flex;
     gap: 30px;
@@ -49,7 +46,6 @@
     color: #ffd700;
   }
   
-  /* 🔹 Logout Button */
   .logout-btn {
     background-color: #dc3545;
     color: white;
@@ -67,7 +63,6 @@
     transform: scale(1.05);
   }
   
-  /* 🔹 Responsive Adjustments */
   @media (max-width: 1024px) {
     .admin-nav-menu {
       gap: 20px;
@@ -122,7 +117,7 @@
   }
   
   .admin-nav-menu a:visited {
-    color: white; /* Ensure visited links stay white */
+    color: white;
   }
 
   .shop-name,

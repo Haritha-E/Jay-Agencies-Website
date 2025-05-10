@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AdminNavbar from "./AdminNavbar";  // adjust path if needed
+import AdminNavbar from "./AdminNavbar"; 
 
 const AdminLayout = ({ onLogout }) => {
   return (

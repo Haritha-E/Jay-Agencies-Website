@@ -60,8 +60,6 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { name, price, size, description, stock } = req.body;
-    console.log("Stock received in backend:", stock);  // Log the stock value to check
-
     const product = await Product.findById(req.params.id);
 
     if (!product) {
@@ -80,7 +78,7 @@ export const updateProduct = async (req, res) => {
     product.price = price;
     product.size = size;
     product.description = description;
-    product.stock = stock; // Ensure this is stored as a number
+    product.stock = stock; 
 
     await product.save();
     res.status(200).json({ message: "Product updated successfully" });
@@ -104,7 +102,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// Add rating and feedback
+
 export const addRating = async (req, res) => {
   const { rating, feedback } = req.body;
   const userId = req.user._id; 
@@ -124,7 +122,6 @@ export const addRating = async (req, res) => {
   }
 };
 
-// Get all ratings
 export const getAllRatings = async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
@@ -138,7 +135,7 @@ export const getAllRatings = async (req, res) => {
   }
 };
 
-// Get similar products
+
 export const getSimilarProducts = async (req, res) => {
   try {
     const { productId } = req.params;

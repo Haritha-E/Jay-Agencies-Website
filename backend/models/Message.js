@@ -1,4 +1,3 @@
-// models/Message.js
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
@@ -17,8 +16,8 @@ const messageSchema = new mongoose.Schema({
   repliedAt: Date,
   status: {
     type: String,
-    enum: ["Pending", "Replied"], // Possible status values
-    default: "Pending", // Default status is Pending
+    enum: ["Pending", "Replied"],
+    default: "Pending", 
   },
 });
 

@@ -1,13 +1,13 @@
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
-// ✅ Get cart with filtered items
+
+
 export const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("products.productId");
 
     if (!cart) return res.status(200).json({ products: [] });
 
-    // Filter out deleted products
     const validProducts = cart.products.filter(item => item.productId !== null);
 
     if (validProducts.length !== cart.products.length) {
@@ -21,7 +21,7 @@ export const getCart = async (req, res) => {
   }
 };
 
-// ✅ Add item to cart with stock check
+
 export const addToCart = async (req, res) => {
   try {
     const { productId, quantity = 1 } = req.body;
@@ -77,7 +77,6 @@ export const addToCart = async (req, res) => {
   }
 };
 
-// ✅ Update quantity of a product in cart with stock check
 export const updateCartQuantity = async (req, res) => {
   const { productId, quantity } = req.body;
 
@@ -106,7 +105,6 @@ export const updateCartQuantity = async (req, res) => {
 };
 
 
-// ✅ Remove specific product from cart
 export const removeFromCart = async (req, res) => {
   const { productId } = req.params;
   try {
@@ -123,7 +121,6 @@ export const removeFromCart = async (req, res) => {
 };
 
 
-// ✅ Clear entire cart
 export const clearCart = async (req, res) => {
   try {
     await Cart.findOneAndDelete({ user: req.user._id });
@@ -133,7 +130,6 @@ export const clearCart = async (req, res) => {
   }
 };
 
-// ✅ Get cart items only (used for Products page maybe)
 export const getCartItems = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("products.productId", "name price image");

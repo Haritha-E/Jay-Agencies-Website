@@ -1,11 +1,7 @@
-// GET /api/analytics/top-rated-products
 import Rating from "../models/Rating.js";
 import Product from "../models/Product.js";
 import Order from "../models/Order.js";
-import User from "../models/User.js";
-import mongoose from "mongoose";
 
-// 📌 Yearly Turnover (Group by Year)
 export const getYearlyTurnover = async (req, res) => {
   try {
     const yearlyData = await Order.aggregate([
@@ -25,7 +21,6 @@ export const getYearlyTurnover = async (req, res) => {
   }
 };
 
-// 📌 Monthly Turnover (Current Year)
 export const getMonthlyTurnover = async (req, res) => {
   try {
     const currentYear = new Date().getFullYear();
@@ -60,7 +55,6 @@ export const getMonthlyTurnover = async (req, res) => {
   }
 };
 
-// 📌 Top 5 Most Active Customers
 export const getTopCustomers = async (req, res) => {
   try {
     const customers = await Order.aggregate([
@@ -104,14 +98,13 @@ export const getTopSoldProducts = async (req, res) => {
   try {
     const topSold = await Product.find()
       .sort({ sold: -1 })
-      .limit(5); // or any number you prefer
+      .limit(5);
 
     res.json(topSold);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch top sold products" });
   }
 };
-
 
 export const getTopRatedProducts = async (req, res) => {
   try {

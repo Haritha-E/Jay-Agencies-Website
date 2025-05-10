@@ -5,7 +5,6 @@ import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
-// POST - Save message
 router.post('/', async (req, res) => {
   try {
     const newMessage = new Message(req.body);
@@ -16,7 +15,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET - Fetch all messages (admin only)
 router.get('/', protect, async (req, res) => {
   try {
     const messages = await Message.find().sort({ createdAt: -1 });
@@ -30,10 +28,9 @@ router.put("/reply/:id", async (req, res) => {
     try {
         const { reply } = req.body;
 
-        // Update the message with the reply and change the status to 'replied'
         const message = await Message.findByIdAndUpdate(
             req.params.id,
-            { reply, repliedAt: new Date(), status: 'replied' },  // Add 'status' field
+            { reply, repliedAt: new Date(), status: 'replied' },  
             { new: true }
         );
 
@@ -41,7 +38,6 @@ router.put("/reply/:id", async (req, res) => {
             return res.status(404).json({ error: "Message not found" });
         }
 
-        // Format date for email
         const formattedDate = new Date(message.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -56,7 +52,6 @@ router.put("/reply/:id", async (req, res) => {
             },
         });
 
-        // Create HTML email with better formatting
         const htmlEmail = `
         <!DOCTYPE html>
         <html>
@@ -135,7 +130,6 @@ router.put("/reply/:id", async (req, res) => {
         </html>
         `;
 
-        // Create plain text version for email clients that don't support HTML
         const textEmail = `
     Dear ${message.name},
 
@@ -156,7 +150,6 @@ router.put("/reply/:id", async (req, res) => {
     © ${new Date().getFullYear()} Jay Agencies. All rights reserved.
         `;
 
-        // Send reply email with both HTML and plain text versions
         await transporter.sendMail({
             from: '"Jay Agencies Support" <support@jayagencies.com>',
             to: message.email,

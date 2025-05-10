@@ -17,7 +17,6 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Middleware
 const allowedOrigins = [
   "http://localhost:3000",
   process.env.CLIENT_URL,
@@ -37,7 +36,6 @@ app.use(cors({
 
 app.use("/uploads", express.static("uploads"));
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes); 
 app.use("/api/cart", cartRoutes);
@@ -48,7 +46,6 @@ app.use("/api/ratings", ratingRoutes);
 app.use('/api/messages', messageRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

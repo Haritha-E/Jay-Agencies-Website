@@ -15,7 +15,7 @@ const Home = ({ user }) => {
   const fetchProducts = async () => {
     try {
       const res = await getProducts();
-      setProducts(res.data.slice(0, 7)); // Fetch only the first 7 products
+      setProducts(res.data.slice(0, 7));
     } catch (err) {
       console.error("Error fetching products", err);
     }
@@ -74,7 +74,6 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      {/* About Us Section */}
       <section id="about-us" className="about-section">
         <div className="section-header">
           <h2>About Jay Agencies</h2>
@@ -116,8 +115,6 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      {/* Rest of the component remains unchanged */}
-      {/* Featured Products Section */}
       <section id="featured-products" className="products-section">
         <div className="section-header">
           <h2>Featured Products</h2>
@@ -157,7 +154,6 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
       <section className="why-choose-section">
         <div className="section-header">
           <h2>Why Choose Us</h2>
@@ -188,7 +184,6 @@ const Home = ({ user }) => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="footer" id="contact">
         <div className="footer-top-pattern"></div>
         <div className="footer-container">

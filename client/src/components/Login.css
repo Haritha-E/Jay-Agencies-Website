@@ -1,4 +1,3 @@
-/* Login.css */
 :root {
   --primary: #1e3a8a;
   --primary-light: #2563eb;
@@ -17,14 +16,12 @@
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Base Layout */
 .log-login-container {
   display: flex;
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Brand Section */
 .log-login-brand-section {
   background-color: var(--primary);
   color: var(--white);
@@ -91,7 +88,6 @@
   font-weight: 500;
 }
 
-/* Form Section */
 .log-login-form-section {
   flex: 1;
   display: flex;
@@ -119,7 +115,6 @@
   margin-bottom: 0.75rem;
 }
 
-/* Login Form */
 .log-login-form {
   display: flex;
   flex-direction: column;
@@ -138,29 +133,27 @@
   color: var(--text);
 }
 
-/* Fix for consistent input field widths */
 .log-form-group input {
-  width: 100%; /* Make all inputs take full width of their container */
+  width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid var(--gray);
   border-radius: 0.375rem;
   font-size: 1rem;
   transition: border-color 0.2s ease;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  box-sizing: border-box;
 }
 
-/* Ensure the password container takes full width too */
 .log-password-container {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%; /* Ensure full width */
+  width: 100%; 
 }
 
-/* No need to change this, already correct */
+
 .log-password-container input {
   width: 100%;
-  padding-right: 2.5rem; /* Make space for the eye icon */
+  padding-right: 2.5rem; 
 }
 
 .log-form-group input:focus {
@@ -186,7 +179,6 @@
   color: var(--primary);
 }
 
-/* Error message */
 .log-error-message {
   color: var(--danger);
   font-size: 0.875rem;
@@ -270,7 +262,6 @@
   text-decoration: underline;
 }
 
-/* Forgot Password Section */
 .log-forgot-password-section {
   display: flex;
   flex-direction: column;
@@ -322,7 +313,6 @@
   background-color: var(--gray-light);
 }
 
-/* Reset Email Sent State */
 .log-reset-email-sent {
   text-align: center;
   padding: 1.5rem;
@@ -358,7 +348,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Footer */
 .log-login-footer {
   margin-top: auto;
   padding-top: 2rem;
@@ -367,7 +356,6 @@
   color: var(--text-light);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .log-login-container {
     flex-direction: column;

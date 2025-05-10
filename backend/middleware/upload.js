@@ -2,19 +2,17 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-// Disk Storage Engine
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let folder = "uploads"; // default
+    let folder = "uploads";
 
-    // Check fieldname to decide folder
+
     if (file.fieldname === "profilePic") {
       folder = "uploads/profilePics";
     } else if (file.fieldname === "productImage") {
       folder = "uploads/products";
     }
 
-    // Create folder if it doesn't exist
     fs.mkdirSync(folder, { recursive: true });
 
     cb(null, folder);
@@ -28,7 +26,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File Filter (only allow images)
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp/;
   const ext = path.extname(file.originalname).toLowerCase();

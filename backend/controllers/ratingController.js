@@ -8,21 +8,17 @@ export const addOrUpdateRating = async (req, res) => {
     const { rating, feedback } = req.body;
     const userId = req.user._id;
 
-    // Check if product exists
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    // Check if rating already exists by this user for this product
     let existingRating = await Rating.findOne({ productId, userId });
 
     if (existingRating) {
-      // Update existing rating
       existingRating.rating = rating;
       existingRating.feedback = feedback;
       await existingRating.save();
       return res.status(200).json({ message: "Rating updated", rating: existingRating });
     } else {
-      // Add new rating
       const newRating = new Rating({ productId, userId, rating, feedback });
       await newRating.save();
       return res.status(201).json({ message: "Rating added", rating: newRating });

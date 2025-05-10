@@ -47,7 +47,6 @@ const Login = ({ onLogin }) => {
         throw new Error("Invalid response: Missing user information.");
       }
 
-      // Store user data
       localStorage.setItem('token', token);
       localStorage.setItem('userId', user.id);
       localStorage.setItem('userName', user.name);
@@ -69,7 +68,6 @@ const Login = ({ onLogin }) => {
       );
 
       setTimeout(() => {
-        // Call onLogin for both admin and regular users
         onLogin({ 
           name: user.name, 
           email: user.email, 
@@ -77,7 +75,6 @@ const Login = ({ onLogin }) => {
           isAdmin: user.isAdmin 
         });
         
-        // Then navigate based on user role
         if (user.isAdmin) {
           navigate('/admin/dashboard');
         } else {

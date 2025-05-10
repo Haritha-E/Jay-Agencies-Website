@@ -9,15 +9,14 @@ const AdminNavbar = ({ onLogout }) => {
   const handleLogout = () => {
     localStorage.clear();
     onLogout();
-    navigate("/"); // Redirect to the homepage after logout
+    navigate("/");
   };
 
   return (
     <header className="admin-nav-header">
-      {/* Clickable Jay Agencies heading with logo */}
       <Link to="/" className="shop-name">
         <img
-          src="/jay_logo.png"  // Referencing the logo from the public folder
+          src="/jay_logo.png" 
           alt="Jay Agencies Logo"
           className="navbar-logo"
         />
