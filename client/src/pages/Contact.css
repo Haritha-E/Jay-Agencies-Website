@@ -234,7 +234,7 @@
   
   .form-row {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.3rem;
     flex-wrap: wrap;
   }
   
@@ -253,6 +253,7 @@
   .form-group input,
   .form-group textarea {
     width: 100%;
+    padding: 14px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 1rem;

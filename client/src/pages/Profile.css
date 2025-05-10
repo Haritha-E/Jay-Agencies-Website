@@ -1,129 +1,213 @@
-.profile-container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 25px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-heading {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .profile-img-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ddd;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
-  }
-  
-  .profile-img:hover {
-    transform: scale(1.05);
-  }
-  
-  .default-icon {
-    font-size: 120px;
-    color: #ccc;
-    margin-bottom: 10px;
-  }
+/* Profile.css */
 
-  input {
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    padding: 14px;
-    transition: border .3s, box-shadow .3s;
+/* Main container */
+.profile-container {
     width: 100%;
-  }
-  
-  .profile-img-container input[type="file"] {
-    margin-top: 8px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .profile-form {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Profile card */
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Profile header */
+.profile-header {
+    background: linear-gradient(135deg, #4a66d8 0%, #2e4bb8 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.profile-header p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Profile content */
+.profile-content {
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-  }
-  
-  .profile-form input,
-  .profile-form textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
-  
-  .profile-form input:focus,
-  .profile-form textarea:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-  }
-  
-  .profile-form button {
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
+    align-items: center;
+}
+
+/* Profile image */
+.profile-img-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.default-icon {
+    width: 100%;
+    height: 100%;
+    color: #c5c5c5;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.camera-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #4a66d8;
     color: white;
-    font-size: 16px;
-    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .profile-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .profile-form button:disabled {
-    background-color: #a0a0a0;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.camera-icon:hover {
+    background-color: #3851b8;
+    transform: scale(1.05);
+}
+
+.hidden-input {
+    display: none;
+}
+
+/* Form styling */
+.profile-form {
+    width: 100%;
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-size: 15px;
+}
+
+.input-container {
+    position: relative;
+}
+
+.profile-form input,
+.profile-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-form input:focus,
+.profile-form textarea:focus {
+    border-color: #4a66d8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 102, 216, 0.2);
+}
+
+.profile-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Validation styling */
+.form-group.has-error label {
+    color: #e53935;
+}
+
+.input-error {
+    border-color: #e53935 !important;
+}
+
+.input-error:focus {
+    box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.2) !important;
+}
+
+.error-message {
+    color: #e53935;
+    font-size: 14px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.error-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e53935;
+    font-size: 18px;
+}
+
+/* Button styling */
+.update-btn {
+    width: 100%;
+    background-color: #4a66d8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.update-btn:hover {
+    background-color: #3851b8;
+}
+
+.update-btn:disabled {
+    background-color: #a2aed0;
     cursor: not-allowed;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 576px) {
-    .profile-container {
-      margin: 20px;
-      padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .profile-content {
+        padding: 30px 20px;
     }
-  
-    .profile-heading {
-      font-size: 20px;
+    
+    .profile-header {
+        padding: 20px;
     }
-  
+    
     .profile-form input,
     .profile-form textarea {
-      font-size: 14px;
+        padding: 10px 14px;
     }
-  
-    .profile-form button {
-      font-size: 14px;
-      padding: 8px;
-    }
-  
-    .profile-img {
-      width: 100px;
-      height: 100px;
-    }
-  
-    .default-icon {
-      font-size: 100px;
-    }
-  }
-  
+}

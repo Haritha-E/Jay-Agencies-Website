@@ -15,6 +15,7 @@ const CheckoutPage = () => {
   const [userData, setUserData] = useState({ phone: "", address: "" });
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [errors, setErrors] = useState({ phone: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,13 +41,32 @@ const CheckoutPage = () => {
     }
   };
 
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      setErrors({ ...errors, phone: "Please enter a valid 10-digit phone number" });
+      return false;
+    }
+    setErrors({ ...errors, phone: "" });
+    return true;
+  };
+
   const handleChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+    
+    if (name === "phone") {
+      validatePhone(value);
+    }
   };
 
   const handleConfirmOrder = async () => {
-    if (!userData.phone.trim() || !userData.address.trim()) {
-      alert("Phone number and address are required to place an order.");
+    if (!userData.address.trim()) {
+      alert("Delivery address is required to place an order.");
+      return;
+    }
+
+    if (!validatePhone(userData.phone)) {
       return;
     }
 
@@ -97,88 +117,139 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="checkout-page">
-      <h2>Checkout</h2>
-
-      <table className="checkout-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Price (₹)</th>
-            <th>Subtotal (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((item) => (
-            <tr key={item._id}>
-              <td>{item.productId?.name}</td>
-              <td>{item.quantity}</td>
-              <td>{item.productId?.price.toFixed(2)}</td>
-              <td>{(item.productId?.price * item.quantity).toFixed(2)}</td>
-            </tr>
-          ))}
-          {showConfirmModal && (
-            <div className="modal-overlay">
-              <div className="modal">
-                <h2>Confirm Your Order</h2>
-                <p>Are you sure you want to place this order?</p>
-                <div className="modal-buttons">
-                  <button
-                    className="modal-confirm"
-                    onClick={() => {
-                      setShowConfirmModal(false);
-                      handleConfirmOrder();
-                    }}
-                  >
-                    Yes, Place Order
-                  </button>
-                  <button
-                    className="modal-cancel"
-                    onClick={() => setShowConfirmModal(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
+    <div className="checkout-container">
+      <div className="checkout-header">
+        <h1>Complete Your Order</h1>
+        <p className="checkout-step">Review your items and delivery details</p>
+      </div>
+      
+      <div className="checkout-layout">
+        <div className="checkout-left">
+          <div className="checkout-section check-order-summary">
+            <h2>Order Summary</h2>
+            {cartItems.length === 0 ? (
+              <p className="empty-cart-message">Your cart is empty</p>
+            ) : (
+              <div className="order-items">
+                {cartItems.map((item) => (
+                  <div className="order-item" key={item._id}>
+                    <div className="item-details">
+                      <h3 className="item-name">{item.productId?.name}</h3>
+                      <div className="item-meta">
+                        <span className="item-quantity">Qty: {item.quantity}</span>
+                        <span className="item-price">₹{item.productId?.price.toFixed(2)}</span>
+                      </div>
+                    </div>
+                    <div className="item-subtotal">
+                      ₹{(item.productId?.price * item.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="order-totals">
+              <div className="subtotal">
+                <span>Subtotal</span>
+                <span>₹{totalPrice.toFixed(2)}</span>
+              </div>
+              <div className="delivery-fee">
+                <span>Delivery Fee</span>
+                <span>FREE</span>
+              </div>
+              <div className="final-total">
+                <span>Total</span>
+                <span>₹{totalPrice.toFixed(2)}</span>
               </div>
             </div>
-          )}
-
-        </tbody>
-      </table>
-
-      <div className="billing-summary">
-        <h3>Total Amount: ₹{totalPrice.toFixed(2)}</h3>
-
-        <div className="contact-section">
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            id="phone"
-            type="text"
-            name="phone"
-            value={userData.phone}
-            placeholder="Enter phone number"
-            onChange={handleChange}
-          />
-
-          <label htmlFor="address">Delivery Address</label>
-          <textarea
-            id="address"
-            name="address"
-            value={userData.address}
-            placeholder="Enter full address"
-            onChange={handleChange}
-          />
+          </div>
         </div>
-
-        <button
-          className="confirm-btn"
-          onClick={() => setShowConfirmModal(true)}
-        >
-          Confirm Order
-        </button>
-
+        
+        <div className="checkout-right">
+          <div className="checkout-section payment-info">
+            <div className="payment-method-notice">
+              <div className="cod-icon">₹</div>
+              <div className="cod-details">
+                <h3>Cash on Delivery Only</h3>
+                <p>Pay with cash when your order is delivered</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="checkout-section delivery-info">
+            <h2>Delivery Information</h2>
+            
+            <div className="check-form-group">
+              <label htmlFor="phone">Phone Number*</label>
+              <input
+                id="phone"
+                type="tel"
+                name="phone"
+                value={userData.phone}
+                placeholder="Enter 10-digit phone number"
+                onChange={handleChange}
+                className={errors.phone ? "input-error" : ""}
+              />
+              {errors.phone && <div className="error-message">{errors.phone}</div>}
+              <small className="input-help">Required for delivery coordination</small>
+            </div>
+            
+            <div className="check-form-group">
+              <label htmlFor="address">Delivery Address*</label>
+              <textarea
+                id="address"
+                name="address"
+                value={userData.address}
+                placeholder="Enter complete delivery address with pincode"
+                onChange={handleChange}
+                rows="4"
+              />
+              <small className="input-help">Please provide full address including city, state and PIN code</small>
+            </div>
+          </div>
+          
+          <button
+            className="place-order-btn"
+            onClick={() => setShowConfirmModal(true)}
+            disabled={cartItems.length === 0}
+          >
+            Place Order
+          </button>
+        </div>
       </div>
+      
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Confirm Your Order</h2>
+            <div className="modal-content">
+              <p>You're about to place an order for ₹{totalPrice.toFixed(2)}</p>
+              <p className="modal-info">Cash on delivery payment will be collected upon delivery</p>
+              <div className="modal-delivery-details">
+                <p><strong>Phone:</strong> {userData.phone}</p>
+                <p><strong>Address:</strong> {userData.address}</p>
+              </div>
+            </div>
+            <div className="modal-buttons">
+              <button
+                className="modal-confirm"
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  handleConfirmOrder();
+                }}
+              >
+                Confirm Order
+              </button>
+              <button
+                className="modal-cancel"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

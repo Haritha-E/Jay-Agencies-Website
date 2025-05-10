@@ -143,7 +143,7 @@ const AdminManageOrders = () => {
             return (
               <div className="admin-order-card" key={order._id}>
                 <div className="admin-order-info">
-                  <h4>Order #{order._id.slice(-6).toUpperCase()}</h4>
+                  <h4>Order ID: {order._id}</h4>
                   <p><strong>Customer:</strong> {order.user?.name} ({order.user?.email}) <br></br> Phone No: {order.user?.phone}</p>
                   <p><strong>Placed:</strong> {new Date(order.createdAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
                   {order.status === "Delivered" && (

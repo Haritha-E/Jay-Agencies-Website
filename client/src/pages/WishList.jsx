@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getWishlistItems, removeFromWishlist, API_URL } from "../api";
-import { useNavigate } from "react-router-dom"; // import for navigation
-import "./WishList.css"; // Optional: style as needed
+import { useNavigate } from "react-router-dom";
+import "./WishList.css";
 
 const WishList = () => {
   const [wishlist, setWishlist] = useState([]);
   const [toast, setToast] = useState(null);
-  const navigate = useNavigate(); // initialize navigation
+  const navigate = useNavigate();
 
   const fetchWishlist = async () => {
     try {
@@ -50,7 +50,7 @@ const WishList = () => {
     <div className="wishlist-page">
       <h2>Your Wishlist</h2>
 
-      {/* ✅ Toast Message */}
+      {/* Toast Message */}
       {toast && <div className="toast">{toast}</div>}
 
       <div className="wishlist-grid">
@@ -65,11 +65,17 @@ const WishList = () => {
             <p>₹{product.price}</p>
             <p>Size: {product.size}</p>
             <div className="wishlist-actions">
-              <button onClick={() => handleViewProduct(product._id)}>
-                View
+              <button 
+                className="view-button" 
+                onClick={() => handleViewProduct(product._id)}
+              >
+                View Details
               </button>
-              <button onClick={() => handleRemove(product._id)}>
-                Remove ❌
+              <button 
+                className="remove-button" 
+                onClick={() => handleRemove(product._id)}
+              >
+                Remove from Wishlist
               </button>
             </div>
           </div>

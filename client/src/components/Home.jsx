@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaArrowCircleRight, FaHome, FaBoxOpen, FaPhoneAlt } from "react-icons/fa";
 import "./Home.css";
-import { getProducts,API_URL  } from "../api";
+import { getProducts, API_URL } from "../api";
 
 const Home = ({ user }) => {
   const navigate = useNavigate();
@@ -23,38 +23,53 @@ const Home = ({ user }) => {
 
   return (
     <div className="home-container">
-      {/* Hero Section - Split Screen */}
+      {/* Professional Hero Section */}
       <section className="hero-section">
+        <div className="hero-overlay"></div>
         <div className="hero-content">
-          <div className="hero-text">
-            <h1>
-              {user?.name ? `Welcome, ${user.name}!` : "Welcome to Jay Agencies"}
+          <div className="hero-header">
+            <h1 className="hero-title">
+              {user?.name ? `Welcome, ${user.name}` : "Welcome to Jay Agencies"}
             </h1>
-            <p className="hero-tagline">Premium Kitchenware & Home Essentials</p>
+            <h2 className="hero-subtitle">Premium Kitchenware Distribution</h2>
+          </div>
+          
+          <div className="hero-main-info">
             <p className="hero-description">
-              Crafted for elegance, designed for efficiency
+              Established in 2014, Jay Agencies is Salem's leading distributor of high-quality kitchenware 
+              and home essentials. We serve retailers and businesses with premium products that combine 
+              functionality, durability, and elegant design.
             </p>
-            <div className="hero-buttons">
-              <button 
-                className="primary-button"
-                onClick={() => navigate("/products")}
-              >
-                Browse Collection
-              </button>
-              <button 
-                className="secondary-button"
-                onClick={() => document.getElementById("about-us").scrollIntoView({ behavior: "smooth" })}
-              >
-                Learn More
-              </button>
+          </div>
+          
+          <div className="hero-stats-row">
+            <div className="hero-stat">
+              <span className="stat-number">10+</span>
+              <span className="home-stat-label">Years Experience</span>
+            </div>
+            <div className="hero-stat">
+              <span className="stat-number">100+</span>
+              <span className="home-stat-label">Products</span>
+            </div>
+            <div className="hero-stat">
+              <span className="stat-number">50+</span>
+              <span className="home-stat-label">Business Partners</span>
             </div>
           </div>
-          <div className="hero-image-container">
-            <img 
-              src="https://img.freepik.com/premium-photo/different-kitchen-utensil-blue-wooden-background_185193-61976.jpg" 
-              alt="Premium Kitchenware Collection" 
-              className="hero-image"
-            />
+          
+          <div className="hero-buttons">
+            <button 
+              className="primary-button"
+              onClick={() => navigate("/products")}
+            >
+              Browse Collection
+            </button>
+            <button 
+              className="secondary-button"
+              onClick={() => document.getElementById("about-us").scrollIntoView({ behavior: "smooth" })}
+            >
+              Learn More
+            </button>
           </div>
         </div>
       </section>
@@ -101,6 +116,7 @@ const Home = ({ user }) => {
         </div>
       </section>
 
+      {/* Rest of the component remains unchanged */}
       {/* Featured Products Section */}
       <section id="featured-products" className="products-section">
         <div className="section-header">

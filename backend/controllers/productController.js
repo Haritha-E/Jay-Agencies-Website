@@ -159,7 +159,7 @@ export const getSimilarProducts = async (req, res) => {
     const similarProducts = await Product.find({
       _id: { $ne: productId }, 
       name: { $regex: regexPattern, $options: "i" }
-    }).limit(4);
+    }).limit(5);
 
     res.status(200).json(similarProducts);
   } catch (error) {

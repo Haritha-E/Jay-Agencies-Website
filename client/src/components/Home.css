@@ -97,117 +97,223 @@ button{
     background: linear-gradient(to right, #3498db, #2ecc71);
     margin: 0 auto;
   }
-  
-  /* Hero Section - Split Screen */
+
+/* Professional Hero Section */
+.hero-section {
+  margin-top: 5px;
+  position: relative;
+  min-height: 600px;
+  background-image: url('https://images.unsplash.com/photo-1556911261-6bd341186b2f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  padding: 0 5%;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #f0f0f0;
+}
+
+.hero-main-info {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 85%;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+}
+
+.hero-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.25rem 2rem;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  transition: transform 0.3s ease;
+}
+
+.hero-stat:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-stat-label {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-stat-label {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.primary-button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 28px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-button:hover {
+  background-color: #d35400;
+  transform: translateY(-2px);
+}
+
+.secondary-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .hero-main-info {
+    width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
   .hero-section {
-    background-color: #f8f9fa;
-    min-height: 400px;
-    position: relative;
+    min-height: 650px;
   }
   
-  .hero-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-width: 1400px;
-    margin-bottom: -4rem;
-    min-height: 600px;
+  .hero-title {
+    font-size: 2.5rem;
   }
   
-  .hero-text {
-    flex: 1;
-    padding: 3rem;
-    background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
-    z-index: 2;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    border-radius: 12px;
-    border-left: 5px solid #3498db;
-    transition: transform 0.3s ease;
-  }
-  
-  .hero-text:hover {
-    transform: translateY(-5px);
-  }
-  
-  
-  .hero-text h1 {
-    font-size: 2.3rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    text-align: center;
-  }
-  
-  .hero-tagline {
+  .hero-subtitle {
     font-size: 1.5rem;
-    font-weight: 600;
-    color: #3498db;
-    margin-bottom: 1.5rem;
-    text-align: center;
   }
   
-  .hero-description {
-    font-size: 1.1rem;
-    color: #7f8c8d;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-    text-align: center;
+  .hero-stats-row {
+    flex-direction: column;
+    gap: 1rem;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .hero-stat {
+    width: 100%;
   }
   
   .hero-buttons {
-    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    margin-top: 2rem;
+    width: 80%;
+    max-width: 400px;
   }
   
   .primary-button, .secondary-button {
-    padding: 0.8rem 1.8rem;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .primary-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-  }
-  
-  .primary-button:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-  }
-  
-  .secondary-button {
-    background-color: transparent;
-    color: #3498db;
-    border: 2px solid #3498db;
-  }
-  
-  .secondary-button:hover {
-    background-color: #eef7fd;
-    transform: translateY(-2px);
-  }
-  
-  .hero-image-container {
-    flex: 1;
-    height: 600px;
-    overflow: hidden;
-  }
-  
-  .hero-image {
     width: 100%;
-    height: 80%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 3s ease;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 2rem;
   }
   
-  .hero-image:hover {
-    transform: scale(1.05);
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
+  
+  .hero-stats-row {
+    width: 90%;
+  }
+  
+  .hero-buttons {
+    width: 90%;
+  }
+}
   
   /* About Section */
   .about-section {
@@ -561,18 +667,7 @@ button{
   
   /* Responsive Design */
   @media screen and (max-width: 992px) {
-    .hero-content {
-      flex-direction: column;
-      min-height: auto;
-    }
-    
-    .hero-text, .hero-image-container {
-      width: 100%;
-    }
-    
-    .hero-image-container {
-      height: 400px;
-    }
+
     
     .about-content {
       flex-direction: column;
@@ -588,19 +683,7 @@ button{
       padding: 3rem 1rem;
     }
     
-    .hero-text {
-      padding: 2rem 1.5rem;
-    }
-    
-    .hero-text h1 {
-      font-size: 2.2rem;
-    }
-    
-    .hero-tagline {
-      font-size: 1.3rem;
-    }
-    
-    
+
     .footer-section {
       min-width: 100%;
     }
@@ -633,9 +716,6 @@ button{
   }
   
   @media screen and (max-width: 480px) {
-    .hero-buttons {
-      flex-direction: column;
-    }
     
     .primary-button, .secondary-button {
       width: 100%;
