@@ -74,7 +74,11 @@ const CheckoutPage = () => {
 
     try {
       await updateUserProfile(userData);
-      await placeOrder({ products: cartItems, ...userData });
+      await placeOrder({ 
+        products: cartItems, 
+        ...userData, 
+        totalAmount: total
+      });
       await clearUserCart();
 
       setOrderSuccess(true);
@@ -90,10 +94,13 @@ const CheckoutPage = () => {
     }
   };
 
-  const totalPrice = cartItems.reduce((sum, item) => {
+  const subtotal = cartItems.reduce((sum, item) => {
     if (!item.productId) return sum;
     return sum + item.productId.price * item.quantity;
   }, 0);
+
+  const gst = subtotal * 0.18;
+  const total = subtotal + gst;
 
   if (isPlacingOrder) {
     return (
@@ -151,7 +158,11 @@ const CheckoutPage = () => {
             <div className="order-totals">
               <div className="subtotal">
                 <span>Subtotal</span>
-                <span>₹{totalPrice.toFixed(2)}</span>
+                <span>₹{subtotal.toFixed(2)}</span>
+              </div>
+              <div className="gst">
+                <span>GST (18%)</span>
+                <span>₹{gst.toFixed(2)}</span>
               </div>
               <div className="delivery-fee">
                 <span>Delivery Fee</span>
@@ -159,7 +170,7 @@ const CheckoutPage = () => {
               </div>
               <div className="final-total">
                 <span>Total</span>
-                <span>₹{totalPrice.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -223,7 +234,7 @@ const CheckoutPage = () => {
           <div className="modal">
             <h2>Confirm Your Order</h2>
             <div className="modal-content">
-              <p>You're about to place an order for ₹{totalPrice.toFixed(2)}</p>
+              <p>You're about to place an order for ₹{total.toFixed(2)}</p>
               <p className="modal-info">Cash on delivery payment will be collected upon delivery</p>
               <div className="modal-delivery-details">
                 <p><strong>Phone:</strong> {userData.phone}</p>

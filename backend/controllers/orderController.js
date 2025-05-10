@@ -11,14 +11,14 @@ import User from "../models/User.js";
 
 export const placeOrder = async (req, res) => {
   try {
-    const { products, address } = req.body;
+    const { products, address, totalAmount } = req.body;
 
     const user = await User.findById(req.user._id);  
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    let total = 0;
+    let subtotal = 0;
     const enrichedProducts = [];
 
     for (const item of products) {
@@ -31,12 +31,14 @@ export const placeOrder = async (req, res) => {
       product.sold += item.quantity;
       await product.save(); 
 
-      total += product.price * item.quantity;
+      subtotal += product.price * item.quantity;
       enrichedProducts.push({
         productId: item.productId,
         quantity: item.quantity,
       });
     }
+
+    const total = totalAmount || (subtotal * 1.18);
 
     const order = new Order({
       user: req.user._id,
@@ -58,6 +60,8 @@ export const placeOrder = async (req, res) => {
     });
 
     const deliveryDate = moment().add(10, "days").format("MMMM Do YYYY");
+
+    const gst = subtotal * 0.18;
 
     try {
       await transporter.sendMail({
@@ -156,7 +160,7 @@ export const placeOrder = async (req, res) => {
               
               <div class="order-info">
                 <h2>Order Details</h2>
-                <p><strong>Order Number:</strong> #${savedOrder._id.toString().slice(-8)}</p>
+                <p><strong>Order Number:</strong> #${savedOrder._id}</p>
                 <p><strong>Order Date:</strong> ${moment(savedOrder.createdAt).format('MMMM Do YYYY, h:mm a')}</p>
                 <p><strong>Payment Method:</strong> Cash on Delivery</p>
               </div>
@@ -196,12 +200,20 @@ export const placeOrder = async (req, res) => {
                     `;
                   })).then(rows => rows.join(''))}
                   
+                  <tr>
+                    <td colspan="3" style="text-align: right;">Subtotal:</td>
+                    <td>Rs.${subtotal.toFixed(2)}</td>
+                  </tr>
+                  
+                  <tr>
+                    <td colspan="3" style="text-align: right;">GST (18%):</td>
+                    <td>Rs.${gst.toFixed(2)}</td>
+                  </tr>
+                  
                   <tr class="total-row">
                     <td colspan="3" style="text-align: right;">Total:</td>
                     <td>Rs.${savedOrder.total.toFixed(2)}</td>
                   </tr>
-                  
-    
                 </tbody>
               </table>
               
@@ -220,9 +232,9 @@ export const placeOrder = async (req, res) => {
                 <p>© ${new Date().getFullYear()} Jay Agencies. All rights reserved.</p>
                 <p>This email was sent to ${user.email}. Please do not reply to this email.</p>
                 <p>
-                  <a href="${process.env.FRONTEND_URL}/privacy-policy">Privacy Policy</a> | 
-                  <a href="${process.env.FRONTEND_URL}/terms">Terms & Conditions</a> | 
-                  <a href="${process.env.FRONTEND_URL}/contact">Contact Us</a>
+                  <a href="${process.env.CLIENT_URL}/">Home</a> | 
+                  <a href="${process.env.CLIENT_URL}/products">Products</a> | 
+                  <a href="${process.env.CLIENT_URL}/contact">Contact Us</a>
                 </p>
               </div>
             </div>
@@ -389,7 +401,7 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
             
             <div class="order-info">
               <h2>Order Details</h2>
-              <p><strong>Order Number:</strong> #${order._id.toString().slice(-8)}</p>
+              <p><strong>Order Number:</strong> #${order._id}</p>
               <p><strong>Order Date:</strong> ${orderDate}</p>
               <p><strong>Delivery Date:</strong> ${deliveryDate}</p>
               <p><strong>Payment Method:</strong> Cash on Delivery</p>
@@ -417,9 +429,9 @@ const sendDeliveryConfirmationEmail = async (orderId) => {
               <p>© ${new Date().getFullYear()} Jay Agencies. All rights reserved.</p>
               <p>This email was sent to ${user.email}. Please do not reply to this email.</p>
               <p>
-                <a href="${process.env.FRONTEND_URL}/">Home</a> | 
-                <a href="${process.env.FRONTEND_URL}/products">Products</a> | 
-                <a href="${process.env.FRONTEND_URL}/contact">Contact Us</a>
+                <a href="${process.env.CLIENT_URL}/">Home</a> | 
+                <a href="${process.env.CLIENT_URL}/products">Products</a> | 
+                <a href="${process.env.CLIENT_URL}/contact">Contact Us</a>
               </p>
             </div>
           </div>
@@ -562,15 +574,30 @@ const generateInvoicePDF = async (order) => {
       doc.moveTo(50, currentY).lineTo(550, currentY).stroke();
       currentY += 15;
       
-      const subtotal = order.total;
+      const total = order.total;
+      const subtotal = (total / 1.18).toFixed(2);
+      const gstAmount = (total - subtotal).toFixed(2);
+      
+      doc.font('Helvetica');
+      doc.text('', 50, currentY);
+      doc.text('Subtotal:', 380, currentY);
+      doc.text(`Rs.${subtotal}`, 490, currentY);
+      currentY += 15;
+      
+      doc.text('', 50, currentY);
+      doc.text('GST (18%):', 380, currentY);
+      doc.text(`Rs.${gstAmount}`, 490, currentY);
+      currentY += 15;
       
       doc.font('Helvetica-Bold');
+      doc.moveTo(380, currentY).lineTo(550, currentY).stroke();
+      currentY += 15;
+      
       doc.text('', 50, currentY);
       doc.text('Total:', 380, currentY);
-      doc.text(`Rs.${subtotal.toFixed(2)}`, 490, currentY);
+      doc.text(`Rs.${total.toFixed(2)}`, 490, currentY);
       currentY += 15;
       doc.font('Helvetica');
-
       
       doc.moveDown(4);
       doc.fontSize(10).text('Thank you for your business!', { align: 'center' });

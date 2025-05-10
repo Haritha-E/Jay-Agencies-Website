@@ -133,11 +133,6 @@ const AdminManageOrders = () => {
       ) : (
         <div className="admin-order-grid">
           {filteredOrders.map((order) => {
-            const orderTotal = order.products.reduce(
-              (sum, item) => sum + item.quantity * (item.productId?.price || 0),
-              0
-            );
-
             return (
               <div className="admin-order-card" key={order._id}>
                 <div className="admin-order-info">
@@ -153,7 +148,7 @@ const AdminManageOrders = () => {
                     </p>
                   )}
 
-                  <p><strong>Total:</strong> ₹{orderTotal}</p>
+                  <p><strong>Total:</strong> ₹{order.total?.toFixed(2)}</p>
 
                   <div className="admin-status">
                     <span className={`badge ${order.status === "Delivered" ? "delivered" : "placed"}`}>

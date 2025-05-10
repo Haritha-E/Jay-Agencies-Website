@@ -87,13 +87,13 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = cartItems.reduce((sum, item) => {
+  const subtotal = cartItems.reduce((sum, item) => {
     if (!item.productId) return sum;
     return sum + item.productId.price * item.quantity;
   }, 0);
 
-  const subtotal = totalPrice;
-  const total = subtotal;
+  const gst = subtotal * 0.18;
+  const total = subtotal + gst;
 
   return (
     <div className="cart-container">
@@ -229,6 +229,11 @@ const CartPage = () => {
               <div className="summary-row">
                 <span>Subtotal</span>
                 <span className="summary-value">₹{subtotal.toFixed(2)}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>GST (18%)</span>
+                <span className="summary-value">₹{gst.toFixed(2)}</span>
               </div>
               
               <div className="summary-row">

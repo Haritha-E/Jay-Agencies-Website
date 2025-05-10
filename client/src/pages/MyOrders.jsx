@@ -127,6 +127,7 @@ const MyOrders = () => {
         <div className="order-list">
           {filteredOrders.map((order) => {
             const totalPrice = calculateTotalPrice(order.products);
+            const gst=totalPrice * 0.18;
             const isExpanded = expandedOrderId === order._id;
             const orderDate = new Date(order.createdAt).toLocaleDateString("en-IN", { 
               timeZone: "Asia/Kolkata",
@@ -166,7 +167,7 @@ const MyOrders = () => {
                           <><FaClock /> {order.status}</>
                         )}
                       </div>
-                      <div className="order-price">₹{totalPrice.toFixed(2)}</div>
+                      <div className="order-price">₹{order.total?.toFixed(2)}</div>
                     </div>
                   </div>
                   <div className="expand-icon">
@@ -229,8 +230,9 @@ const MyOrders = () => {
                         <span>{order.products.reduce((sum, item) => sum + item.quantity, 0)}</span>
                       </div>
                       <div className="summary-item total">
-                        <span>Order Total:</span>
-                        <span>₹{totalPrice.toFixed(2)}</span>
+                        <span>Order Subtotal: ₹{totalPrice.toFixed(2)}</span>
+                        <span>GST (18%): ₹{gst.toFixed(2)}</span>
+                        <span>Order Total: ₹{order.total?.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
