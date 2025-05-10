@@ -23,7 +23,6 @@ const WishList = () => {
   const handleRemove = async (productId) => {
     try {
       await removeFromWishlist(productId);
-      setToast("Removed from wishlist ❌");
       setWishlist((prev) => prev.filter((item) => item._id !== productId));
       setTimeout(() => setToast(null), 2000);
     } catch (err) {
