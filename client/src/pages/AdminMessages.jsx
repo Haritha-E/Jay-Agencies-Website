@@ -147,7 +147,7 @@ const AdminMessages = () => {
       )}
 
       {loading ? (
-        <div className="loading-spinner">
+        <div className="ad-loading-spinner">
           <div className="spinner"></div>
           <p>Loading messages...</p>
         </div>

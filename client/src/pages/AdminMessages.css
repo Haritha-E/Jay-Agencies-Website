@@ -149,7 +149,7 @@ body {
   }
 }
 
-.loading-spinner {
+.ad-loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
