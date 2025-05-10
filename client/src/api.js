@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { toast } from "react-toastify";
+
 
 export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -49,24 +51,43 @@ export const updateProduct = async (id, formData) => {
 
 // ---------- CART ----------
 export const addToCart = async (productId) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast.warning("Please login to add items to cart");
+    return;
+  }
+
   try {
     const response = await axios.post(
       `${API_URL}/api/cart/add`,
-      { productId, quantity: 1 }, 
+      { productId, quantity: 1 },
       getAuthHeaders()
     );
-    return response.data.cart; 
+    return response.data.cart;
   } catch (error) {
-    throw error; 
+    throw error;
   }
 };
+
 
 export const validateCartStock = async() =>{
   return await axios.get(`${API_URL}/api/cart/validate-stock`, getAuthHeaders()); 
   };
 
 export const getCartItems = async () => {
-  return await axios.get(`${API_URL}/api/cart`, getAuthHeaders()); 
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return { data: { products: [] } }; // Matches expected structure
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/api/cart`, getAuthHeaders());
+    return response.data ? { data: response.data } : { data: { products: [] } };
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    return { data: { products: [] } };
+  }
 };
 
 export const removeFromCart = async (productId) => {
@@ -84,17 +105,42 @@ export const updateCartQuantity = async (productId, quantity) => {
 
 // ---------- WISHLIST ----------
 export const addToWishlist = async (productId) => {
-  return await axios.post(`${API_URL}/api/wishlist/add/${productId}`, {}, getAuthHeaders());
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast.warning("Please login to add items to wishlist");
+    return false;
+  }
+
+  try {
+    await axios.post(`${API_URL}/api/wishlist/add/${productId}`, {}, getAuthHeaders());
+    return true;
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+    return false;
+  }
 };
+
+
 
 export const removeFromWishlist = async (productId) => {
   return await axios.delete(`${API_URL}/api/wishlist/remove/${productId}`, getAuthHeaders());
 };
 
 export const getWishlistItems = async () => {
-  return await axios.get(`${API_URL}/api/wishlist`, getAuthHeaders());
-};
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    return { data: [] }; 
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/api/wishlist`, getAuthHeaders());
+    return response.data ? { data: response.data } : { data: [] }; 
+  } catch (error) {
+    console.error("Error fetching wishlist items:", error);
+    return { data: [] }; 
+  }
+};
 // ---------- PROFILE ----------
 export const getUserProfile = async () => {
   return await axios.get(`${API_URL}/api/users/profile`, getAuthHeaders());
@@ -146,6 +192,12 @@ export const getProduct = async (id) => {
 
 // ---------- RATINGS ----------
 export const addOrUpdateRating = async (productId, ratingData) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast.warning("Please login to rate or review the product");
+    return;
+  }
+
   try {
     const response = await axios.post(`${API_URL}/api/ratings/${productId}`, ratingData, getAuthHeaders());
     return response.data;
@@ -153,6 +205,7 @@ export const addOrUpdateRating = async (productId, ratingData) => {
     throw error.response?.data || error;
   }
 };
+
 
 
 export const getRatings = async (productId) => {

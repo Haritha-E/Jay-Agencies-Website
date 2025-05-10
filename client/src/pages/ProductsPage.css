@@ -99,7 +99,7 @@
 .prod-product-card img {
   width: 100%;
   height: 180px;
-  object-fit: control;
+  object-fit: contain;
   border-radius: 12px;
   margin-bottom: 15px;
   transition: transform 0.3s ease;

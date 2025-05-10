@@ -103,23 +103,28 @@ const ProductsPage = () => {
   };
 
   const handleToggleWishlist = async (productId) => {
-    try {
-      if (wishlistItems.includes(productId)) {
-        await removeFromWishlist(productId);
+  try {
+    if (wishlistItems.includes(productId)) {
+      const success = await removeFromWishlist(productId);
+      if (success) {
         setWishlistItems((prev) => prev.filter((id) => id !== productId));
-      } else {
-        await addToWishlist(productId);
+      }
+    } else {
+      const success = await addToWishlist(productId);
+      if (success) {
         setWishlistItems((prev) => [...prev, productId]);
       }
-    } catch (err) {
-      const message =
-        err.response?.data?.message === "Session expired. Please login again."
-          ? "Session expired! Please login to use wishlist ❗"
-          : "Please login to use wishlist ❗";
-      setToast(message);
-      setTimeout(() => setToast(null), 2000);
     }
-  };
+  } catch (err) {
+    const message =
+      err.response?.data?.message === "Session expired. Please login again."
+        ? "Session expired! Please login to use wishlist ❗"
+        : "Please login to use wishlist ❗";
+    setToast(message);
+    setTimeout(() => setToast(null), 2000);
+  }
+};
+
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =

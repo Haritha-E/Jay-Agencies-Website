@@ -13,12 +13,6 @@ const WishList = () => {
       const res = await getWishlistItems();
       setWishlist(res.data);
     } catch (err) {
-      const message =
-        err.response?.data?.message === "Session expired. Please login again."
-          ? "Session expired! Please login to view wishlist ❗"
-          : "Login to view wishlist ❗";
-      setToast(message);
-      setTimeout(() => setToast(null), 2000);
     }
   };
 
@@ -33,11 +27,7 @@ const WishList = () => {
       setWishlist((prev) => prev.filter((item) => item._id !== productId));
       setTimeout(() => setToast(null), 2000);
     } catch (err) {
-      const message =
-        err.response?.data?.message === "Session expired. Please login again."
-          ? "Session expired! Please login to remove from wishlist ❗"
-          : "Error removing from wishlist ❗";
-      setToast(message);
+      setToast("Error removing from wishlist ❗");
       setTimeout(() => setToast(null), 2000);
     }
   };

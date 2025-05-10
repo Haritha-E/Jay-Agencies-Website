@@ -91,25 +91,30 @@ const ProductDetails = () => {
     }
   };
 
-  const handleToggleWishlist = async () => {
-    try {
-      if (wishlistItems.includes(product._id)) {
-        await removeFromWishlist(product._id);
+const handleToggleWishlist = async () => {
+  try {
+    if (wishlistItems.includes(product._id)) {
+      const res = await removeFromWishlist(product._id);
+      if (res) {
         setWishlistItems((prev) => prev.filter((id) => id !== product._id));
         showToast("Removed from wishlist ❌");
-      } else {
-        await addToWishlist(product._id);
+      }
+    } else {
+      const success = await addToWishlist(product._id);
+      if (success) {
         setWishlistItems((prev) => [...prev, product._id]);
         showToast("Added to wishlist ❤️");
       }
-    } catch (error) {
-      const message =
-        error.response?.data?.message === "Session expired. Please login again."
-          ? "Session expired! Please login to use wishlist ❗"
-          : "Please login to use wishlist ❗";
-      showToast(message);
     }
-  };
+  } catch (error) {
+    const message =
+      error.response?.data?.message === "Session expired. Please login again."
+        ? "Session expired! Please login to use wishlist ❗"
+        : "Please login to use wishlist ❗";
+    showToast(message);
+  }
+};
+
 
   const handleSubmitReview = async () => {
     try {

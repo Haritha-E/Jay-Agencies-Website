@@ -18,7 +18,6 @@ const CartPage = () => {
     setIsLoading(true);
     try {
       const res = await getCartItems();
-      console.log("Cart Response 👉", res.data);
       setCartItems(res.data.products);
     } catch (err) {
       const message =

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify"; 
+import axios from "axios"; 
 import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./components/Login";
@@ -33,7 +34,6 @@ function App() {
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);  
 
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
@@ -48,24 +48,46 @@ function App() {
     }
 
     setLoading(false);  
+
+    const axiosInterceptor = axios.interceptors.response.use(
+      response => response,
+      error => {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 401 && message === "Session expired. Please login again.") {
+          toast.error("Session expired. Please login again.");
+          localStorage.clear(); 
+
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 3000);
+        }
+
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(axiosInterceptor);
+    };
   }, []);
 
-const handleLogin = (user) => {
-  if (!user || !user.name || !user.email || !user.token) return;
+  const handleLogin = (user) => {
+    if (!user || !user.name || !user.email || !user.token) return;
 
-  const userRole = user.isAdmin ? "admin" : "customer";
+    const userRole = user.isAdmin ? "admin" : "customer";
 
-  setLoggedIn(true);
-  setUserName(user.name);
-  setUserEmail(user.email);
-  setRole(userRole);
+    setLoggedIn(true);
+    setUserName(user.name);
+    setUserEmail(user.email);
+    setRole(userRole);
 
-  localStorage.setItem("token", user.token);
-  localStorage.setItem("userName", user.name);
-  localStorage.setItem("userEmail", user.email);
-  localStorage.setItem("role", userRole);
-};
-
+    localStorage.setItem("token", user.token);
+    localStorage.setItem("userName", user.name);
+    localStorage.setItem("userEmail", user.email);
+    localStorage.setItem("role", userRole);
+  };
 
   const handleLogout = () => {
     setLoggedIn(false);
@@ -81,23 +103,14 @@ const handleLogin = (user) => {
 
   return (
     <Router>
-      <ToastContainer
-       closeButton={false}
-     />
+      <ToastContainer closeButton={false} />
       <Routes>
         <Route path="/login" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Login onLogin={handleLogin} />} />
         <Route path="/signup" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Signup />} />
 
         {/* Customer Routes*/}
         <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>
-        <Route
-            path="/"
-            element={role === "admin" ? (
-              <Navigate to="/admin/dashboard" />
-            ) : (
-              <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />
-            )}
-          />
+          <Route path="/" element={role === "admin" ? <Navigate to="/admin/dashboard" /> : <Home user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />} />
           <Route path="/products" element={role !== "admin" ? <ProductsPage /> : <Navigate to="/admin/dashboard" />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={role !== "admin" ? <CartPage /> : <Navigate to="/admin/dashboard" />} />
