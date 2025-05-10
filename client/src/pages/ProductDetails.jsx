@@ -30,6 +30,7 @@ const ProductDetails = () => {
   const [toast, setToast] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
   const [activeTab, setActiveTab] = useState("description");
   const [imageLoading, setImageLoading] = useState(true);
@@ -115,20 +116,66 @@ const handleToggleWishlist = async () => {
   }
 };
 
+  const validateFeedback = () => {
+    const trimmedFeedback = feedback.trim();
+    
+    if (!trimmedFeedback) {
+      setFeedbackError("Review text is required");
+      return false;
+    }
+    
+    if (trimmedFeedback.length < 5) {
+      setFeedbackError("Review must be at least 5 characters");
+      return false;
+    }
+    
+    if (trimmedFeedback.length > 500) {
+      setFeedbackError("Review cannot exceed 500 characters");
+      return false;
+    }
+    
+    // Check if feedback is just numbers
+    if (/^\d+$/.test(trimmedFeedback)) {
+      setFeedbackError("Review cannot contain only numbers");
+      return false;
+    }
+    
+    // Check if feedback has meaningful content (at least 2 words with letters)
+    const wordCount = trimmedFeedback.split(/\s+/).filter(word => /[a-zA-Z]/.test(word)).length;
+    if (wordCount < 2) {
+      setFeedbackError("Please provide a meaningful review with at least 2 words");
+      return false;
+    }
+    
+    setFeedbackError("");
+    return true;
+  };
 
   const handleSubmitReview = async () => {
     try {
+      if (!validateFeedback()) {
+        return;
+      }
+      
       const ratingData = { rating: ratingValue, feedback };
       await addOrUpdateRating(product._id, ratingData);
       showToast("Review added successfully 👍");
       setRatingValue(0);
       setFeedback("");
+      setFeedbackError("");
 
       const updatedRatingsRes = await getRatings(id);
       setRatings(updatedRatingsRes.data);
     } catch (error) {
       showToast("Error submitting review ❌");
       console.error("Error submitting review:", error);
+    }
+  };
+
+  const handleFeedbackChange = (e) => {
+    setFeedback(e.target.value);
+    if (feedbackError) {
+      validateFeedback();
     }
   };
 
@@ -383,10 +430,12 @@ const handleToggleWishlist = async () => {
                       <textarea
                         id="feedback"
                         value={feedback}
-                        onChange={(e) => setFeedback(e.target.value)}
+                        onChange={handleFeedbackChange}
                         placeholder="Share your experience with this product..."
-                        className="d1-feedback-textarea"
+                        className={`d1-feedback-textarea ${feedbackError ? 'd1-feedback-error' : ''}`}
                       />
+                      {feedbackError && <p className="d1-error-message">{feedbackError}</p>}
+                      <small className="d1-feedback-counter">{feedback.length}/500 characters</small>
                     </div>
                     
                     <button
