@@ -25,6 +25,8 @@ import Contact from "./pages/Contact";
 import AdminMessages from "./pages/AdminMessages";
 import AdminLayout from "./components/AdminLayout";
 import AdminAnalytics from "./pages/AdminAnalytics";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 
 function App() {
@@ -107,6 +109,9 @@ function App() {
       <Routes>
         <Route path="/login" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Login onLogin={handleLogin} />} />
         <Route path="/signup" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Signup />} />
+        <Route path="/signup" element={loggedIn ? <Navigate to="/" /> : <Signup />} />
+        <Route path="/forgot-password" element={loggedIn ? <Navigate to="/" /> : <ForgotPassword />} />
+        <Route path="/reset-password/:token" element={loggedIn ? <Navigate to="/" /> : <ResetPassword />} />
 
         {/* Customer Routes*/}
         <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>

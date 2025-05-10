@@ -150,6 +150,9 @@ const Login = ({ onLogin }) => {
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
+            <div className="log-forgot-password">
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </div>
           </div>
           
           <button 
@@ -173,4 +176,4 @@ const Login = ({ onLogin }) => {
   );
 };
 
-export default Login;
+export default Login; 

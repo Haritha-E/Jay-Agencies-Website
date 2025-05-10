@@ -22,6 +22,7 @@ export const loginUser = async (userData) => {
   return await axios.post(`${API_URL}/api/auth/login`, userData);
 };
 
+
 // ---------- PRODUCTS ----------
 export const addProduct = async (formData) => {
   return await axios.post(`${API_URL}/api/products/add`, formData, {
