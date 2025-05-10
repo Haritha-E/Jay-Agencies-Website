@@ -43,8 +43,6 @@ const AdminManageOrders = () => {
 
   return (
     <div className="admin-orders-page">
-      {/* Use AdminNavbar here */}
-
       <div className="admin-orders-header">
         <h2 className="admin-orders-title">Manage Orders</h2>
 

@@ -12,7 +12,7 @@ const EditProduct = () => {
     price: "",
     size: "",
     description: "",
-    stock: "", // Will be converted to number later
+    stock: "", 
     image: null,
   });
 
@@ -62,7 +62,7 @@ const EditProduct = () => {
       formData.append("price", productData.price);
       formData.append("size", productData.size);
       formData.append("description", productData.description);
-      formData.append("stock", Number(productData.stock)); // Debug here
+      formData.append("stock", Number(productData.stock)); 
 
       if (productData.image) {
         formData.append("productImage", productData.image);

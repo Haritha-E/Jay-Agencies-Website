@@ -50,7 +50,6 @@ const WishList = () => {
     <div className="wishlist-page">
       <h2>Your Wishlist</h2>
 
-      {/* Toast Message */}
       {toast && <div className="toast">{toast}</div>}
 
       <div className="wishlist-grid">

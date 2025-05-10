@@ -1,4 +1,3 @@
-/* AdminMessages.css - Professional E-commerce Admin Panel Styling */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -26,7 +25,6 @@
   --anim-normal: 0.3s ease;
 }
 
-/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -39,14 +37,12 @@ body {
   line-height: 1.5;
 }
 
-/* Main Container */
 .admin-messages-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
-/* Header Styles */
 .admin-header {
   display: flex;
   justify-content: space-between;
@@ -113,7 +109,6 @@ body {
   border-color: var(--primary-color);
 }
 
-/* Notification Styles */
 .notification {
   padding: 1rem;
   margin-bottom: 1.5rem;
@@ -154,7 +149,6 @@ body {
   }
 }
 
-/* Loading Spinner */
 .loading-spinner {
   display: flex;
   flex-direction: column;
@@ -180,7 +174,6 @@ body {
   }
 }
 
-/* No Messages State */
 .no-messages {
   text-align: center;
   padding: 4rem 0;
@@ -201,14 +194,12 @@ body {
   font-size: 1.125rem;
 }
 
-/* Messages List */
 .messages-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
-/* Message Card */
 .message-card {
   background-color: white;
   border-radius: var(--radius-lg);
@@ -222,7 +213,6 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
-/* Message Header */
 .message-header {
   display: flex;
   justify-content: space-between;
@@ -264,7 +254,6 @@ body {
   background-color: rgba(239, 68, 68, 0.1);
 }
 
-/* Message Content */
 .subject {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -287,7 +276,6 @@ body {
   font-style: italic;
 }
 
-/* Reply Box */
 .reply-box {
   padding: 1.25rem 1.5rem;
   background-color: var(--gray-100);
@@ -328,7 +316,6 @@ body {
   background-color: var(--primary-hover);
 }
 
-/* Replied Message */
 .reply-box.replied {
   background-color: rgba(72, 202, 228, 0.07);
   border-top: 1px solid var(--gray-200);
@@ -347,7 +334,6 @@ body {
   white-space: pre-wrap;
 }
 
-/* Delete Confirmation */
 .delete-confirmation {
   padding: 1.5rem;
   text-align: center;
@@ -393,7 +379,6 @@ body {
   background-color: var(--gray-100);
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .admin-header {
     flex-direction: column;
@@ -443,14 +428,12 @@ body {
   }
 }
 
-/* For larger screens, we can make the grid two columns */
 @media (min-width: 1024px) {
   .messages-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Badge-like styling for status indication */
 .status-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
@@ -469,7 +452,6 @@ body {
   color: var(--warning-color);
 }
 
-/* Icons */
 .icon-inbox:before {
   content: "📥";
   font-size: 2.5rem;

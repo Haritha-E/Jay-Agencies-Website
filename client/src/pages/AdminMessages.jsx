@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminMessages.css";
-import { API_URL } from "../api"; // Adjust the import path as necessary
+import { API_URL } from "../api"; 
 
 const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -11,7 +11,7 @@ const AdminMessages = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [sortOrder, setSortOrder] = useState("newest");
   const [filterType, setFilterType] = useState("all");
-  const [isSendingReply, setIsSendingReply] = useState(false);  // New state for loading reply
+  const [isSendingReply, setIsSendingReply] = useState(false); 
 
   const fetchMessages = React.useCallback(async () => {
     setLoading(true);
@@ -62,7 +62,7 @@ const AdminMessages = () => {
       showNotification("error", "Reply cannot be empty");
       return;
     }
-    setIsSendingReply(true);  // Start loading state
+    setIsSendingReply(true);  
     const token = localStorage.getItem("token");
     try {
       const response = await axios.put(
@@ -81,7 +81,7 @@ const AdminMessages = () => {
       console.error("Reply failed:", err);
       showNotification("error", "Failed to send reply");
     } finally {
-      setIsSendingReply(false);  // End loading state
+      setIsSendingReply(false);  
     }
   };
   
@@ -203,7 +203,7 @@ const AdminMessages = () => {
                       />
                       <button
                         onClick={() => sendReply(msg._id)}
-                        disabled={isSendingReply}  // Disable button while sending reply
+                        disabled={isSendingReply}  
                       >
                         {isSendingReply ? "Sending..." : "Send Reply"}
                       </button>

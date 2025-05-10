@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane } from "react-icons/fa";
 import "./Contact.css";
 import axios from 'axios';
-import { API_URL } from "../api"; // Adjust the import path as necessary
+import { API_URL } from "../api"; 
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +40,6 @@ const Contact = () => {
       [name]: value,
     }));
     
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors((prev) => ({
         ...prev,
@@ -84,7 +83,6 @@ const Contact = () => {
       </div>
 
       <div className="contact-content">
-        {/* Contact Information */}
         <div className="contact-info">
           <div className="info-card">
             <h2>Contact Information</h2>
@@ -132,7 +130,6 @@ const Contact = () => {
             </div>
           </div>
           
-          {/* Map */}
           <div className="map-container">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15664.936555581615!2d78.1367!3d11.6618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf1ccf52cccad%3A0xfdc63b07c73f8175!2sShankar%20Nagar%2C%20Salem%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1683101779244!5m2!1sen!2sin" 
@@ -147,7 +144,6 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Contact Form */}
         <div className="contact-form-container">
           <div className="form-card">
             <h2>Send Us a Message</h2>

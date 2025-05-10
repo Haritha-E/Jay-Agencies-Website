@@ -186,17 +186,14 @@ const ProductDetails = () => {
   const renderStarRating = (rating) => {
     const stars = [];
     
-    // Full stars
     for (let i = 1; i <= Math.floor(rating); i++) {
       stars.push(<FaStar key={`star-${i}`} className="d1-star d1-filled" />);
     }
     
-    // Half star
     if (rating % 1 >= 0.5) {
       stars.push(<FaStarHalfAlt key="half-star" className="d1-star d1-half" />);
     }
     
-    // Empty stars
     while (stars.length < 5) {
       stars.push(<FaRegStar key={`empty-star-${stars.length}`} className="d1-star d1-empty" />);
     }

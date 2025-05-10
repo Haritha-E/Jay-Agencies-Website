@@ -3,9 +3,8 @@ import axios from "axios";
 import { FaCheckCircle, FaClock, FaSort, FaFilter, FaAngleDown, FaBox } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../api";
-import "./MyOrders.css"; // Import the CSS file for styling
+import "./MyOrders.css"; 
 
-// Create a separate CSS file for the enhanced styling
 const MyOrders = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -41,7 +40,6 @@ const MyOrders = () => {
       ? [...orders]
       : orders.filter((order) => order.status === statusFilter);
   
-    // Sort based on sortOrder
     filtered.sort((a, b) => {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);

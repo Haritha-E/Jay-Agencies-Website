@@ -15,19 +15,17 @@ const SalesReport = () => {
     try {
       const queryParams = new URLSearchParams();
 
-      // Change in fetchReport callback:
       if (status !== "All") queryParams.append("status", status);
       if (startDate) queryParams.append("startDate", startDate);
       if (endDate) queryParams.append("endDate", endDate);
-      // Update the sortOrder parameter value to match the new values:
-      queryParams.append("sortOrder", sortOrder.toLowerCase()); // Convert "Newest" to "newest" for API
+      queryParams.append("sortOrder", sortOrder.toLowerCase()); 
 
       const res = await getSalesReport(queryParams.toString());
       setReport(res);
     } catch (error) {
       console.error("Error fetching report:", error);
     }
-  }, [status, startDate, endDate, sortOrder]); // Include sortOrder in dependencies
+  }, [status, startDate, endDate, sortOrder]); 
 
   useEffect(() => {
     fetchReport();
@@ -37,10 +35,9 @@ const SalesReport = () => {
     setStatus("All");
     setStartDate("");
     setEndDate("");
-    setSortOrder("Newest"); // Reset sort order to default
+    setSortOrder("Newest"); 
   };
 
-  // Handle sorting locally if API doesn't support it
   const sortedOrders = React.useMemo(() => {
     if (!report || !report.orders) return [];
     
@@ -52,7 +49,7 @@ const SalesReport = () => {
     });
   }, [report, sortOrder]);
 
-  // Format date for reports
+  
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
       day: "2-digit",
@@ -61,7 +58,6 @@ const SalesReport = () => {
     });
   };
 
-  // Get current date/time formatted for filenames
   const getFormattedDateTime = () => {
     const now = new Date();
     return now.toISOString().slice(0, 10).replace(/-/g, "");
@@ -69,36 +65,32 @@ const SalesReport = () => {
 
   const exportToExcel = () => {
     try {
-      // Define colors to match PDF export
       const colors = {
-        primary: "#1034A6",      // Deep royal blue
-        secondary: "#0C2461",    // Darker blue
-        accent: "#DAA520",       // Gold
-        light: "#EBF0FF",        // Light blue tint
-        alternate: "#F5F5FF",    // Almost white with blue tint
+        primary: "#1034A6",      
+        secondary: "#0C2461",    
+        accent: "#DAA520",       
+        light: "#EBF0FF",        
+        alternate: "#F5F5FF",    
         white: "#FFFFFF",
         black: "#000000",
-        success: "#2E7D32",      // Green for completed status
-        processing: "#1565C0",   // Blue for processing status
-        pending: "#EF6C00",      // Orange for pending status
-        cancelled: "#C62828"     // Red for cancelled status
+        success: "#2E7D32",      
+        processing: "#1565C0",   
+        pending: "#EF6C00",      
+        cancelled: "#C62828"
       };
   
-      // Format date properly
       const formatDate = (date) => {
         if (!date) return 'N/A';
         const d = new Date(date);
         return d.toLocaleDateString('en-IN');
       };
       
-      // Get timestamp for filename
       const getFormattedDateTime = () => {
         const now = new Date();
         return now.toISOString().split('T')[0] + '_' + 
               now.toTimeString().split(' ')[0].replace(/:/g, '-');
       };
   
-      // Create filter text for report header
       let filterText = "All Orders";
       if (typeof status !== 'undefined' && status !== "All") {
         filterText = `Status: ${status}`;
@@ -112,7 +104,6 @@ const SalesReport = () => {
       }
       filterText += ` | Sort: ${sortOrder === "Newest" ? "Newest First" : "Oldest First"}`;
   
-      // Function to get status color based on status value
       const getStatusColor = (status) => {
         switch(status) {
           case 'Completed': return colors.success;
@@ -123,7 +114,6 @@ const SalesReport = () => {
         }
       };
   
-      // Create HTML template with advanced styling to match PDF export
       const htmlContent = `
       <html xmlns:o="urn:schemas-microsoft-com:office:office" 
             xmlns:x="urn:schemas-microsoft-com:office:excel" 
@@ -309,7 +299,6 @@ const SalesReport = () => {
       </html>
       `;
       
-      // Create a blob and save it with proper file extension
       const blob = new Blob([htmlContent], {type: 'application/vnd.ms-excel'});
       const filename = `JayAgencies_SalesReport_${getFormattedDateTime()}.xls`;
       saveAs(blob, filename);
@@ -321,61 +310,51 @@ const SalesReport = () => {
     }
   };
 
-  // Improved PDF Export with proper formatting and layout
   const exportToPDF = () => {
     try {
-      // Create new PDF document (landscape for better table layout)
       const doc = new jsPDF({
         orientation: "landscape",
         unit: "mm",
         format: "a4"
       });
       
-      // Define dimensions
       const pageWidth = doc.internal.pageSize.getWidth();
-      const margins = 15; // 15mm margins on each side
+      const margins = 15; 
       const tableWidth = pageWidth - (margins * 2);
       
-      // Better column width distribution
       const colWidths = [
-        tableWidth * 0.25, // Order ID
-        tableWidth * 0.15, // Customer
-        tableWidth * 0.25, // Email
-        tableWidth * 0.10, // Total
-        tableWidth * 0.10, // Status
-        tableWidth * 0.15  // Date
+        tableWidth * 0.25, 
+        tableWidth * 0.15, 
+        tableWidth * 0.25, 
+        tableWidth * 0.10, 
+        tableWidth * 0.10, 
+        tableWidth * 0.15  
       ];
       
-      // Set starting positions
       const startX = margins;
       let startY = 20;
       
-      // Professional color theme - Rich deep blues and gold accents
       const colors = {
-        primary: [16, 52, 166],       // Deep royal blue
-        secondary: [12, 36, 97],      // Darker blue
-        accent: [218, 165, 32],       // Gold
-        light: [235, 240, 255],       // Light blue tint
-        alternate: [245, 245, 255],   // Almost white with blue tint
+        primary: [16, 52, 166],       
+        secondary: [12, 36, 97],      
+        accent: [218, 165, 32],       
+        light: [235, 240, 255],       
+        alternate: [245, 245, 255],   
         white: [255, 255, 255],
         black: [0, 0, 0]
       };
       
-      // Add company header with styling
       doc.setFillColor(...colors.primary);
       doc.rect(0, 0, pageWidth, 20, "F");
       
-      // Add gold accent line
       doc.setFillColor(...colors.accent);
       doc.rect(0, 20, pageWidth, 2, "F");
       
-      // Company name
       doc.setFontSize(20);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...colors.white);
       doc.text("JAY AGENCIES", pageWidth / 2, 12, { align: "center" });
       
-      // Add company details section
       doc.setFillColor(...colors.light);
       doc.rect(0, 22, pageWidth, 15, "F");
       
@@ -385,7 +364,6 @@ const SalesReport = () => {
       doc.text("2/1, Meenatchi Nagar, Hasthampatti, Salem 636007", pageWidth / 2, 28, { align: "center" });
       doc.text("GSTIN/UIN: 33AGAPR3442B1ZZ", pageWidth / 2, 33, { align: "center" });
       
-      // Add report title with better styling
       doc.setFillColor(...colors.secondary);
       doc.rect(0, 37, pageWidth, 10, "F");
       
@@ -395,7 +373,6 @@ const SalesReport = () => {
       
       startY = 55;
       
-      // Add filters info if any are active
       let filterText = "All Orders";
       if (status !== "All") filterText = `Status: ${status}`;
       if (startDate && endDate) filterText += ` | Period: ${formatDate(startDate)} - ${formatDate(endDate)}`;
@@ -410,15 +387,12 @@ const SalesReport = () => {
       
       startY += 8;
       
-      // Add summary box with gold accent
       doc.setFillColor(...colors.secondary);
       doc.roundedRect(startX, startY, tableWidth, 15, 3, 3, "F");
       
-      // Gold accent line above summary box
       doc.setFillColor(...colors.accent);
       doc.rect(startX, startY - 1, tableWidth, 1, "F");
       
-      // Summary text
       doc.setTextColor(...colors.white);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
@@ -431,7 +405,6 @@ const SalesReport = () => {
       
       startY += 25;
       
-      // Function to split text into lines based on available width
       const splitTextToLines = (text, maxWidth) => {
         const fontSize = doc.internal.getFontSize();
         const charWidth = doc.getStringUnitWidth(text) * fontSize / doc.internal.scaleFactor;
@@ -440,10 +413,8 @@ const SalesReport = () => {
           return [text];
         }
         
-        // Calculate approximately how many characters we can fit
         const approxCharsPerLine = Math.floor(text.length * (maxWidth / charWidth));
         
-        // Split text into words
         const words = text.split(' ');
         const lines = [];
         let currentLine = '';
@@ -464,7 +435,6 @@ const SalesReport = () => {
           lines.push(currentLine);
         }
         
-        // If we still have no lines (perhaps it's a single very long word), force split
         if (lines.length === 0) {
           let i = 0;
           while (i < text.length) {
@@ -477,18 +447,14 @@ const SalesReport = () => {
         return lines;
       };
       
-      // Table header with gold accent and styling
       const headerY = startY;
       
-      // Gold accent line above header
       doc.setFillColor(...colors.accent);
       doc.rect(startX, headerY - 7, tableWidth, 1, "F");
       
-      // Header background
       doc.setFillColor(...colors.primary);
       doc.rect(startX, headerY - 6, tableWidth, 10, "F");
       
-      // Header text
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...colors.white);
       doc.setFontSize(11);
@@ -499,7 +465,6 @@ const SalesReport = () => {
         currentX += colWidths[i];
       });
       
-      // Table rows with better styling
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...colors.black);
       doc.setFontSize(10);
@@ -508,11 +473,9 @@ const SalesReport = () => {
       const baseRowHeight = 10;
       
       const addTableHeader = (yPos) => {
-        // Gold accent line above header
         doc.setFillColor(...colors.accent);
         doc.rect(startX, yPos - 7, tableWidth, 1, "F");
         
-        // Header background
         doc.setFillColor(...colors.primary);
         doc.rect(startX, yPos - 6, tableWidth, 10, "F");
         
@@ -532,7 +495,6 @@ const SalesReport = () => {
       };
       
       sortedOrders.forEach((order, index) => {
-        // Prepare all text content and calculate row height
         const orderId = order._id || "N/A";
         const customerName = order.user?.name || "N/A";
         const email = order.user?.email || "N/A";
@@ -540,31 +502,25 @@ const SalesReport = () => {
         const status = order.status || "N/A";
         const date = formatDate(order.createdAt);
         
-        // Split text into lines if needed and calculate max lines
         const orderIdLines = splitTextToLines(orderId, colWidths[0] - 8);
         const customerLines = splitTextToLines(customerName, colWidths[1] - 8);
         const emailLines = splitTextToLines(email, colWidths[2] - 8);
         
-        // Determine how many lines this row needs
         const maxLines = Math.max(
           orderIdLines.length,
           customerLines.length,
           emailLines.length,
-          1 // Minimum 1 line
+          1 
         );
         
-        // Calculate row height based on content
-        const rowHeight = Math.max(baseRowHeight, maxLines * 5 + 5); // 5mm per line plus padding
+        const rowHeight = Math.max(baseRowHeight, maxLines * 5 + 5); 
         
-        // Check if we need a new page
         if (rowY + rowHeight > doc.internal.pageSize.getHeight() - 20) {
           doc.addPage();
           
-          // Add header to new page with company name
           doc.setFillColor(...colors.primary);
           doc.rect(0, 0, pageWidth, 15, "F");
           
-          // Gold accent line
           doc.setFillColor(...colors.accent);
           doc.rect(0, 15, pageWidth, 1, "F");
           
@@ -573,15 +529,12 @@ const SalesReport = () => {
           doc.setFontSize(14);
           doc.text("JAY AGENCIES - SALES REPORT (CONTINUED)", pageWidth / 2, 10, { align: "center" });
           
-          // Reset position for new page
           rowY = 25;
           
-          // Add table header to the new page
           addTableHeader(rowY);
           rowY += 10;
         }
         
-        // Draw row background with alternating colors
         if (index % 2 === 0) {
           doc.setFillColor(...colors.light);
         } else {
@@ -589,10 +542,8 @@ const SalesReport = () => {
         }
         doc.rect(startX, rowY - 6, tableWidth, rowHeight, "F");
         
-        // Draw cell content - handle multiline text
         currentX = startX + 4;
         
-        // Order ID (full, with wrapping)
         let lineY = rowY;
         orderIdLines.forEach((line, i) => {
           doc.text(line, currentX, lineY);
@@ -600,7 +551,6 @@ const SalesReport = () => {
         });
         currentX += colWidths[0];
         
-        // Customer (full, with wrapping)
         lineY = rowY;
         customerLines.forEach((line, i) => {
           doc.text(line, currentX, lineY);
@@ -608,7 +558,6 @@ const SalesReport = () => {
         });
         currentX += colWidths[1];
         
-        // Email (full, with wrapping)
         lineY = rowY;
         emailLines.forEach((line, i) => {
           doc.text(line, currentX, lineY);
@@ -616,7 +565,6 @@ const SalesReport = () => {
         });
         currentX += colWidths[2];
         
-        // Simple fields (typically don't need wrapping)
         doc.text(amount, currentX, rowY);
         currentX += colWidths[3];
         
@@ -625,31 +573,25 @@ const SalesReport = () => {
         
         doc.text(date, currentX, rowY);
         
-        // Move to next row position (accounting for variable row height)
         rowY += rowHeight;
       });
       
-      // Add page footer with page numbers and company info
       const totalPages = doc.internal.getNumberOfPages();
       for (let i = 1; i <= totalPages; i++) {
         doc.setPage(i);
         
-        // Gold accent line above footer
         doc.setFillColor(...colors.accent);
         doc.rect(0, doc.internal.pageSize.getHeight() - 11, pageWidth, 1, "F");
         
-        // Footer background
         doc.setFillColor(...colors.primary);
         doc.rect(0, doc.internal.pageSize.getHeight() - 10, pageWidth, 10, "F");
         
-        // Page number and company info
         doc.setFontSize(9);
         doc.setFont("helvetica", "normal");
         doc.setTextColor(...colors.white);
         doc.text(`Page ${i} of ${totalPages} | Generated by: JAY AGENCIES ERP System`, pageWidth / 2, doc.internal.pageSize.getHeight() - 4, { align: "center" });
       }
       
-      // Save PDF
       const filename = `JayAgencies_SalesReport_${getFormattedDateTime()}.pdf`;
       doc.save(filename);
     } catch (error) {
@@ -692,7 +634,6 @@ const SalesReport = () => {
           />
         </div>
 
-        {/* New sort order filter */}
         <div className="filter">
           <label>Sort By:</label>
           <select 

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import "./AdminAddProduct.css";
-import {API_URL} from "../api"; // Adjust the import based on your project structure
+import {API_URL} from "../api"; 
 
 const AddProduct = ({onLogout}) => {
   const [productData, setProductData] = useState({
@@ -9,7 +9,7 @@ const AddProduct = ({onLogout}) => {
     price: "",
     size: "",
     description: "",
-    stock: 0,  // Added stock field
+    stock: 0, 
   });
 
   const [image, setImage] = useState(null);
@@ -25,7 +25,7 @@ const AddProduct = ({onLogout}) => {
   };
 
   const handleReset = () => {
-    setProductData({ name: "", price: "", size: "", description: "", stock: 0 }); // Reset stock to 0
+    setProductData({ name: "", price: "", size: "", description: "", stock: 0 });
     setImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; 
@@ -46,7 +46,7 @@ const AddProduct = ({onLogout}) => {
     formData.append("price", productData.price);
     formData.append("size", productData.size);
     formData.append("description", productData.description);
-    formData.append("stock", productData.stock);  // Send stock in the request
+    formData.append("stock", productData.stock); 
 
     try {
       const res = await fetch(`${API_URL}/api/products/add`, {

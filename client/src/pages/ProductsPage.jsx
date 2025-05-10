@@ -36,11 +36,9 @@ const ProductsPage = () => {
         const productsRes = await getProducts();
         setProducts(productsRes.data);
 
-        // Fetch user's cart
         const cartRes = await getCartItems();
         setCartItems(cartRes.data.products);
 
-        // Fetch wishlist items
         const wishlistRes = await getWishlistItems();
         setWishlistItems(wishlistRes.data.map((item) => item._id));
       } catch (err) {
@@ -54,7 +52,7 @@ const ProductsPage = () => {
     try {
       await addToCart(productId);
       setToast("Product added to cart ✅");
-      const cartRes = await getCartItems();  // Fetch updated cart after adding
+      const cartRes = await getCartItems(); 
       setCartItems(cartRes.data.products);
     } catch (err) {
       const message =
@@ -70,7 +68,7 @@ const ProductsPage = () => {
     try {
       await removeFromCart(productId);
       setToast("Item removed from cart 🗑️");
-      const cartRes = await getCartItems();  // Fetch updated cart after removal
+      const cartRes = await getCartItems(); 
       setCartItems(cartRes.data.products);
     } catch (err) {
       setToast("Error removing item ❌");
@@ -83,8 +81,8 @@ const ProductsPage = () => {
     const newQuantity = cartItem ? cartItem.quantity + 1 : 1;
 
     try {
-      await updateCartQuantity(productId, newQuantity); // Send the updated quantity directly
-      const cartRes = await getCartItems();  // Fetch updated cart after increase
+      await updateCartQuantity(productId, newQuantity); 
+      const cartRes = await getCartItems(); 
       setCartItems(cartRes.data.products);
     } catch (err) {
       console.error("Error increasing quantity", err);
@@ -96,8 +94,8 @@ const ProductsPage = () => {
     const newQuantity = cartItem && cartItem.quantity > 1 ? cartItem.quantity - 1 : 1;
 
     try {
-      await updateCartQuantity(productId, newQuantity); // Send the updated quantity directly
-      const cartRes = await getCartItems();  // Fetch updated cart after decrease
+      await updateCartQuantity(productId, newQuantity); 
+      const cartRes = await getCartItems();  
       setCartItems(cartRes.data.products);
     } catch (err) {
       console.error("Error decreasing quantity", err);
@@ -140,7 +138,6 @@ const ProductsPage = () => {
     return matchesSearch && matchesPrice;
   });
 
-  // Check if product is already in the cart
   const getCartQuantity = (productId) => {
     const cartItem = cartItems.find((item) => item.productId._id === productId);
     return cartItem ? cartItem.quantity : 0;

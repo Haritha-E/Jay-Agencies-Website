@@ -1,4 +1,3 @@
-/* CartPage.css */
 :root {
   --primary-color: #3a86ff;
   --primary-hover: #2a75ec;
@@ -51,7 +50,6 @@
   font-weight: 600;
 }
 
-/* Toast Notification */
 .toast-notification {
   position: fixed;
   top: 1rem;
@@ -82,7 +80,6 @@
   margin-left: 1rem;
 }
 
-/* Loading State */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -106,7 +103,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Empty Cart */
 .empty-cart {
   text-align: center;
   padding: 3rem 1rem;
@@ -146,7 +142,6 @@
   background-color: var(--primary-hover);
 }
 
-/* Cart Layout */
 .cart-layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -159,7 +154,6 @@
   }
 }
 
-/* Cart Items Container */
 .cart-items-container {
   background-color: white;
   border-radius: var(--radius);
@@ -186,7 +180,6 @@
   }
 }
 
-/* Cart Item Row */
 .cart-item-row {
   display: grid;
   grid-template-columns: 1fr;
@@ -203,7 +196,6 @@
   }
 }
 
-/* Item Column */
 .item-column {
   margin-bottom: 1rem;
 }
@@ -253,7 +245,6 @@
   }
 }
 
-/* Price Column */
 .price-column {
   font-weight: 600;
   margin-bottom: 1rem;
@@ -265,7 +256,6 @@
   }
 }
 
-/* Quantity Column */
 .quantity-column {
   margin-bottom: 1rem;
 }
@@ -326,7 +316,6 @@
   }
 }
 
-/* Subtotal Column */
 .subtotal-column {
   font-weight: 600;
   margin-bottom: 1rem;
@@ -342,7 +331,6 @@
   }
 }
 
-/* Action Column */
 .action-column {
   position: absolute;
   top: 1rem;
@@ -375,7 +363,6 @@
   }
 }
 
-/* Cart Summary Container */
 .cart-summary-container {
   display: flex;
   flex-direction: column;
@@ -450,7 +437,6 @@
   color:#ffffff;
 }
 
-/* Cart Help */
 .cart-help {
   background-color: white;
   border-radius: var(--radius);
@@ -470,7 +456,6 @@
   color: var(--text-light);
 }
 
-/* Animation */
 @keyframes slideIn {
   from {
     transform: translateY(-20px);

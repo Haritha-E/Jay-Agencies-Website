@@ -58,7 +58,6 @@ const ProfilePage = () => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
     
-    // Validate on change
     if (name === 'email') {
       if (value && !validateEmail(value)) {
         setErrors(prev => ({ ...prev, email: "Please enter a valid email address" }));
@@ -79,7 +78,6 @@ const ProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate before submission
     const emailValid = !userData.email || validateEmail(userData.email);
     const phoneValid = !userData.phone || validatePhone(userData.phone);
     
@@ -91,7 +89,6 @@ const ProfilePage = () => {
       setErrors(prev => ({ ...prev, phone: "Please enter a valid phone number" }));
     }
     
-    // Stop submission if validation fails
     if (!emailValid || !phoneValid) {
       toast.error("Please fix the errors before submitting");
       return;

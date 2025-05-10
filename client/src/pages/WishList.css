@@ -40,7 +40,6 @@
   object-fit: contain;
 }
 
-/* New buttons layout */
 .wishlist-actions {
   display: flex;
   flex-direction: column;
@@ -80,7 +79,6 @@
 button{
   width: 100%;
 }
-/* Add responsiveness */
 @media (max-width: 768px) {
   .wishlist-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

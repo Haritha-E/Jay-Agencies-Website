@@ -65,7 +65,6 @@
   font-size: 14px;
 }
 
-/* Added slightly dark background for thead */
 .product-table thead {
   background-color: #f1f5f9;
 }
@@ -75,10 +74,9 @@
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  word-wrap: break-word; /* Ensures text wraps properly */
+  word-wrap: break-word;
 }
 
-/* Added hovering row darkening effect */
 .product-table tbody tr:hover {
   background-color: #e4e4e4d2;
   transition: background-color 0.2s ease;
@@ -139,8 +137,8 @@
   padding: 8px;
   font-size: 14px;
   margin-top: 0.5rem;
-  width: 100%; /* Full width on smaller screens */
-  max-width: 300px; /* Restrict width on larger screens */
+  width: 100%; 
+  max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -151,7 +149,6 @@
   font-size: 18px;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .manage-products-header {
     flex-direction: column;
@@ -178,12 +175,12 @@
   }
 
   .add-product-btn {
-    width: 100%; /* Full width for smaller screens */
+    width: 100%;
     justify-content: center;
   }
 
   .search-bar input {
-    width: 100%; /* Full width for smaller screens */
+    width: 100%; 
   }
 
   .product-table th,

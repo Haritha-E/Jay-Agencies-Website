@@ -79,13 +79,12 @@ const CartPage = () => {
   
     try {
       await updateCartQuantity(productId, newQuantity);
-      // Clear any previous warning for this item
       setStockWarnings((prev) => ({ ...prev, [productId]: null }));
     } catch (err) {
       console.error("Error updating quantity", err);
       const message = err.response?.data?.message || "Error updating quantity";
       setStockWarnings((prev) => ({ ...prev, [productId]: message }));
-      fetchCartItems(); // rollback
+      fetchCartItems(); 
     }
   };
 

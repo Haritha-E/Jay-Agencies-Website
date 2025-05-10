@@ -70,7 +70,7 @@ const CheckoutPage = () => {
       return;
     }
 
-    setIsPlacingOrder(true); // Show loader
+    setIsPlacingOrder(true);
 
     try {
       await updateUserProfile(userData);

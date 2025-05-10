@@ -229,8 +229,8 @@
   animation: pulse 2s infinite ease-in-out;
   position: relative;
   overflow: hidden;
-  z-index: 10; /* Ensure it appears above other content */
-  margin-bottom: 1rem; /* Add space below */
+  z-index: 10; 
+  margin-bottom: 1rem; 
 }
 
 @keyframes pulse {
@@ -281,8 +281,8 @@
   animation: pulse 2s infinite ease-in-out;
   position: relative;
   overflow: hidden;
-  z-index: 5; /* Ensure it's below the order notification */
-  margin-bottom: 1rem; /* Add space below */
+  z-index: 5; 
+  margin-bottom: 1rem; 
 }
 
 .message-alert::before {
@@ -302,7 +302,6 @@
 }
 
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .admin-dashboard {
     padding: 1.5rem;
@@ -323,7 +322,7 @@
   }
   
   .dashboard-content {
-    grid-template-columns: repeat(2, 1fr); /* Adjust to 2 cards per row on smaller screens */
+    grid-template-columns: repeat(2, 1fr); 
   }
 }
 
@@ -337,6 +336,6 @@
   }
   
   .dashboard-content {
-    grid-template-columns: 1fr; /* 1 card per row on very small screens */
+    grid-template-columns: 1fr; 
   }
 }

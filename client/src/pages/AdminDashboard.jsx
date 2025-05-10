@@ -8,16 +8,15 @@ import {
 } from "react-icons/fa";
 import { MdAnalytics } from "react-icons/md";
 import axios from "axios";
-import { API_URL } from "../api"; // Adjust the import path as necessary
+import { API_URL } from "../api"; 
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [newOrders, setNewOrders] = useState(0);
   const [pendingMessages, setPendingMessages] = useState(0);
-  const [showMessageAlert, setShowMessageAlert] = useState(false); // State to control message alert visibility
+  const [showMessageAlert, setShowMessageAlert] = useState(false); 
 
-  // Fetch placed orders
   const fetchPlacedOrders = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -36,7 +35,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Fetch pending messages
   const fetchPendingMessages = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -49,7 +47,6 @@ const AdminDashboard = () => {
       const pending = response.data.filter((message) => message.status === "Pending");
       setPendingMessages(pending.length);
 
-      // Only show the alert if there are pending messages
       setShowMessageAlert(pending.length > 0);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -64,9 +61,6 @@ const AdminDashboard = () => {
   return (
           
     <div className="admin-dashboard">
-      {/* Include AdminNavbar component */}
-
-      {/* New Order Notification */}
       {newOrders > 0 && (
         <div className="order-notification">
           🚨 {newOrders} new order{newOrders > 1 ? "s" : ""} placed. Check the
@@ -74,7 +68,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Pending Messages Notification */}
       {showMessageAlert && (
         <div className="message-alert">
           📬 You have new pending message{pendingMessages > 1 ? "s" : ""}. Check the Customer Messages section!
@@ -109,7 +102,6 @@ const AdminDashboard = () => {
           <p>Analyze sales performance and generate reports.</p>
         </div>
 
-        {/* Customer Messages Card */}
         <div
           className="dashboard-card"
           onClick={() => navigate("/admin/messages")}

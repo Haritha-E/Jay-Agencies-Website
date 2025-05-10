@@ -1,6 +1,4 @@
-/* Profile.css */
 
-/* Main container */
 .profile-container {
     width: 100%;
     max-width: 800px;
@@ -9,7 +7,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Profile card */
 .profile-card {
     background-color: #ffffff;
     border-radius: 12px;
@@ -17,7 +14,6 @@
     overflow: hidden;
 }
 
-/* Profile header */
 .profile-header {
     background: linear-gradient(135deg, #4a66d8 0%, #2e4bb8 100%);
     color: white;
@@ -37,7 +33,6 @@
     opacity: 0.8;
 }
 
-/* Profile content */
 .profile-content {
     padding: 40px;
     display: flex;
@@ -45,7 +40,6 @@
     align-items: center;
 }
 
-/* Profile image */
 .profile-img-container {
     position: relative;
     width: 120px;
@@ -98,7 +92,6 @@
     display: none;
 }
 
-/* Form styling */
 .profile-form {
     width: 100%;
     max-width: 500px;
@@ -142,7 +135,6 @@
     min-height: 100px;
 }
 
-/* Validation styling */
 .form-group.has-error label {
     color: #e53935;
 }
@@ -172,7 +164,6 @@
     font-size: 18px;
 }
 
-/* Button styling */
 .update-btn {
     width: 100%;
     background-color: #4a66d8;
@@ -196,7 +187,6 @@
     cursor: not-allowed;
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
     .profile-content {
         padding: 30px 20px;

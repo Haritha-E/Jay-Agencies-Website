@@ -38,7 +38,6 @@ const AdminManageProducts = () => {
     }
   };
 
-  // 🔍 Filter products based on search term
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -55,7 +54,6 @@ const AdminManageProducts = () => {
           </button>
         </header>
 
-        {/* 🔍 Search Bar */}
         <div className="search-bar">
           <FaSearch className="search-icon" />
           <input

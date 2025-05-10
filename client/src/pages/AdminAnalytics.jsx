@@ -12,7 +12,6 @@ import { Loader, AlertCircle, DollarSign, ShoppingBag, Star, Users, TrendingUp }
 import "./AdminAnalytics.css";
 
 const AdminAnalytics = () => {
-  // State variables
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [yearlyTurnover, setYearlyTurnover] = useState([]);
@@ -20,22 +19,19 @@ const AdminAnalytics = () => {
   const [topSoldProducts, setTopSoldProducts] = useState([]);
   const [topRatedProducts, setTopRatedProducts] = useState([]);
   const [topCustomers, setTopCustomers] = useState([]);
-  const [activeTab, setActiveTab] = useState("sales"); // Changed default to "sales"
+  const [activeTab, setActiveTab] = useState("sales"); 
 
-  // Month names for conversion
   const monthNames = React.useMemo(() => [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ], []);
 
-  // Fetch all data
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Fetch all data in parallel
         const [
           yearlyRes,
           monthlyRes,
@@ -50,7 +46,6 @@ const AdminAnalytics = () => {
           getTopCustomers()
         ]);
 
-        // Set state with responses
         setYearlyTurnover(yearlyRes.data);
         setMonthlyTurnover(monthlyRes.data.map(item => ({
           ...item,
@@ -63,7 +58,6 @@ const AdminAnalytics = () => {
         console.error("Failed to fetch analytics data:", err);
         setError("Failed to load analytics data. Please check your connection and try again.");
         
-        // Check for auth errors
         if (err.response && err.response.status === 401) {
           setError("Authentication error. Please log in again.");
         }
@@ -75,17 +69,13 @@ const AdminAnalytics = () => {
     fetchAnalyticsData();
   }, [monthNames]);
 
-  // Calculate total yearly revenue for overview
   const totalYearlyRevenue = yearlyTurnover.reduce((sum, item) => sum + item.total, 0);
   
-  // Get current year's revenue
   const currentYear = new Date().getFullYear();
   const currentYearRevenue = yearlyTurnover.find(item => item.year === currentYear)?.total || 0;
   
-  // Get total products sold
   const totalProductsSold = topSoldProducts.reduce((sum, product) => sum + product.sold, 0);
 
-  // Loading state
   if (loading) {
     return (
       <div className="analytics-loading">
@@ -95,7 +85,6 @@ const AdminAnalytics = () => {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="analytics-error">
@@ -116,7 +105,6 @@ const AdminAnalytics = () => {
         <p>Comprehensive insights into your e-commerce performance</p>
       </div>
 
-      {/* Navigation Tabs - Removed overview tab */}
       <div className="analytics-tabs">
         <button 
           className={`tab-button ${activeTab === "sales" ? "active" : ""}`}
@@ -138,10 +126,8 @@ const AdminAnalytics = () => {
         </button>
       </div>
 
-      {/* Sales Analytics Tab - Now includes content from overview tab */}
       {activeTab === "sales" && (
         <div className="analytics-sales">
-          {/* Stats Cards - Moved from overview */}
           <div className="stats-cards">
             <div className="stat-card">
               <div className="stat-icon revenue-icon">
@@ -188,7 +174,6 @@ const AdminAnalytics = () => {
             </div>
           </div>
 
-          {/* Yearly Revenue Chart - Moved from overview */}
           <div className="chart-container">
             <h2>Yearly Revenue Trend</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -213,7 +198,6 @@ const AdminAnalytics = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Monthly Revenue Chart - Moved from overview */}
           <div className="chart-container">
             <h2>Monthly Revenue (Current Year)</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -258,7 +242,6 @@ const AdminAnalytics = () => {
         </div>
       )}
 
-      {/* Product Insights Tab */}
       {activeTab === "products" && (
         <div className="analytics-products">
           <div className="adminanal-product-grid">
@@ -354,7 +337,6 @@ const AdminAnalytics = () => {
         </div>
       )}
 
-      {/* Customer Analysis Tab */}
       {activeTab === "customers" && (
         <div className="analytics-customers">
           <h2>Top 10 Most Active Customers</h2>

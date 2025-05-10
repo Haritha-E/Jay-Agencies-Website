@@ -31,9 +31,9 @@ function App() {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [role, setRole] = useState("");
-  const [loading, setLoading] = useState(true);  // New loading state
+  const [loading, setLoading] = useState(true);  
 
-  // Check localStorage and set state on initial load
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
@@ -47,13 +47,12 @@ function App() {
       setRole(storedRole);
     }
 
-    setLoading(false);  // Set loading to false after checking localStorage
+    setLoading(false);  
   }, []);
 
 const handleLogin = (user) => {
   if (!user || !user.name || !user.email || !user.token) return;
 
-  // Get the role from the user object directly
   const userRole = user.isAdmin ? "admin" : "customer";
 
   setLoggedIn(true);
@@ -77,7 +76,7 @@ const handleLogin = (user) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;  // Show loading message until state is updated
+    return <div>Loading...</div>;  
   }
 
   return (
@@ -86,11 +85,10 @@ const handleLogin = (user) => {
        closeButton={false}
      />
       <Routes>
-        {/* Auth Routes */}
         <Route path="/login" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Login onLogin={handleLogin} />} />
         <Route path="/signup" element={loggedIn ? <Navigate to={role === "admin" ? "/admin/dashboard" : "/"} /> : <Signup />} />
 
-        {/* Customer Routes (with Navbar) */}
+        {/* Customer Routes*/}
         <Route element={<Layout user={loggedIn ? { name: userName, email: userEmail } : null} onLogout={handleLogout} />}>
         <Route
             path="/"
@@ -111,7 +109,6 @@ const handleLogin = (user) => {
         </Route>
 
         {/* Admin Routes */}
-        {/* Admin Routes with AdminLayout */}
         <Route path="/admin" element={role === "admin" ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/" />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminManageProducts />} />
