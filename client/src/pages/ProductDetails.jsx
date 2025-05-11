@@ -385,7 +385,7 @@ const handleToggleWishlist = async () => {
             <div className="d1-tab-content">
               {activeTab === 'description' && (
                 <div className="d1-description-tab">
-                  <p>{product.description}</p>
+                  <p style={{ whiteSpace: 'pre-line' }}>{product.description}</p>
                 </div>
               )}
               

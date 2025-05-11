@@ -75,8 +75,8 @@ const AdminManageProducts = () => {
                   <th>Name</th>
                   <th>Price (₹)</th>
                   <th>Size</th>
-                  <th>Description</th>
                   <th>Stock</th>
+                  <th>Sold</th>
                   <th>Availability</th>
                   <th>Actions</th>
                 </tr>
@@ -94,8 +94,8 @@ const AdminManageProducts = () => {
                     <td>{product.name}</td>
                     <td>₹{product.price}</td>
                     <td>{product.size}</td>
-                    <td>{product.description}</td>
                     <td>{product.stock}</td>
+                    <td>{product.sold}</td>
                     <td>
                       {product.stock > 0 ? (
                         <span className="in-stock">In Stock</span>
