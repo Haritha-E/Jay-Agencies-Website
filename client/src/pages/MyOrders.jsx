@@ -232,7 +232,7 @@ const MyOrders = () => {
                       <div className="summary-item total">
                         <span>Order Subtotal: ₹{totalPrice.toFixed(2)}</span>
                         <span>GST (18%): ₹{gst.toFixed(2)}</span>
-                        <span>Order Total: ₹{order.total?.toFixed(2)}</span>
+                        <span>Order xxxxxx</span>
                       </div>
                     </div>
                   </div>

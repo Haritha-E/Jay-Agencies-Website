@@ -128,8 +128,7 @@ const ProductsPage = () => {
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      product.description.toLowerCase().includes(search.toLowerCase());
+      product.name.toLowerCase().includes(search.toLowerCase());
 
     const matchesPrice =
       priceFilter === ""
@@ -193,8 +192,7 @@ const ProductsPage = () => {
             </p>
             <img src={`${API_URL}/uploads/products/${product.image}`} alt={product.name} />
             <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p>₹{product.price}</p>
+            <p>Price: ₹{product.price}</p>
             <p>Size: {product.size}</p>
           </div>
 
