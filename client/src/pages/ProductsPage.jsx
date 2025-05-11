@@ -10,13 +10,16 @@ import {
   getWishlistItems,
   API_URL,
 } from "../api";
+import { getRatings } from "../api"; 
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import "./ProductsPage.css";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [productRatings, setProductRatings] = useState({}); 
   const [search, setSearch] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
   const [toast, setToast] = useState(null);
@@ -41,6 +44,30 @@ const ProductsPage = () => {
 
         const wishlistRes = await getWishlistItems();
         setWishlistItems(wishlistRes.data.map((item) => item._id));
+
+        const ratingsData = {};
+        for (const product of productsRes.data) {
+          try {
+            const ratingRes = await getRatings(product._id);
+            const ratings = ratingRes.data;
+            
+            if (ratings && ratings.length > 0) {
+              const sum = ratings.reduce((acc, rating) => acc + rating.rating, 0);
+              const averageRating = sum / ratings.length;
+              ratingsData[product._id] = { 
+                averageRating: averageRating, 
+                count: ratings.length,
+                ratings: ratings 
+              };
+            } else {
+              ratingsData[product._id] = { averageRating: 0, count: 0, ratings: [] };
+            }
+          } catch (err) {
+            console.error(`Failed to load ratings for product ${product._id}`, err);
+            ratingsData[product._id] = { averageRating: 0, count: 0, ratings: [] };
+          }
+        }
+        setProductRatings(ratingsData);
       } catch (err) {
         console.error("Failed to load data", err);
       }
@@ -125,6 +152,23 @@ const ProductsPage = () => {
   }
 };
 
+  const renderStarRating = (rating) => {
+    const stars = [];
+    
+    for (let i = 1; i <= Math.floor(rating); i++) {
+      stars.push(<FaStar key={`star-${i}`} className="prod-star prod-filled" style={{ color: "#FFD700" }} />);
+    }
+    
+    if (rating % 1 >= 0.5) {
+      stars.push(<FaStarHalfAlt key="half-star" className="prod-star prod-half" style={{ color: "#FFD700" }} />);
+    }
+    
+    while (stars.length < 5) {
+      stars.push(<FaRegStar key={`empty-star-${stars.length}`} className="prod-star prod-empty" style={{ color: "#FFD700" }} />);
+    }
+    
+    return <div className="prod-star-rating">{stars}</div>;
+  };
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
@@ -194,6 +238,18 @@ const ProductsPage = () => {
             <h3>{product.name}</h3>
             <p>Price: ₹{product.price}</p>
             <p>Size: {product.size}</p>
+            <div className="prod-rating">
+              {productRatings[product._id] && (
+                <>
+                  {renderStarRating(productRatings[product._id].averageRating)}
+                  <span className="prod-rating-text">
+                    {productRatings[product._id].averageRating > 0 
+                      ? `${productRatings[product._id].averageRating.toFixed(1)} (${productRatings[product._id].count} ${productRatings[product._id].count === 1 ? 'review' : 'reviews'})` 
+                      : 'No ratings yet'}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
 
           {getCartQuantity(product._id) > 0 ? (
@@ -247,7 +303,6 @@ const ProductsPage = () => {
     </div>
   </div>
 );
-
 };
 
 export default ProductsPage;
