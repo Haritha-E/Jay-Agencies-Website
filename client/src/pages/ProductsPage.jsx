@@ -45,29 +45,41 @@ const ProductsPage = () => {
         const wishlistRes = await getWishlistItems();
         setWishlistItems(wishlistRes.data.map((item) => item._id));
 
-        const ratingsData = {};
-        for (const product of productsRes.data) {
-          try {
-            const ratingRes = await getRatings(product._id);
-            const ratings = ratingRes.data;
-            
-            if (ratings && ratings.length > 0) {
-              const sum = ratings.reduce((acc, rating) => acc + rating.rating, 0);
-              const averageRating = sum / ratings.length;
-              ratingsData[product._id] = { 
-                averageRating: averageRating, 
-                count: ratings.length,
-                ratings: ratings 
-              };
-            } else {
-              ratingsData[product._id] = { averageRating: 0, count: 0, ratings: [] };
-            }
-          } catch (err) {
-            console.error(`Failed to load ratings for product ${product._id}`, err);
-            ratingsData[product._id] = { averageRating: 0, count: 0, ratings: [] };
-          }
-        }
-        setProductRatings(ratingsData);
+        const ratingsPromises = productsRes.data.map(async (product) => {
+  try {
+    const ratingRes = await getRatings(product._id);
+    const ratings = ratingRes.data;
+
+    if (ratings && ratings.length > 0) {
+      const sum = ratings.reduce((acc, rating) => acc + rating.rating, 0);
+      const averageRating = sum / ratings.length;
+      return {
+        productId: product._id,
+        data: { averageRating, count: ratings.length, ratings },
+      };
+    } else {
+      return {
+        productId: product._id,
+        data: { averageRating: 0, count: 0, ratings: [] },
+      };
+    }
+  } catch (err) {
+    console.error(`Failed to load ratings for product ${product._id}`, err);
+    return {
+      productId: product._id,
+      data: { averageRating: 0, count: 0, ratings: [] },
+    };
+  }
+});
+
+const ratingsResults = await Promise.all(ratingsPromises);
+
+const ratingsData = {};
+ratingsResults.forEach(({ productId, data }) => {
+  ratingsData[productId] = data;
+});
+setProductRatings(ratingsData);
+
       } catch (err) {
         console.error("Failed to load data", err);
       }
