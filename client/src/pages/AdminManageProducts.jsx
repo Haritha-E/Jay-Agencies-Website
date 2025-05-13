@@ -54,15 +54,21 @@ const AdminManageProducts = () => {
           </button>
         </header>
 
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search by product name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="search-bar-with-count">
+          <div className="search-input-container">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search by product name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="product-count">
+            Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+          </div>
         </div>
+
 
         <div className="product-table">
           {filteredProducts.length === 0 ? (

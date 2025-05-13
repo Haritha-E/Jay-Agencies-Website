@@ -221,3 +221,31 @@
   color: red;
   font-weight: bold;
 }
+
+.search-bar-with-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.search-input-container input {
+  padding: 0.5rem;
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.product-count {
+  font-size: 0.95rem;
+  color: #555;
+  margin-left: 1rem;
+  white-space: nowrap;
+}
